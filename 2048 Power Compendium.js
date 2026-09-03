@@ -1,5 +1,11 @@
 /* There are secrets hidden in the Compendium. If you want to find those secrets legitimately, I'd recommend not looking
- at the code. If you don't know whether you've found all the secrets yet, then you have not. */
+ at the code. If you don't know whether you've found all the secrets yet, then you have not.
+ Also, this script is very WIP. First of all, I work at implementing the new color systems beyond RGB/HSL/HSV, which includes HWB, LAB, LCH, OKLAB, OKLCH,
+ sRGB (based on RGB but numbers range from 0 to 1 instead of 0 to 255), Linear RGB, Display P3, Adobe RGB, ProPhoto RGB, Rec2020, XYZ D50 and D65,
+ as well as APCA, WCAG, and ΔE color contrast checking functions primarily for the purpose of accessibility tweaks. Color spaces outside of sRGB gamut will be introduced much later.
+ However, in the meantime, I only add the conditions for the color system checking in the code (edited after line ~27000), which are kept purely for future implementation purposes.
+ The whole site still rely on RGB/HSL/HSV.
+ */
 
 //Opening setup (the code that executes on its own)
 let width = 4; let height = 4; let min_dim = 2; //width and height are the dimensions of the grid, min_dim doesn't really do anything other than set defaults for certain modifiers
@@ -27049,7 +27055,7 @@ function removeMergeRuleApplies(rule) { // Replaces all "mergeRuleApplies" check
 function evaluateColor(color) {
     /*
     Colors can appear in several forms in TileTypes: as a string like #f938ac, or as an array such as ["@RGBA", 255, 40, 20, 1]
-    (which can come in RGBA, HSLA, or HSVA forms), and there can be gradients, which are arrays with each entry being either a color or a position in the gradient.
+    (which can come in many different forms, such as RGB, HSL, LAB, OKLAB, XYZ D65), and there can be gradients, which are arrays with each entry being either a color or a position in the gradient.
     */
     let vcoord = 0; let hcoord = 0; let gri = Grid; let vars = []; let globalVarStat = 0;
     if (arguments.length > 1 && arguments[1] !== undefined) vcoord = arguments[1];
@@ -27109,14 +27115,14 @@ function evaluateColor(color) {
             color.splice(0, color.indexOf("@end_vars") + 1);
         }
     }
-    if (color[0] === "@HSLA") {
+    if (color[0] === "@HSLA" || color[0] === "@HSL") {
         let hue = CalcArray(color[1], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
         let saturation = CalcArray(color[2], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
         let brightness = CalcArray(color[3], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
         let alpha = CalcArray(color[4], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
         return "hsla(" + hue + ", " + saturation + "%, " + brightness + "%, " + alpha + ")";
     }
-    else if (color[0] === "@HSVA") { //HSV to HSL conversion found on Wikipedia
+    else if (color[0] === "@HSVA" || color[0] === "@HSV") { //HSV to HSL conversion found on Wikipedia
         let hue = CalcArray(color[1], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
         let HSVsaturation = CalcArray(color[2], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat) / 100;
         let HSVvalue = CalcArray(color[3], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat) / 100;
@@ -27125,14 +27131,112 @@ function evaluateColor(color) {
         if (!(brightness == 0 || brightness == 1)) saturation = (HSVvalue - brightness)/Math.min(brightness, 1 - brightness);
         brightness *= 100; saturation *= 100;
         let alpha = CalcArray(color[4], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
-        return "hsla(" + hue + ", " + saturation + "%, " + brightness + "%, " + alpha + ")"
+        return "hsla(" + hue + ", " + saturation + "%, " + brightness + "%, " + alpha + ")";
     }
-    else if (color[0] === "@RGBA") {
+    else if (color[0] === "@RGBA" || color[0] === "@RGB") {
         let red = CalcArray(color[1], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
         let green = CalcArray(color[2], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
         let blue = CalcArray(color[3], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
         let alpha = CalcArray(color[4], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
-        return "rgba(" + red + ", " + green + ", " + blue+ ", " + alpha + ")"
+        return "rgba(" + red + ", " + green + ", " + blue + ", " + alpha + ")";
+    }
+    else if (color[0] === "@sRGB" || color[0] === "@LinearRGB") {
+        let red = CalcArray(color[1], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
+        let green = CalcArray(color[2], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
+        let blue = CalcArray(color[3], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
+        let alpha = CalcArray(color[4], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
+        let redLinear = red > 0.04045 ? Math.pow((red + 0.055) / 1.055, 2.4) : red / 12.92;
+        let greenLinear = green > 0.04045 ? Math.pow((green + 0.055) / 1.055, 2.4) : green / 12.92;
+        let blueLinear = blue > 0.04045 ? Math.pow((blue + 0.055) / 1.055, 2.4) : blue / 12.92;
+        if (color[0] === "@LinearRGB") {
+          return "rgba(" + Math.round(redLinear * 255) + ", " + Math.round(greenLinear * 255) + ", " + Math.round(blueLinear * 255) + ", " + alpha + ")";
+        } else {
+          return "rgba(" + Math.round(red * 255) + ", " + Math.round(green * 255) + ", " + Math.round(blue * 255) + ", " + alpha + ")";
+        }
+    }
+    else if (color[0] === "@HWB") {
+      let hue = CalcArray(color[1], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
+      let white = CalcArray(color[2], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
+      let black = CalcArray(color[3], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
+      let alpha = CalcArray(color[4], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
+      // WIP. Explicit RGB calculation under the default legacy syntax will be introduced later.
+      return "hwb(" + hue + " " + white + "% " + black + "% / " + alpha + ")";
+    }
+    else if (color[0] === "@XYZ" || color[0] === "@XYZ-D65") {
+      let x = CalcArray(color[1], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
+      let y = CalcArray(color[2], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
+      let z = CalcArray(color[3], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
+      let alpha = CalcArray(color[4], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
+      // WIP. Explicit RGB calculation under the default legacy syntax will be introduced later.
+      return "color(xyz-d65 " + x + " " + y + " " + z + " / " + alpha + ")";
+    }
+    else if (color[0] === "@XYZ-D50") {
+      let x = CalcArray(color[1], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
+      let y = CalcArray(color[2], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
+      let z = CalcArray(color[3], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
+      let alpha = CalcArray(color[4], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
+      // WIP. Explicit RGB calculation under the default legacy syntax will be introduced later.
+      return "color(xyz-d50 " + x + " " + y + " " + z + " / " + alpha + ")";
+    }
+    else if (color[0] === "@LAB") {
+      let lightness = CalcArray(color[1], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
+      let a = CalcArray(color[2], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
+      let b = CalcArray(color[3], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
+      let alpha = CalcArray(color[4], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
+      // WIP. Explicit RGB calculation under the default legacy syntax will be introduced later.
+      return "lab(" + lightness + " " + a + " " + b + " / " + alpha + ")";
+    }
+    else if (color[0] === "@LCH") {
+      let lightness = CalcArray(color[1], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
+      let chroma = CalcArray(color[2], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
+      let hue = CalcArray(color[3], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
+      let alpha = CalcArray(color[4], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
+      // WIP. Explicit RGB calculation under the default legacy syntax will be introduced later.
+      return "lch(" + lightness + " " + chroma + " " + hue + " / " + alpha + ")";
+    }
+    else if (color[0] === "@OKLAB") {
+      let l = CalcArray(color[1], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
+      let a = CalcArray(color[2], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
+      let b = CalcArray(color[3], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
+      let alpha = CalcArray(color[4], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
+      // WIP. Explicit RGB calculation under the default legacy syntax will be introduced later.
+      return "oklab(" + lightness + " " + a + " " + b + " / " + alpha + ")";
+    }
+    else if (color[0] === "@OKLCH") {
+      let l = CalcArray(color[1], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
+      let c = CalcArray(color[2], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
+      let h = CalcArray(color[3], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
+      let alpha = CalcArray(color[4], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
+      // WIP. Explicit RGB calculation under the default legacy syntax will be introduced later.
+      return "oklch(" + lightness + " " + chroma + " " + hue + " / " + alpha + ")";
+    }
+    else if (color[0] === "@DisplayP3") {
+      let red = CalcArray(color[1], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
+      let green = CalcArray(color[2], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
+      let blue = CalcArray(color[3], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
+      let alpha = CalcArray(color[4], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
+      return "color(display-p3" + red + " " + green + " " + blue + " / " + alpha + ")";
+    }
+    else if (color[0] === "@A98RGB" || color[0] === "@AdobeRGB") {
+      let red = CalcArray(color[1], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
+      let green = CalcArray(color[2], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
+      let blue = CalcArray(color[3], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
+      let alpha = CalcArray(color[4], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
+      return "color(a98-rgb" + red + " " + green + " " + blue + " / " + alpha + ")";
+    }
+    else if (color[0] === "@ProPhotoRGB" || color[0] === "@ProPhoto") {
+      let red = CalcArray(color[1], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
+      let green = CalcArray(color[2], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
+      let blue = CalcArray(color[3], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
+      let alpha = CalcArray(color[4], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
+      return "color(prophoto-rgb" + red + " " + green + " " + blue + " / " + alpha + ")";
+    }
+    else if (color[0] === "@Rec2020") {
+      let red = CalcArray(color[1], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
+      let green = CalcArray(color[2], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
+      let blue = CalcArray(color[3], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
+      let alpha = CalcArray(color[4], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
+      return "color(rec2020" + red + " " + green + " " + blue + " / " + alpha + ")";
     }
     else if (color[0] === "@linear-gradient" || color[0] === "@radial-gradient" || color[0] === "@conic-gradient" || color[0] === "@repeating-linear-gradient" || color[0] === "@repeating-radial-gradient" || color[0] === "@repeating-conic-gradient") {
         let grad = color[0].slice(1) + "("
@@ -27244,9 +27348,9 @@ function convertColor(col, system) { // Converts colors between systems; mostly 
     }
     else {
         let colorarray = [];
-        if (Array.isArray(color) && !(color[0] == "@RGBA" || color[0] == "@HSLA" || color[0] == "@HSVA")) color = CalcArray(color, vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
-        if (Array.isArray(color) && (color[0] == "@RGBA" || color[0] == "@HSLA" || color[0] == "@HSVA")) colorarray = color;
-        else if (typeof color == "string" && color[0] == "#") { //Any hex colors are converted to RGBA arrays first
+        if (Array.isArray(color) && !(color[0] == "@RGB" || color[0] == "@RGBA" || color[0] == "@HSL" || color[0] == "@HSLA" || color[0] == "@HSV" || color[0] == "@HSVA" || color[0] == "@HWB" || color[0] == "@LAB" || color[0] == "@LCH" || color[0] == "@OKLAB" || color[0] == "@OKLCH" || color[0] == "@SRGB" || color[0] == "@LinearRGB" || color[0] == "@DisplayP3" || color[0] == "@A98RGB" || color[0] == "@AdobeRGB" || color[0] == "@ProPhotoRGB" || color[0] == "@ProPhoto" || color[0] == "@Rec2020" || color[0] == "@XYZ" || color[0] == "@XYZ-D50" || color[0] == "@XYZ-D65")) color = CalcArray(color, vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
+        if (Array.isArray(color) && (color[0] == "@RGB" || color[0] == "@RGBA" || color[0] == "@HSL" || color[0] == "@HSLA" || color[0] == "@HSV" || color[0] == "@HSVA" || color[0] == "@HWB" || color[0] == "@LAB" || color[0] == "@LCH" || color[0] == "@OKLAB" || color[0] == "@OKLCH" || color[0] == "@SRGB" || color[0] == "@LinearRGB" || color[0] == "@DisplayP3" || color[0] == "@A98RGB" || color[0] == "@AdobeRGB" || color[0] == "@ProPhotoRGB" || color[0] == "@ProPhoto" || color[0] == "@Rec2020" || color[0] == "@XYZ" || color[0] == "@XYZ-D50" || color[0] == "@XYZ-D65")) colorarray = color;
+        else if (typeof color == "string" && color[0] == "#") { // Any hex colors are converted to RGBA arrays first
             if (system == "@Hex") return color;
             if (color.length == 7 || color.length == 9) {
                 let red = parseInt((color[1] + color[2]), 16);
@@ -27285,13 +27389,14 @@ function convertColor(col, system) { // Converts colors between systems; mostly 
             }
             return hexcode;
         }
-        if (Array.isArray(colorarray) && (colorarray[0] == "@RGBA" || colorarray[0] == "@HSLA" || colorarray[0] == "@HSVA")) {
+        if (Array.isArray(colorarray) && (color[0] == "@RGB" || color[0] == "@RGBA" || color[0] == "@HSL" || color[0] == "@HSLA" || color[0] == "@HSV" || color[0] == "@HSVA" || color[0] == "@HWB" || color[0] == "@LAB" || color[0] == "@LCH" || color[0] == "@OKLAB" || color[0] == "@OKLCH" || color[0] == "@SRGB" || color[0] == "@LinearRGB" || color[0] == "@DisplayP3" || color[0] == "@A98RGB" || color[0] == "@AdobeRGB" || color[0] == "@ProPhotoRGB" || color[0] == "@ProPhoto" || color[0] == "@Rec2020" || color[0] == "@XYZ" || color[0] == "@XYZ-D50" || color[0] == "@XYZ-D65")) {
+            // Conversion for color systems beyond RGB/HSL/HSV are under construction.
             let e1 = CalcArray(colorarray[1], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
             let e2 = CalcArray(colorarray[2], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
             let e3 = CalcArray(colorarray[3], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
             let e4 = CalcArray(colorarray[4], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
             //Conversion formulas are from the subpages of https://www.rapidtables.com/convert/color/
-            if (colorarray[0] == "@RGBA" && system == "@HSLA") {
+            if ((colorarray[0] == "@RGB" || colorarray[0] == "@RGBA") && (system == "@HSL" || system == "@HSLA")) {
                 let rprime = Math.min(Math.max(e1 / 255, 0), 1);
                 let gprime = Math.min(Math.max(e2 / 255, 0), 1);
                 let bprime = Math.min(Math.max(e3 / 255, 0), 1);
@@ -27309,7 +27414,7 @@ function convertColor(col, system) { // Converts colors between systems; mostly 
                 }
                 colorarray = ["@HSLA", hue, saturation * 100, lightness * 100, e4];
             }
-            else if (colorarray[0] == "@RGBA" && system == "@HSVA") {
+            else if ((colorarray[0] == "@RGB" || colorarray[0] == "@RGBA") && (system == "@HSV" || system == "@HSVA")) {
                 let rprime = Math.min(Math.max(e1 / 255, 0), 1);
                 let gprime = Math.min(Math.max(e2 / 255, 0), 1);
                 let bprime = Math.min(Math.max(e3 / 255, 0), 1);
@@ -27327,7 +27432,7 @@ function convertColor(col, system) { // Converts colors between systems; mostly 
                 }
                 colorarray = ["@HSVA", hue, saturation * 100, value * 100, e4];
             }
-            else if (colorarray[0] == "@HSLA" && system == "@RGBA") {
+            else if ((colorarray[0] == "@HSL" || colorarray[0] == "@HSLA") && (system == "@RGB" || system == "@RGBA")) {
                 let hue = mod(e1, 360);
                 let saturation = Math.min(Math.max(e2 / 100, 0), 1);
                 let lightness = Math.min(Math.max(e3 / 100, 0), 1);
@@ -27343,7 +27448,7 @@ function convertColor(col, system) { // Converts colors between systems; mostly 
                 else if (hue >= 300 && hue < 360) {b = x; r = c;}
                 colorarray = ["@RGBA", 255 * (r + m), 255 * (g + m), 255 * (b + m), e4];
             }
-            else if (colorarray[0] == "@HSLA" && system == "@HSVA") {
+            else if ((colorarray[0] == "@HSL" || colorarray[0] == "@HSLA") && (system == "@HSV" || system == "@HSVA")) {
                 let hue = mod(e1, 360);
                 let saturationL = Math.min(Math.max(e2 / 100, 0), 1);
                 let lightness = Math.min(Math.max(e3 / 100, 0), 1);
@@ -27352,7 +27457,7 @@ function convertColor(col, system) { // Converts colors between systems; mostly 
                 if (value != 0) saturationV = 2 * (1 - lightness/value);
                 colorarray = ["@HSVA", hue, saturationV * 100, value * 100, e4];
             }
-            else if (colorarray[0] == "@HSVA" && system == "@RGBA") {
+            else if ((colorarray[0] == "@HSV" || colorarray[0] == "@HSVA") && (system == "@RGB" || system == "@RGBA")) {
                 let hue = mod(e1, 360);
                 let saturation = Math.min(Math.max(e2 / 100, 0), 1);
                 let value = Math.min(Math.max(e3 / 100, 0), 1);
@@ -27368,7 +27473,7 @@ function convertColor(col, system) { // Converts colors between systems; mostly 
                 else if (hue >= 300 && hue < 360) {b = x; r = c;}
                 colorarray = ["@RGBA", 255 * (r + m), 255 * (g + m), 255 * (b + m), e4];
             }
-            else if (colorarray[0] == "@HSVA" && system == "@HSLA") {
+            else if ((colorarray[0] == "@HSV" || colorarray[0] == "@HSVA") && (system == "@HSL" || system == "@HSLA")) {
                 let hue = mod(e1, 360);
                 let saturationV = Math.min(Math.max(e2 / 100, 0), 1);
                 let value = Math.min(Math.max(e3 / 100, 0), 1);
@@ -27378,6 +27483,7 @@ function convertColor(col, system) { // Converts colors between systems; mostly 
                 colorarray = ["@HSLA", hue, saturationL * 100, lightness * 100, e4];
             }
             else colorarray = [colorarray[0], e1, e2, e3, e4];
+            // Note that conversion from wide-gamut color systems (such as XYZ, LAB, OKLAB, and Display P3) to HSL/HSV/HWB aren't done directly with each other, they must be converted first through RGB.
         }
         return colorarray;
     }
@@ -27413,6 +27519,7 @@ function rotateColor(color, degrees) { //degrees = 180 gives the complementary c
 }
 
 function deevaluateColor(color) {
+    // Very WIP here due to the implementation of the color systems such as LAB/LCH, OKLAB/OKLCH, color() used to define specific color spaces as well as XYZ.
     if (typeof color !== "string") return color;
     if (color[0] === "#") return convertColor(color, "@RGBA");
     if (color.indexOf("(") == -1) return color;
