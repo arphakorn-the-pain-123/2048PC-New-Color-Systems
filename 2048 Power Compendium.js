@@ -28058,6 +28058,7 @@ function convertColor(col, system) { // Converts colors between systems; mostly 
 }
 
 function rotateColor(color, degrees) { //degrees = 180 gives the complementary color
+    // Color rotation based on LCH and OKLCH color systems will be implemented later. HWB is basically the same as HSL.
     let invertL = false; let vcoord = 0; let hcoord = 0; let gri = Grid; let vars = []; let globalVarStat = 0;
     if (arguments.length > 2 && arguments[2] !== undefined) invertL = arguments[2]; // If this is true, then the lightness of the color is inverted
     if (arguments.length > 3 && arguments[3] !== undefined) vcoord = arguments[3];
@@ -28086,7 +28087,7 @@ function rotateColor(color, degrees) { //degrees = 180 gives the complementary c
     }
 }
 
-function deevaluateColor(color) {
+function deevaluateColor(color, useAlpha = true) {
     // Very WIP here due to the implementation of the color systems such as LAB/LCH, OKLAB/OKLCH, color() used to define specific color spaces as well as XYZ.
     if (typeof color !== "string") return color;
     if (color[0] === "#") return convertColor(color, "@RGBA");
@@ -28113,19 +28114,86 @@ function deevaluateColor(color) {
         else if (currentGrad.indexOf("(") == -1) multiGradArray[m] = color;
         else if (currentGrad.slice(0, 4) == "hsla") {
             let commaSplit = currentGrad.slice(5, -1).split(", ");
-            multiGradArray[m] = ["@HSLA", Number(commaSplit[0]), Number(commaSplit[1].slice(0, -1)), Number(commaSplit[2].slice(0, -1)), Number(commaSplit[3])]
+            multiGradArray[m] = [useAlpha ? "@HSLA" : "@HSL", Number(commaSplit[0]), Number(commaSplit[1].slice(0, -1)), Number(commaSplit[2].slice(0, -1)), Number(commaSplit[3])]
         }
         else if (currentGrad.slice(0, 4) == "rgba") {
             let commaSplit = currentGrad.slice(5, -1).split(", ");
-            multiGradArray[m] = ["@RGBA", Number(commaSplit[0]), Number(commaSplit[1]), Number(commaSplit[2]), Number(commaSplit[3])]
+            multiGradArray[m] = [useAlpha ? "@RGBA" : "@RGB", Number(commaSplit[0]), Number(commaSplit[1]), Number(commaSplit[2]), Number(commaSplit[3])]
         }
         else if (currentGrad.slice(0, 4) == "hsl(") {
             let commaSplit = currentGrad.slice(4, -1).split(", ");
-            multiGradArray[m] = ["@HSLA", Number(commaSplit[0]), Number(commaSplit[1].slice(0, -1)), Number(commaSplit[2].slice(0, -1)), 1]
+            multiGradArray[m] = [useAlpha ? "@HSLA" : "@HSL", Number(commaSplit[0]), Number(commaSplit[1].slice(0, -1)), Number(commaSplit[2].slice(0, -1)), 1]
         }
         else if (currentGrad.slice(0, 4) == "rgb(") {
             let commaSplit = currentGrad.slice(4, -1).split(", ");
-            multiGradArray[m] = ["@RGBA", Number(commaSplit[0]), Number(commaSplit[1]), Number(commaSplit[2]), 1]
+            multiGradArray[m] = [useAlpha ? "@RGBA" : "@RGB", Number(commaSplit[0]), Number(commaSplit[1]), Number(commaSplit[2]), 1]
+        }
+        else if (currentGrad.slice(0, 3) == "hwb") {
+            let spaceSplit = currentGrad.slice(4, -1).split(" ");
+            let slashIndex = spaceSplit.indexOf("/");
+            if (slashIndex > -1) {
+              spaceSplit.splice(slashIndex, 1)
+            }
+            multiGradArray[m] = ["@HWB", Number(spaceSplit[0]), Number(spaceSplit[1].slice(0, -1)), Number(spaceSplit[2].slice(0, -1)), Number(spaceSplit[3])]
+        }
+        else if (currentGrad.slice(0, 3) == "lab") {
+            let spaceSplit = currentGrad.slice(4, -1).split(" ");
+            let slashIndex = spaceSplit.indexOf("/");
+            if (slashIndex > -1) {
+              spaceSplit.splice(slashIndex, 1)
+            }
+            multiGradArray[m] = ["@LAB_raw", Number(spaceSplit[0]), Number(spaceSplit[1].slice(0, -1)), Number(spaceSplit[2].slice(0, -1)), Number(spaceSplit[3])]
+        }
+        else if (currentGrad.slice(0, 3) == "lch") {
+            let spaceSplit = currentGrad.slice(4, -1).split(" ");
+            let slashIndex = spaceSplit.indexOf("/");
+            if (slashIndex > -1) {
+              spaceSplit.splice(slashIndex, 1)
+            }
+            multiGradArray[m] = ["@LCH_raw", Number(spaceSplit[0]), Number(spaceSplit[1].slice(0, -1)), Number(spaceSplit[2].slice(0, -1)), Number(spaceSplit[3])]
+        }
+        else if (currentGrad.slice(0, 5) == "oklab") {
+            let spaceSplit = currentGrad.slice(6, -1).split(" ");
+            let slashIndex = spaceSplit.indexOf("/");
+            if (slashIndex > -1) {
+              spaceSplit.splice(slashIndex, 1)
+            }
+            multiGradArray[m] = ["@OKLAB_raw", Number(spaceSplit[0]), Number(spaceSplit[1].slice(0, -1)), Number(spaceSplit[2].slice(0, -1)), Number(spaceSplit[3])]
+        }
+        else if (currentGrad.slice(0, 5) == "oklch") {
+            let spaceSplit = currentGrad.slice(6, -1).split(" ");
+            let slashIndex = spaceSplit.indexOf("/");
+            if (slashIndex > -1) {
+              spaceSplit.splice(slashIndex, 1)
+            }
+            multiGradArray[m] = ["@OKLCH_raw", Number(spaceSplit[0]), Number(spaceSplit[1].slice(0, -1)), Number(spaceSplit[2].slice(0, -1)), Number(spaceSplit[3])]
+        }
+        else if (currentGrad.slice(0, 5) == "color") {
+            let spaceSplit = currentGrad.slice(6, -1).split(" ");
+            let slashIndex = spaceSplit.indexOf("/");
+            if (slashIndex > -1) {
+              spaceSplit.splice(slashIndex, 1)
+            }
+            let colorSpace = spaceSplit[0];
+            if (colorSpace = "srgb") {
+              multiGradArray[m] = ["@sRGB_raw", Number(spaceSplit[1]), Number(spaceSplit[2].slice(0, -1)), Number(spaceSplit[3].slice(0, -1)), Number(spaceSplit[4])];
+            } else if (colorSpace = "srgb-linear") {
+              multiGradArray[m] = ["@sRGBLinear", Number(spaceSplit[1]), Number(spaceSplit[2].slice(0, -1)), Number(spaceSplit[3].slice(0, -1)), Number(spaceSplit[4])];
+            } else if (colorSpace = "display-p3") {
+              multiGradArray[m] = ["@DisplayP3", Number(spaceSplit[1]), Number(spaceSplit[2].slice(0, -1)), Number(spaceSplit[3].slice(0, -1)), Number(spaceSplit[4])];
+            } else if (colorSpace = "a98-rgb") {
+              multiGradArray[m] = ["@A98RGB", Number(spaceSplit[1]), Number(spaceSplit[2].slice(0, -1)), Number(spaceSplit[3].slice(0, -1)), Number(spaceSplit[4])];
+            } else if (colorSpace = "prophoto-rgb") {
+              multiGradArray[m] = ["@ProPhotoRGB", Number(spaceSplit[1]), Number(spaceSplit[2].slice(0, -1)), Number(spaceSplit[3].slice(0, -1)), Number(spaceSplit[4])];
+            } else if (colorSpace = "rec2020") {
+              multiGradArray[m] = ["@Rec2020", Number(spaceSplit[1]), Number(spaceSplit[2].slice(0, -1)), Number(spaceSplit[3].slice(0, -1)), Number(spaceSplit[4])];
+            } else if (colorSpace = "xyz") {
+              multiGradArray[m] = ["@XYZ_raw", Number(spaceSplit[1]), Number(spaceSplit[2].slice(0, -1)), Number(spaceSplit[3].slice(0, -1)), Number(spaceSplit[4])];
+            } else if (colorSpace = "xyz-d50") {
+              multiGradArray[m] = ["@XYZ-D50_raw", Number(spaceSplit[1]), Number(spaceSplit[2].slice(0, -1)), Number(spaceSplit[3].slice(0, -1)), Number(spaceSplit[4])];
+            } else if (colorSpace = "xyz-d65") {
+              multiGradArray[m] = ["@XYZ-D65_raw", Number(spaceSplit[1]), Number(spaceSplit[2].slice(0, -1)), Number(spaceSplit[3].slice(0, -1)), Number(spaceSplit[4])];
+            }
         }
         else if (currentGrad.indexOf("gradient") != -1) {
             let gradType = currentGrad.slice(0, currentGrad.indexOf("("));
