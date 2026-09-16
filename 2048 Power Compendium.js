@@ -233,7 +233,7 @@ let tempAutoDirections;
 
 //These lists of operators are used by CalcArrayConvert
 let any_operators = ["=", "!=", ">", "<", ">=", "<=", "max", "min", "1st", "first", "2nd", "second", "Number", "String", "Boolean", "Array", "BigInt", "GaussianBigInt", "typeof", "output", "console.log", "CalcArrayParent", "evaluateColor", "customDIVESeedUnlock", "defaultAbbrevAny", "tileValue", "discoveredTilesFilter", "@ScriptSignal"];
-let number_operators = ["+", "-", "*", "/", "%", "mod", "^", "**", "log", "round", "floor", "ceil", "ceiling", "trunc", "abs", "sign", "sin", "cos", "tan", "gcd", "lcm", "factorial", "prime", "expomod", "bit&", "bit|", "bit~", "bit^", "bit<<", "bit>>", "bit>>>", "rand_int", "rand_float", "defaultAbbrev", "timeAbbrev", "mergeRuleApplies", "mergeRuleApplies_nonRecursive"];
+let number_operators = ["+", "-", "*", "/", "%", "mod", "^", "**", "log", "round", "floor", "ceil", "ceiling", "trunc", "abs", "sign", "sin", "cos", "tan", "gcd", "lcm", "factorial", "prime", "expomod", "bit&", "bit|", "bit~", "bit^", "bit<<", "bit>>", "bit>>>", "rand_int", "rand_float", "defaultAbbrev", "mergeRuleApplies", "mergeRuleApplies_nonRecursive"];
 let string_operators = ["str_char", "str_concat", "str_concat_front", "str_length", "str_slice", "str_substr", "str_replace", "str_indexOf", "str_lastIndexOf", "str_indexOfFrom", "str_lastIndexOfFrom", "str_includes", "str_splice", "str_toUpperCase", "str_toLowerCase", "str_split", "baseDeconvertB", "deevaluateColor"];
 let boolean_operators = ["&&", "||", "!", "&&nsc", "||nsc"];
 let array_operators = ["arr_copy", "arr_elem", "arr_edit_elem", "arr_length", "arr_push", "arr_pop", "arr_shift", "arr_unshift", "arr_concat", "arr_concat_front", "arr_flat", "arr_splice", "arr_slice", "arr_indexOf", "arr_lastIndexOf", "arr_indexOfFrom", "arr_lastIndexOfFrom", "arr_includes", "arr_reverse", "arr_sort", "arr_map", "arr_filter", "arr_reduce", "arr_reduceRight", "arr_binarySearch", "arr_binaryInsert", "arr_binarySearchCF", "arr_binaryInsertCF", "arr_eqRearrange", "CalcArray", "primeDefactorizeB", "weightedRandomArrayEntry", "multicolor"];
@@ -17976,10 +17976,15 @@ function createStatBoxes() {
     }
 }
 
-function defaultAbbreviate(n, isTime = false) { // Tiles whose text values are of type number, bigint, GaussianBigInt, or BigRational (which is currently all of them except Garbage 0s, Box Tiles, and a couple special tiles in modes like 2216.838) use this
+function defaultAbbreviate(n) { // Tiles whose text values are of type number, bigint, GaussianBigInt, or BigRational (which is currently all of them except Garbage 0s, Box Tiles, and a couple special tiles in modes like 2216.838) use this
     if (typeof n == "number") {
-        if ((Math.abs(n) < 10000 && Math.abs(n) >= 0.1) || (Math.abs(n) < 10000 && isTime)) return abbreviateNumber(n, "Number", 3, false);
-        else if (Math.abs(n) >= 10000 && Math.abs(n) < 1e12) return abbreviateNumber(n, "Number", 3, true);
+        if (Math.abs(n) >= 10000 && Math.abs(n) < 1e12) return abbreviateNumber(n, "Number", 3, true);
+        else if (Math.abs(n) >= 100 && Math.abs(n)) return abbreviateNumber(n, "Number", 3, false);
+        else if (Math.abs(n) >= 10 && Math.abs(n)) return abbreviateNumber(n, "Number", 4, false);
+        else if (Math.abs(n) >= 1 && Math.abs(n)) return abbreviateNumber(n, "Number", 5, false);
+        else if (Math.abs(n) >= 0.1 && Math.abs(n)) return abbreviateNumber(n, "Number", 6, false);
+        else if (Math.abs(n) >= 0.01 && Math.abs(n)) return abbreviateNumber(n, "Number", 7, false);
+        else if (Math.abs(n) >= 0.001 && Math.abs(n)) return abbreviateNumber(n, "Number", 8, false);
         else return abbreviateNumber(n, "Scientific", 5, true);
     }
     else if (typeof n == "bigint") {
@@ -24419,7 +24424,7 @@ function loadModifiers() {
                 }
             }
             if (!alreadyThere) {
-                statBoxes.push(["Time Since Game Began", ["@TextE", ["@TimeSinceStartGame", "@if", ["@Parent -2", "<", 0], "2nd", "N/A", "@end-if", "@else", "round", settingModifiers[11], "timeAbbrev", "@end-else"], [" s", "@if", ["@TimeSinceStartGame", "<", 0], "2nd", "", "@end-if"]]])
+                statBoxes.push(["Time Since Game Began", ["@TextE", ["@TimeSinceStartGame", "@if", ["@Parent -2", "<", 0], "2nd", "N/A", "@end-if", "@else", "round", settingModifiers[11], "defaultAbbrev", "@end-else"], [" s", "@if", ["@TimeSinceStartGame", "<", 0], "2nd", "", "@end-if"]]])
                 displayGridIntervalTime = Math.min(displayGridIntervalTime, settingModifiers[11] * 500);
                 if (displayLagReductions.length > 4) displayLagReductions[4] = false;
             }
@@ -24433,7 +24438,7 @@ function loadModifiers() {
                 }
             }
             if (!alreadyThere) {
-                statBoxes.push(["Time Since First Move", ["@TextE", ["@TimeSinceFirstMove", "@if", ["@Parent -2", "<", 0], "2nd", "N/A", "@end-if", "@else", "round", settingModifiers[12], "timeAbbrev"], [" s", "@if", ["@TimeSinceFirstMove", "<", 0], "2nd", "", "@end-if"]]])
+                statBoxes.push(["Time Since First Move", ["@TextE", ["@TimeSinceFirstMove", "@if", ["@Parent -2", "<", 0], "2nd", "N/A", "@end-if", "@else", "round", settingModifiers[12], "defaultAbbrev"], [" s", "@if", ["@TimeSinceFirstMove", "<", 0], "2nd", "", "@end-if"]]])
                 displayGridIntervalTime = Math.min(displayGridIntervalTime, settingModifiers[12] * 500);
                 if (displayLagReductions.length > 4) displayLagReductions[4] = false;
             }
@@ -24447,7 +24452,7 @@ function loadModifiers() {
                 }
             }
             if (!alreadyThere) {
-                statBoxes.push(["Time Since Previous Move Start", ["@TextE", ["@TimeSinceMoveStart", "@if", ["@Parent -2", "<", 0], "2nd", "N/A", "@end-if", "@else", "round", settingModifiers[13], "timeAbbrev"], [" s", "@if", ["@TimeSinceMoveStart", "<", 0], "2nd", "", "@end-if"]]])
+                statBoxes.push(["Time Since Previous Move Start", ["@TextE", ["@TimeSinceMoveStart", "@if", ["@Parent -2", "<", 0], "2nd", "N/A", "@end-if", "@else", "round", settingModifiers[13], "defaultAbbrev"], [" s", "@if", ["@TimeSinceMoveStart", "<", 0], "2nd", "", "@end-if"]]])
                 displayGridIntervalTime = Math.min(displayGridIntervalTime, settingModifiers[13] * 500);
                 if (displayLagReductions.length > 4) displayLagReductions[4] = false;
             }
@@ -24461,7 +24466,7 @@ function loadModifiers() {
                 }
             }
             if (!alreadyThere) {
-                statBoxes.push(["Time Since Previous Move End", ["@TextE", ["@TimeSinceMoveEnd", "@if", ["@Parent -2", "<", 0], "2nd", "N/A", "@end-if", "@else", "round", settingModifiers[14], "timeAbbrev"], [" s", "@if", ["@TimeSinceMoveEnd", "<", 0], "2nd", "", "@end-if"]]])
+                statBoxes.push(["Time Since Previous Move End", ["@TextE", ["@TimeSinceMoveEnd", "@if", ["@Parent -2", "<", 0], "2nd", "N/A", "@end-if", "@else", "round", settingModifiers[14], "defaultAbbrev"], [" s", "@if", ["@TimeSinceMoveEnd", "<", 0], "2nd", "", "@end-if"]]])
                 displayGridIntervalTime = Math.min(displayGridIntervalTime, settingModifiers[14] * 500);
                 if (displayLagReductions.length > 4) displayLagReductions[4] = false;
             }
@@ -24475,7 +24480,7 @@ function loadModifiers() {
                 }
             }
             if (!alreadyThere) {
-                statBoxes.push(["Time It Took To Win", ["@TextE", ["@TimestampVictory", "@if", ["@Parent -2", "<", 0], "2nd", "N/A", "@end-if", "@else", "timeAbbrev"], [" s", "@if", ["@TimestampVictory", "<", 0], "2nd", "", "@end-if"]]])
+                statBoxes.push(["Time It Took To Win", ["@TextE", ["@TimestampVictory", "@if", ["@Parent -2", "<", 0], "2nd", "N/A", "@end-if", "@else", "defaultAbbrev"], [" s", "@if", ["@TimestampVictory", "<", 0], "2nd", "", "@end-if"]]])
             }
         }
         if (settingModifiers[16] !== false) {
@@ -24487,7 +24492,7 @@ function loadModifiers() {
                 }
             }
             if (!alreadyThere) {
-                statBoxes.push(["Time It Took To Game Over", ["@TextE", ["@TimestampGameOver", "@if", ["@Parent -2", "<", 0], "2nd", "N/A", "@end-if", "@else", "timeAbbrev"], [" s", "@if", ["@TimestampGameOver", "<", 0], "2nd", "", "@end-if"]]])
+                statBoxes.push(["Time It Took To Game Over", ["@TextE", ["@TimestampGameOver", "@if", ["@Parent -2", "<", 0], "2nd", "N/A", "@end-if", "@else", "defaultAbbrev"], [" s", "@if", ["@TimestampGameOver", "<", 0], "2nd", "", "@end-if"]]])
             }
         }
     }
@@ -25412,9 +25417,6 @@ function operation(n1, operator, n2) {
         case "defaultAbbrevBR":
         case "defaultAbbrevAny":
             result = defaultAbbreviate(n1);
-        break;
-        case "timeAbbrev":
-            result = defaultAbbreviate(n1, true);
         break;
         //comparisons
         case "=":
@@ -27066,7 +27068,7 @@ function removeMergeRuleApplies(rule) { // Replaces all "mergeRuleApplies" check
     return rule;
 }
 
-// Color conversion system formula is imported from: https://www.w3.org/TR/css-color-4/ (for testing purposes only)
+// Color conversion system formula is imported from: https://www.w3.org/TR/css-color-4/ (experimental)
 function multiplyMatrices(A, B) {
 	let m = A.length;
 
