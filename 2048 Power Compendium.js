@@ -1,10 +1,10 @@
 /* There are secrets hidden in the Compendium. If you want to find those secrets legitimately, I'd recommend not looking
  at the code. If you don't know whether you've found all the secrets yet, then you have not.
- Also, this script is very WIP. First of all, I work at implementing the new color systems beyond RGB/HSL/HSV, which includes HWB, LAB, LCH, OKLAB, OKLCH,
- sRGB (based on RGB but numbers range from 0 to 1 instead of 0 to 255), Linear RGB, Display P3, Adobe RGB, ProPhoto RGB, Rec2020, XYZ D50 and D65,
+ Also, this script is very WIP. The most important part of my modding is working at implementation of the new color systems beyond RGB/HSL/HSV, which includes HWB, LAB, LCH, OKLAB, OKLCH,
+ sRGB (based on RGB but numbers range from 0 to 1 instead of 0 to 255), XYZ D50, and XYZ D65,
  as well as APCA, WCAG, and ΔE color contrast checking functions primarily for the purpose of accessibility tweaks. Color spaces outside of sRGB gamut will be introduced much later.
  However, in the meantime, I only add the conditions for the color system checking in the code (edited after line ~27000), which are kept purely for future implementation purposes.
- The whole site still rely on RGB/HSL/HSV.
+ The whole site still rely on RGB and HSL (as the input).
  */
 
 //Opening setup (the code that executes on its own)
@@ -233,7 +233,7 @@ let tempAutoDirections;
 
 //These lists of operators are used by CalcArrayConvert
 let any_operators = ["=", "!=", ">", "<", ">=", "<=", "max", "min", "1st", "first", "2nd", "second", "Number", "String", "Boolean", "Array", "BigInt", "GaussianBigInt", "typeof", "output", "console.log", "CalcArrayParent", "evaluateColor", "customDIVESeedUnlock", "defaultAbbrevAny", "tileValue", "discoveredTilesFilter", "@ScriptSignal"];
-let number_operators = ["+", "-", "*", "/", "%", "mod", "^", "**", "log", "round", "floor", "ceil", "ceiling", "trunc", "abs", "sign", "sin", "cos", "tan", "gcd", "lcm", "factorial", "prime", "expomod", "bit&", "bit|", "bit~", "bit^", "bit<<", "bit>>", "bit>>>", "rand_int", "rand_float", "defaultAbbrev", "mergeRuleApplies", "mergeRuleApplies_nonRecursive"];
+let number_operators = ["+", "-", "*", "/", "%", "mod", "^", "**", "log", "round", "floor", "ceil", "ceiling", "trunc", "abs", "sign", "sin", "cos", "tan", "gcd", "lcm", "factorial", "prime", "expomod", "bit&", "bit|", "bit~", "bit^", "bit<<", "bit>>", "bit>>>", "rand_int", "rand_float", "defaultAbbrev", "highPrecAbbrev", "mergeRuleApplies", "mergeRuleApplies_nonRecursive"];
 let string_operators = ["str_char", "str_concat", "str_concat_front", "str_length", "str_slice", "str_substr", "str_replace", "str_indexOf", "str_lastIndexOf", "str_indexOfFrom", "str_lastIndexOfFrom", "str_includes", "str_splice", "str_toUpperCase", "str_toLowerCase", "str_split", "baseDeconvertB", "deevaluateColor"];
 let boolean_operators = ["&&", "||", "!", "&&nsc", "||nsc"];
 let array_operators = ["arr_copy", "arr_elem", "arr_edit_elem", "arr_length", "arr_push", "arr_pop", "arr_shift", "arr_unshift", "arr_concat", "arr_concat_front", "arr_flat", "arr_splice", "arr_slice", "arr_indexOf", "arr_lastIndexOf", "arr_indexOfFrom", "arr_lastIndexOfFrom", "arr_includes", "arr_reverse", "arr_sort", "arr_map", "arr_filter", "arr_reduce", "arr_reduceRight", "arr_binarySearch", "arr_binaryInsert", "arr_binarySearchCF", "arr_binaryInsertCF", "arr_eqRearrange", "CalcArray", "primeDefactorizeB", "weightedRandomArrayEntry", "multicolor"];
@@ -17976,16 +17976,34 @@ function createStatBoxes() {
     }
 }
 
-function defaultAbbreviate(n) { // Tiles whose text values are of type number, bigint, GaussianBigInt, or BigRational (which is currently all of them except Garbage 0s, Box Tiles, and a couple special tiles in modes like 2216.838) use this
+function defaultAbbreviate(n, highPrecision = false) { // Tiles whose text values are of type number, bigint, GaussianBigInt, or BigRational (which is currently all of them except Garbage 0s, Box Tiles, and a couple special tiles in modes like 2216.838) use this
     if (typeof n == "number") {
-        if (Math.abs(n) >= 10000 && Math.abs(n) < 1e12) return abbreviateNumber(n, "Number", 3, true);
-        else if (Math.abs(n) >= 100 && Math.abs(n)) return abbreviateNumber(n, "Number", 3, false);
-        else if (Math.abs(n) >= 10 && Math.abs(n)) return abbreviateNumber(n, "Number", 4, false);
-        else if (Math.abs(n) >= 1 && Math.abs(n)) return abbreviateNumber(n, "Number", 5, false);
-        else if (Math.abs(n) >= 0.1 && Math.abs(n)) return abbreviateNumber(n, "Number", 6, false);
-        else if (Math.abs(n) >= 0.01 && Math.abs(n)) return abbreviateNumber(n, "Number", 7, false);
-        else if (Math.abs(n) >= 0.001 && Math.abs(n)) return abbreviateNumber(n, "Number", 8, false);
-        else return abbreviateNumber(n, "Scientific", 5, true);
+      if (highPrecision) {
+        if (Math.abs(n) >= 100000000 && Math.abs(n) < 1e12) return abbreviateNumber(n, "Number", 0, true);
+        else if (Math.abs(n) >= 10000000 && Math.abs(n) < 100000000) return abbreviateNumber(n, "Number", 1, true);
+        else if (Math.abs(n) >= 1000000 && Math.abs(n) < 10000000) return abbreviateNumber(n, "Number", 2, true);
+        else if (Math.abs(n) >= 100000 && Math.abs(n) < 1000000) return abbreviateNumber(n, "Number", 3, true);
+        else if (Math.abs(n) >= 10000 && Math.abs(n) < 100000) return abbreviateNumber(n, "Number", 4, true);
+        else if (Math.abs(n) >= 1000 && Math.abs(n) < 10000) return abbreviateNumber(n, "Number", 5, false);
+        else if (Math.abs(n) >= 100 && Math.abs(n) < 1000) return abbreviateNumber(n, "Number", 6, false);
+        else if (Math.abs(n) >= 10 && Math.abs(n) < 100) return abbreviateNumber(n, "Number", 7, false);
+        else if (Math.abs(n) >= 1 && Math.abs(n) < 10) return abbreviateNumber(n, "Number", 8, false);
+        else if (Math.abs(n) >= 0.1 && Math.abs(n) < 1) return abbreviateNumber(n, "Number", 9, false);
+        else if (Math.abs(n) >= 0.01 && Math.abs(n) < 0.1) return abbreviateNumber(n, "Number", 10, false);
+        else if (Math.abs(n) >= 0.001 && Math.abs(n) < 0.01) return abbreviateNumber(n, "Number", 11, false);
+        else return abbreviateNumber(n, "Scientific", 8, true);
+      }
+      else {
+        if (Math.abs(n) >= 1e12) return abbreviateNumber(n, "Scientific", 5, true);
+        else if (Math.abs(n) >= 1000000 && Math.abs(n) < 1e12) return abbreviateNumber(n, "Number", 0, true);
+        else if (Math.abs(n) >= 100000 && Math.abs(n) < 1000000) return abbreviateNumber(n, "Number", 1, true);
+        else if (Math.abs(n) >= 10000 && Math.abs(n) < 100000) return abbreviateNumber(n, "Number", 2, false);
+        else if (Math.abs(n) >= 1 && Math.abs(n) < 10000) return abbreviateNumber(n, "Number", 3, false);
+        else if (Math.abs(n) >= 0.1 && Math.abs(n) < 1) return abbreviateNumber(n, "Number", 4, false);
+        else if (Math.abs(n) >= 0.01 && Math.abs(n) < 1) return abbreviateNumber(n, "Number", 5, false);
+        else if (Math.abs(n) >= 0.001 && Math.abs(n) < 1) return abbreviateNumber(n, "Number", 6, false);
+        else return abbreviateNumber(n, "Scientific", 3, true);
+      }
     }
     else if (typeof n == "bigint") {
         if (abs(n) < 10000) return String(n);
@@ -25418,6 +25436,9 @@ function operation(n1, operator, n2) {
         case "defaultAbbrevAny":
             result = defaultAbbreviate(n1);
         break;
+        case "highPrecAbbrev":
+            result = defaultAbbreviate(n1, true);
+        break;
         //comparisons
         case "=":
             if (Array.isArray(n1) && Array.isArray(n2)) result = eqPrimArrays(n1, n2);
@@ -27069,6 +27090,7 @@ function removeMergeRuleApplies(rule) { // Replaces all "mergeRuleApplies" check
 }
 
 // Color conversion system formula is imported from: https://www.w3.org/TR/css-color-4/ (experimental)
+/*
 function multiplyMatrices(A, B) {
 	let m = A.length;
 
@@ -27606,6 +27628,7 @@ function polar_un_premultiply(color, alpha, hueIndex) {
 function hsl_premultiply(color, alpha) {
 	return polar_premultiply(color, alpha, 0);
 }
+*/
 
 function evaluateColor(color) {
     /*
