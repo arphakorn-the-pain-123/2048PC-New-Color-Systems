@@ -1806,11 +1806,11 @@ document.getElementById("gp_export_button").addEventListener("click", function()
     switchScreen("SaveCode", "Export");
 });
 document.getElementById("save_code_import").addEventListener("click", function(){
-    if (document.getElementById("save_code_box").value == "View Color Schemes") {
+    if (["view color schemes", "view color scheme", "color scheme viewer"].indexOf(document.getElementById("save_code_box").value.toLowerCase()) !== -1) {
         screenVars = [2n, true, true];
         switchScreen("Tile Viewer", "Wildcard 2048");
     }
-    else if (["Infuse", "Infused"].indexOf(document.getElementById("save_code_box").value) !== -1) {
+    else if (["infuse", "infused"].indexOf(document.getElementById("save_code_box").value.toLowerCase()) !== -1) {
         switchScreen("CustomMode", "Infused Opening");
     }
     else importSave(document.getElementById("save_code_box").value);
