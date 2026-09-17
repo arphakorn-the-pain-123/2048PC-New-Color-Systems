@@ -1,10 +1,8 @@
-/* There are secrets hidden in the Compendium. If you want to find those secrets legitimately, I'd recommend not looking
- at the code. If you don't know whether you've found all the secrets yet, then you have not.
+/* There are secrets hidden in the Compendium. If you want to find those secrets legitimately, I'd recommend not looking at the code. If you don't know whether you've found all the secrets yet, then you have not.
  Also, this script is very WIP. The most important part of my modding is working at implementation of the new color systems beyond RGB/HSL/HSV, which includes HWB, LAB, LCH, OKLAB, OKLCH,
- sRGB (based on RGB but numbers range from 0 to 1 instead of 0 to 255), XYZ D50, and XYZ D65,
- as well as APCA, WCAG, and ΔE color contrast checking functions primarily for the purpose of accessibility tweaks. Color spaces outside of sRGB gamut will be introduced much later.
- However, in the meantime, I only add the conditions for the color system checking in the code (edited after line ~27000), which are kept purely for future implementation purposes.
- The whole site still rely on RGB and HSL (as the input).
+ sRGB (based on RGB but numbers range from 0 to 1 instead of 0 to 255), XYZ D50, and XYZ D65, as well as APCA, WCAG, and ΔE color contrast checking functions
+ primarily for the purpose of accessibility tweaks. Color spaces outside of sRGB gamut will be introduced much later. However, in the meantime,
+ I only add the conditions for the color system checking in the code (edited after line ~27000), which are kept purely for future implementation purposes. The whole site still rely on RGB and HSL (as the input).
  */
 
 //Opening setup (the code that executes on its own)
@@ -17978,8 +17976,8 @@ function createStatBoxes() {
 
 function defaultAbbreviate(n, highPrecision = false) { // Tiles whose text values are of type number, bigint, GaussianBigInt, or BigRational (which is currently all of them except Garbage 0s, Box Tiles, and a couple special tiles in modes like 2216.838) use this
     if (typeof n == "number") {
-      if (highPrecision) {
-        if (Math.abs(n) >= 100000000 && Math.abs(n) < 1e12) return abbreviateNumber(n, "Number", 0, true);
+      if (highPrecision) { // Increases the minimum precision to 9 mantissa digits, and increases the large number threshold to switch to scientific notation from 10^12 to 10^15.
+        if (Math.abs(n) >= 100000000 && Math.abs(n) < 1e15) return abbreviateNumber(n, "Number", 0, true);
         else if (Math.abs(n) >= 10000000 && Math.abs(n) < 100000000) return abbreviateNumber(n, "Number", 1, true);
         else if (Math.abs(n) >= 1000000 && Math.abs(n) < 10000000) return abbreviateNumber(n, "Number", 2, true);
         else if (Math.abs(n) >= 100000 && Math.abs(n) < 1000000) return abbreviateNumber(n, "Number", 3, true);
@@ -17993,7 +17991,7 @@ function defaultAbbreviate(n, highPrecision = false) { // Tiles whose text value
         else if (Math.abs(n) >= 0.001 && Math.abs(n) < 0.01) return abbreviateNumber(n, "Number", 11, false);
         else return abbreviateNumber(n, "Scientific", 8, true);
       }
-      else {
+      else { // The default precision setting's minimum precision is 4 mantissa digits. With scientific notation, large numbers use 6 mantissa digits, whereas small numbers use 4 mantissa digits, for consistency with the place-value notation.
         if (Math.abs(n) >= 1e12) return abbreviateNumber(n, "Scientific", 5, true);
         else if (Math.abs(n) >= 1000000 && Math.abs(n) < 1e12) return abbreviateNumber(n, "Number", 0, true);
         else if (Math.abs(n) >= 100000 && Math.abs(n) < 1000000) return abbreviateNumber(n, "Number", 1, true);
@@ -27089,7 +27087,7 @@ function removeMergeRuleApplies(rule) { // Replaces all "mergeRuleApplies" check
     return rule;
 }
 
-// Color conversion system formula is imported from: https://www.w3.org/TR/css-color-4/ (experimental)
+// Color conversion system formula is inspired from: https://www.w3.org/TR/css-color-4/
 /*
 function multiplyMatrices(A, B) {
 	let m = A.length;
@@ -27629,6 +27627,24 @@ function hsl_premultiply(color, alpha) {
 	return polar_premultiply(color, alpha, 0);
 }
 */
+function linearRGB(s) {
+  var linear = 0;
+  if (s <= 0.04045) {
+    linear = s / 12.92;
+  } else {
+    linear = ((s + 0.055) / 1.055) ** 2.4;
+  }
+  return linear;
+}
+function gammaRGB(l) {
+  var gamma = 0;
+  if (l <= 0.0031308) {
+    gamma = l * 12.92;
+  } else {
+    gamma = 1.055 * (l ** (1 / 2.4)) - 0.055;
+  }
+  return gamma;
+}
 
 function evaluateColor(color) {
     /*
@@ -27693,40 +27709,30 @@ function evaluateColor(color) {
             color.splice(0, color.indexOf("@end_vars") + 1);
         }
     }
-    if (color[0] === "@RGB" || color[0] === "@RGBA" || color[0] === "@RGB_modern" || color[0] === "@RGBA_modern" || color[0] === "@sRGB" || color[0] === "@sRGB_raw" || color[0] === "@LinearRGB" || color[0] === "@sRGBLinear" || color[0] === "@LinearRGB_raw" || color[0] === "@sRGBLinear_raw") {
+    if (color[0] === "@RGB" || color[0] === "@RGBA" || color[0] === "@sRGB" || color[0] === "@LinearRGB" || color[0] === "@sRGBLinear") {
         let red = CalcArray(color[1], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
         let green = CalcArray(color[2], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
         let blue = CalcArray(color[3], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
         let alpha = CalcArray(color[4], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
-        let redLinear = red > 0.04045 ? Math.pow((red + 0.055) / 1.055, 2.4) : red / 12.92;
-        let greenLinear = green > 0.04045 ? Math.pow((green + 0.055) / 1.055, 2.4) : green / 12.92;
-        let blueLinear = blue > 0.04045 ? Math.pow((blue + 0.055) / 1.055, 2.4) : blue / 12.92;
+        let redGamma = gammaRGB(red);
+        let greenGamma = gammaRGB(red);
+        let blueGamma = gammaRGB(red);
         if (color[0] === "@LinearRGB" || color[0] === "@sRGBLinear") {
-          return "rgba(" + Math.round(redLinear * 255) + ", " + Math.round(greenLinear * 255) + ", " + Math.round(blueLinear * 255) + ", " + alpha + ")";
-        } else if (color[0] === "@LinearRGB_raw" || color[0] === "@sRGBLinear_raw") {
-          return "color(srgb-linear" + redLinear + " " + greenLinear + " " + blueLinear + " / " + alpha + ")";
+          return "rgba(" + Math.round(redGamma * 255) + ", " + Math.round(greenGamma * 255) + ", " + Math.round(blueGamma * 255) + ", " + alpha + ")";
         } else if (color[0] === "@sRGB") {
           return "rgba(" + Math.round(red * 255) + ", " + Math.round(green * 255) + ", " + Math.round(blue * 255) + ", " + alpha + ")";
-        } else if (color[0] === "@sRGB_raw") {
-          return "color(srgb" + red + " " + green + " " + blue + " / " + alpha + ")";
-        } else if (color[0] === "@RGB_modern" || color[0] === "@RGBA_modern") {
-          return "rgba(" + red + " " + green + " " + blue + " / " + alpha + ")";
         } else {
           return "rgba(" + red + ", " + green + ", " + blue + ", " + alpha + ")";
         }
     }
-    else if (color[0] === "@HSL" || color[0] === "@HSLA" || color[0] === "@HSL_modern" || color[0] === "@HSLA_modern") {
+    else if (color[0] === "@HSL" || color[0] === "@HSLA") {
         let hue = CalcArray(color[1], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
         let saturation = CalcArray(color[2], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
         let brightness = CalcArray(color[3], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
         let alpha = CalcArray(color[4], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
-        if (color[0] === "@HSL_modern" || color[0] === "@HSLA_modern") {
-          return "hsla(" + hue + " " + saturation + "% " + brightness + "% / " + alpha + ")";
-        } else {
-          return "hsla(" + hue + ", " + saturation + "%, " + brightness + "%, " + alpha + ")";
-        }
+        return "hsla(" + hue + ", " + saturation + "%, " + brightness + "%, " + alpha + ")";
     }
-    else if (color[0] === "@HSV" || color[0] === "@HSVA" || color[0] === "@HSV_in_HSL" || color[0] === "@HSVA_in_HSLA") { //HSV to HSL conversion found on Wikipedia
+    else if (color[0] === "@HSV" || color[0] === "@HSVA") { //HSV to HSL conversion found on Wikipedia
         let hue = CalcArray(color[1], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
         let HSVsaturation = CalcArray(color[2], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat) / 100;
         let HSVvalue = CalcArray(color[3], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat) / 100;
@@ -27735,105 +27741,60 @@ function evaluateColor(color) {
         if (!(brightness == 0 || brightness == 1)) saturation = (HSVvalue - brightness)/Math.min(brightness, 1 - brightness);
         brightness *= 100; saturation *= 100;
         let alpha = CalcArray(color[4], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
-        if (color[0] === "@HSV_in_HSL" || color[0] === "@HSVA_in_HSLA") {
-          return "hsla(" + hue + " " + saturation + "% " + brightness + "% / " + alpha + ")";
-        } else {
-          return "hsla(" + hue + ", " + saturation + "%, " + brightness + "%, " + alpha + ")";
-        }
+        return "hsla(" + hue + ", " + saturation + "%, " + brightness + "%, " + alpha + ")";
     }
-    else if (color[0] === "@HWB" || color[0] === "@HWB_raw") {
+    else if (color[0] === "@HWB") { // HWB conversion to HSL found using Google's AI overview
       let hue = CalcArray(color[1], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
       let white = CalcArray(color[2], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
       let black = CalcArray(color[3], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
       let alpha = CalcArray(color[4], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
-      var white2;
-      var black2;
-      if (color[0] === "@HWB_raw") {
-        return "hwb(" + hue + " " + white + "% " + black + "% / " + alpha + ")";
+      let saturation = 0;
+      let lightness = 0;
+      let chroma = 0;
+      if (white + black >= 100) {
+        saturation = 0;
+        lightness = white / (white + black) * 100;
+      } else if (white + black <= 0) {
+        saturation = 100;
+        lightness = 50;
       } else {
-        return ""
+        chroma = 100 - white - black;
+        lightness = chroma / 2 + white;
+        if (lightness <= 0 || lightness >= 100) {
+          saturation = 0;
+        } else {
+          saturation = chroma / (100 - Math.abs(2 * lightness - 100)) * 100;
+        }
       }
+      return "hsla(" + hue + ", " + saturation + "%, " + lightness + "%, " + alpha + ")";
     }
-    else if (color[0] === "@LAB" || color[0] === "@LCH" || color[0] === "@LAB_raw" || color[0] === "@LCH_raw") {
+    else if (color[0] === "@LAB" || color[0] === "@LCH") { // LAB/LCH conversion to RGB found using Google's AI overview, using chroma reduction method
       let lightness = CalcArray(color[1], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
       let a = CalcArray(color[2], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
       let b = CalcArray(color[3], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
       let alpha = CalcArray(color[4], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
-      // WIP. Explicit RGB calculation under the default legacy syntax will be introduced later.
-      if (color[0] === "@LAB_raw") {
-        return "lab(" + lightness + " " + a + " " + b + " / " + alpha + ")";
-      } else if (color[0] === "@LCH_raw") {
-        return "lch(" + lightness + " " + a + " " + b + " / " + alpha + ")";
-      } else {
-        return;
-        // WIP. Explicit RGB calculation under the default legacy syntax will be introduced later.
-      }
+      return; // WIP
     }
-    else if (color[0] === "@OKLAB" || color[0] === "@OKLCH" || color[0] === "@OKLAB_raw" || color[0] === "@OKLCH_raw") {
+    else if (color[0] === "@OKLAB" || color[0] === "@OKLCH") { // OKLAB/OKLCH conversion to RGB found using Google's AI overview, using chroma reduction method
       let lightness = CalcArray(color[1], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
       let a = CalcArray(color[2], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
       let b = CalcArray(color[3], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
       let alpha = CalcArray(color[4], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
-      if (color[0] === "@OKLAB_raw") {
-        return "oklab(" + lightness + " " + a + " " + b + " / " + alpha + ")";
-      } else if (color[0] === "@OKLCH_raw") {
-        return "oklch(" + lightness + " " + a + " " + b + " / " + alpha + ")";
-      } else {
-        return; // WIP. Explicit RGB calculation under the default legacy syntax will be introduced later.
-      }
+      return; // WIP
     }
-    else if (color[0] === "@DisplayP3") {
-      let red = CalcArray(color[1], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
-      let green = CalcArray(color[2], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
-      let blue = CalcArray(color[3], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
-      let alpha = CalcArray(color[4], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
-      return "color(display-p3" + red + " " + green + " " + blue + " / " + alpha + ")";
-    }
-    else if (color[0] === "@A98RGB" || color[0] === "@AdobeRGB") {
-      let red = CalcArray(color[1], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
-      let green = CalcArray(color[2], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
-      let blue = CalcArray(color[3], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
-      let alpha = CalcArray(color[4], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
-      return "color(a98-rgb" + red + " " + green + " " + blue + " / " + alpha + ")";
-    }
-    else if (color[0] === "@ProPhotoRGB" || color[0] === "@ProPhoto") {
-      let red = CalcArray(color[1], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
-      let green = CalcArray(color[2], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
-      let blue = CalcArray(color[3], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
-      let alpha = CalcArray(color[4], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
-      return "color(prophoto-rgb" + red + " " + green + " " + blue + " / " + alpha + ")";
-    }
-    else if (color[0] === "@Rec2020") {
-      let red = CalcArray(color[1], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
-      let green = CalcArray(color[2], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
-      let blue = CalcArray(color[3], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
-      let alpha = CalcArray(color[4], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
-      return "color(rec2020" + red + " " + green + " " + blue + " / " + alpha + ")";
-    }
-    else if (color[0] === "@XYZ" || color[0] === "@XYZ-D65" || color[0] === "@XYZ_raw" || color[0] === "@XYZ-D65_raw") {
+    else if (color[0] === "@XYZ" || color[0] === "@XYZ-D65") { // XYZ D65 conversion to RGB found using Google's AI overview, using OKLCH chroma reduction method
       let x = CalcArray(color[1], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
       let y = CalcArray(color[2], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
       let z = CalcArray(color[3], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
       let alpha = CalcArray(color[4], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
-      if (color[0] === "@XYZ_raw") {
-        return "color(xyz " + x + " " + y + " " + z + " / " + alpha + ")";
-      } else if (color[0] === "@XYZ-D65_raw") {
-        return "color(xyz-d65 " + x + " " + y + " " + z + " / " + alpha + ")";
-      } else {
-        return; // WIP. Explicit RGB calculation under the default legacy syntax will be introduced later.
-      }
+      return; // WIP
     }
-    else if (color[0] === "@XYZ-D50" || color[0] === "@XYZ-D50_raw") {
+    else if (color[0] === "@XYZ-D50") { // XYZ D50 conversion to RGB found using Google's AI overview, using OKLCH chroma reduction method
       let x = CalcArray(color[1], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
       let y = CalcArray(color[2], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
       let z = CalcArray(color[3], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
       let alpha = CalcArray(color[4], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
-      if (color[0] === "@XYZ-D50_raw") {
-        return "color(xyz-d50 " + x + " " + y + " " + z + " / " + alpha + ")";
-      } else {
-        return;
-        // WIP. Explicit RGB calculation under the default legacy syntax will be introduced later.
-      }
+      return; // WIP
     }
     else if (color[0] === "@linear-gradient" || color[0] === "@radial-gradient" || color[0] === "@conic-gradient" || color[0] === "@repeating-linear-gradient" || color[0] === "@repeating-radial-gradient" || color[0] === "@repeating-conic-gradient") {
         let grad = color[0].slice(1) + "("
@@ -27945,8 +27906,8 @@ function convertColor(col, system) { // Converts colors between systems; mostly 
     }
     else {
         let colorarray = [];
-        if (Array.isArray(color) && !(color[0] == "@RGB" || color[0] == "@RGBA" || color[0] == "@RGB_modern" || color[0] == "@RGBA_modern" || color[0] == "@HSL" || color[0] == "@HSLA" || color[0] == "@HSL_modern" || color[0] == "@HSLA_modern" || color[0] == "@HSV" || color[0] == "@HSVA" || color[0] == "@HSV_in_HSL" || color[0] == "@HSVA_in_HSLA" || color[0] == "@HWB" || color[0] == "@HWB_raw" || color[0] == "@LAB" || color[0] == "@LCH" || color[0] == "@LAB_raw" || color[0] == "@LCH_raw" || color[0] == "@OKLAB" || color[0] == "@OKLCH" || color[0] == "@OKLAB_raw" || color[0] == "@OKLCH_raw" || color[0] == "@sRGB" || color[0] == "@LinearRGB" || color[0] == "@sRGBLinear" || color[0] == "@sRGB_raw" || color[0] == "@LinearRGB_raw" || color[0] == "@sRGBLinear_raw" || color[0] == "@DisplayP3" || color[0] == "@A98RGB" || color[0] == "@AdobeRGB" || color[0] == "@ProPhotoRGB" || color[0] == "@ProPhoto" || color[0] == "@Rec2020" || color[0] == "@XYZ" || color[0] == "@XYZ-D50" || color[0] == "@XYZ-D65" || color[0] == "@XYZ_raw" || color[0] == "@XYZ-D50_raw" || color[0] == "@XYZ-D65_raw")) color = CalcArray(color, vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
-        if (Array.isArray(color) && (color[0] == "@RGB" || color[0] == "@RGBA" || color[0] == "@RGB_modern" || color[0] == "@RGBA_modern" || color[0] == "@HSL" || color[0] == "@HSLA" || color[0] == "@HSL_modern" || color[0] == "@HSLA_modern" || color[0] == "@HSV" || color[0] == "@HSVA" || color[0] == "@HSV_in_HSL" || color[0] == "@HSVA_in_HSLA" || color[0] == "@HWB" || color[0] == "@HWB_raw" || color[0] == "@LAB" || color[0] == "@LCH" || color[0] == "@LAB_raw" || color[0] == "@LCH_raw" || color[0] == "@OKLAB" || color[0] == "@OKLCH" || color[0] == "@OKLAB_raw" || color[0] == "@OKLCH_raw" || color[0] == "@sRGB" || color[0] == "@LinearRGB" || color[0] == "@sRGBLinear" || color[0] == "@sRGB_raw" || color[0] == "@LinearRGB_raw" || color[0] == "@sRGBLinear_raw" || color[0] == "@DisplayP3" || color[0] == "@A98RGB" || color[0] == "@AdobeRGB" || color[0] == "@ProPhotoRGB" || color[0] == "@ProPhoto" || color[0] == "@Rec2020" || color[0] == "@XYZ" || color[0] == "@XYZ-D50" || color[0] == "@XYZ-D65" || color[0] == "@XYZ_raw" || color[0] == "@XYZ-D50_raw" || color[0] == "@XYZ-D65_raw")) colorarray = color;
+        if (Array.isArray(color) && !(color[0] == "@RGB" || color[0] == "@RGBA" || color[0] == "@HSL" || color[0] == "@HSLA" || color[0] == "@HSV" || color[0] == "@HSVA" || color[0] == "@HWB" || color[0] == "@LAB" || color[0] == "@LCH" || color[0] == "@OKLAB" || color[0] == "@OKLCH" || color[0] == "@sRGB" || color[0] == "@LinearRGB" || color[0] == "@sRGBLinear" || color[0] == "@XYZ" || color[0] == "@XYZ-D50" || color[0] == "@XYZ-D65")) color = CalcArray(color, vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
+        if (Array.isArray(color) && (color[0] == "@RGB" || color[0] == "@RGBA" || color[0] == "@HSL" || color[0] == "@HSLA" || color[0] == "@HSV" || color[0] == "@HSVA" || color[0] == "@HWB" || color[0] == "@LAB" || color[0] == "@LCH" || color[0] == "@OKLAB" || color[0] == "@OKLCH" || color[0] == "@sRGB" || color[0] == "@LinearRGB" || color[0] == "@sRGBLinear" || color[0] == "@XYZ" || color[0] == "@XYZ-D50" || color[0] == "@XYZ-D65")) colorarray = color;
         else if (typeof color == "string" && color[0] == "#") { // Any hex colors are converted to RGBA arrays first
             if (system == "@Hex") return color;
             if (color.length == 7 || color.length == 9) {
@@ -28117,7 +28078,6 @@ function rotateColor(color, degrees) { //degrees = 180 gives the complementary c
 }
 
 function deevaluateColor(color, useAlpha = true) {
-    // Very WIP here due to the implementation of the color systems such as LAB/LCH, OKLAB/OKLCH, color() used to define specific color spaces as well as XYZ.
     if (typeof color !== "string") return color;
     if (color[0] === "#") return convertColor(color, "@RGBA");
     if (color.indexOf("(") == -1) return color;
@@ -28157,7 +28117,7 @@ function deevaluateColor(color, useAlpha = true) {
             let commaSplit = currentGrad.slice(4, -1).split(", ");
             multiGradArray[m] = [useAlpha ? "@RGBA" : "@RGB", Number(commaSplit[0]), Number(commaSplit[1]), Number(commaSplit[2]), 1]
         }
-        else if (currentGrad.slice(0, 3) == "hwb") {
+        /* else if (currentGrad.slice(0, 3) == "hwb") {
             let spaceSplit = currentGrad.slice(4, -1).split(" ");
             let slashIndex = spaceSplit.indexOf("/");
             if (slashIndex > -1) {
@@ -28224,6 +28184,7 @@ function deevaluateColor(color, useAlpha = true) {
               multiGradArray[m] = ["@XYZ-D65_raw", Number(spaceSplit[1]), Number(spaceSplit[2].slice(0, -1)), Number(spaceSplit[3].slice(0, -1)), Number(spaceSplit[4])];
             }
         }
+        */
         else if (currentGrad.indexOf("gradient") != -1) {
             let gradType = currentGrad.slice(0, currentGrad.indexOf("("));
             currentGrad = currentGrad.slice(currentGrad.indexOf("(") + 1, -1);
