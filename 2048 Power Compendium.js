@@ -4989,6 +4989,16 @@ function loadMode(mode) {
     document.getElementById("gm_big_tile").style.setProperty("display", "block");
     document.getElementById("gm_big_tile").style.setProperty("--gm_tfs", "6");
     document.getElementById("gamemode").style.setProperty("color", "black");
+    if (mode == 34 || mode == 35 || mode == 41 || mode == 42 || mode == 61 || mode == 73 || mode == 74 || mode == 75 || mode == 78 || mode == 80 || mode == 93 || mode == 95 || mode == 98 || mode == 99 || mode == 100) {
+      document.getElementById("gamemode").classList.add("dark_background_shadowed");
+    } else {
+      document.getElementById("gamemode").classList.remove("dark_background_shadowed");
+    }
+    if (mode == 50 || mode == 96.50118 || mode == 34.50118 || mode == 50.1 || mode == 50.22 || mode == 91.50118 || mode == 73.50118 || mode == 89.50118 || mode == 97.50118 || mode == 50.248 || mode == 57.50118 || mode == 31.50118) {
+      document.getElementById("gamemode").classList.add("aquatic_background_shadowed");
+    } else {
+      document.getElementById("gamemode").classList.remove("aquatic_background_shadowed");
+    }
     statBoxes = [["Score", "@Score"]];
     mode_vars = [];
     start_game_vars = [];
@@ -7667,7 +7677,7 @@ function loadMode(mode) {
         ["p", "Spawning tiles: 1 (92%), 3 (8%)"]);
     }
     else if (mode == 64) { // Interleaved 3125
-        // width = 4; height = 4;
+        // width = 5; height = 5; Increased from 4 to 5 due to the strategy shenanigans
         TileNumAmount = 2;
         TileTypes = [
         [[-1, 5], 1, "#ffffff", "#505246"], [[-1, 10], 2, "#c6c6c6", "#505246"], [[-1, 15], 3, "#787878", "#505246"],
@@ -10181,8 +10191,8 @@ function loadMode(mode) {
 function loadGridSize(mode, mvars = []) {
     if (modifiers[5] == "Custom") return;
     let size3 = [31, 86];
-    let size4 = [1, 2, 4, 7, 16, 17, 26, 27, 29, 30, 32, 40, 42, 47, 48, 51, 53, 54, 60, 64, 66, 69, 72, 74, 78, 79, 81, 82, 83, 84, 85, 87, 88, 89, 91, 92, 93, 101, 102, 50.1, 73.50118, 50.248, 31.50118, 50.7101113, 0.0001];
-    let size5 = [3, 5, 6, 9, 10, 11, 12, 13, 14, 15, 18, 19, 20, 21, 23, 24, 28, 33, 34, 41, 43, 44, 46, 49, 52, 55, 56, 58, 59, 62, 63, 65, 71, 75, 76, 77, 80, 90, 94, 96, 97, 99, 96.50118, 50.22, 37.71, 71.37, 1.5];
+    let size4 = [1, 2, 4, 7, 16, 17, 26, 27, 29, 30, 32, 40, 42, 47, 48, 51, 53, 54, 60, 66, 69, 72, 74, 78, 79, 81, 82, 83, 84, 85, 87, 88, 89, 91, 92, 93, 101, 102, 50.1, 73.50118, 50.248, 31.50118, 50.7101113, 0.0001];
+    let size5 = [3, 5, 6, 9, 10, 11, 12, 13, 14, 15, 18, 19, 20, 21, 23, 24, 28, 33, 34, 41, 43, 44, 46, 49, 52, 55, 56, 58, 59, 62, 63, 64, 65, 71, 75, 76, 77, 80, 90, 94, 96, 97, 99, 96.50118, 50.22, 37.71, 71.37, 1.5];
     let size6 = [8, 25, 39, 45, 98, 3.24, 98.01];
     let size7 = [22];
     let size8 = [];
@@ -16289,12 +16299,12 @@ function gmDisplayVars() {
             modeRulesDescription = "Tiles are products of two integers, and two tiles can merge if they have at least one integer in common, even if they're not in the same position: for example, a 2 × 6 tile and a 6 × 7 tile can merge into a 6 × 9 tile. If the tiles are equal, the larger number is the one considered to be matching. The score given from a merge is whatever the matching number is. This mode has no win condition, so just try to get as high of a score as you can!";
             modeSpawnDescription = "The starting seed is " + (mode_vars[1] ? 1 : 2) + ". Seeds are unlocked in the same way as DIVE, using the values of the products. Seeds are single integers, so the spawning tile is a product of two (not necessarily distinct) seeds, such that the product is not larger than the largest tile discovered so far.";
             if (!mode_vars[3]) {
-                modeSpawnDescription = "The starting seed is " + (mode_vars[1] ? 1 : 2) + ". Seeds are unlocked in the same way as DIVE, using the values of the products. Seeds are single integers, so the spawning tile is a product of two (not necessarily distinct) seeds, such that the product is not larger than the largest tile discovered so far.";
+                modeSpawnDescription = "The starting seed is " + (mode_vars[1] ? 1 : 2) + ". Seeds are unlocked in the same way as DIVE, using the component values of the products (rather than treating the entire product value as a separate component). Seeds are single integers, so the spawning tile is a product of two (not necessarily distinct) seeds, such that the product is not larger than the largest tile discovered so far.";
                 document.getElementById("Aquatic2496_productLimit_text").innerHTML = "Spawning tiles cannot be larger than all existing tiles.";
                 document.getElementById("Aquatic2496_productLimit_text").style.setProperty("color", "#721c00");
             }
             else {
-                modeSpawnDescription = "The starting seed is " + (mode_vars[1] ? 1 : 2) + ". Seeds are unlocked in the same way as DIVE, using the values of the products. Seeds are single integers, so the spawning tile is a product of two (not necessarily distinct) seeds.";
+                modeSpawnDescription = "The starting seed is " + (mode_vars[1] ? 1 : 2) + ". Seeds are unlocked in the same way as DIVE, using the component values of the products (rather than treating the entire product value as a separate component). Seeds are single integers, so the spawning tile is a product of two (not necessarily distinct) seeds.";
                 document.getElementById("Aquatic2496_productLimit_text").innerHTML = "Spawning tiles can be larger than all existing tiles.";
                 document.getElementById("Aquatic2496_productLimit_text").style.setProperty("color", "#d43500");
             }
@@ -27627,6 +27637,7 @@ function hsl_premultiply(color, alpha) {
 	return polar_premultiply(color, alpha, 0);
 }
 */
+
 function linearRGB(s) {
   var linear = 0;
   if (s <= 0.04045) {
@@ -27644,6 +27655,16 @@ function gammaRGB(l) {
     gamma = 1.055 * (l ** (1 / 2.4)) - 0.055;
   }
   return gamma;
+}
+function cartesianToPolar(ab) {
+  var c = Math.sqrt(ab[0]**2 + ab[1]**2);
+  var h = Math.atan(ab[1] / ab[0]) * (180 / Math.PI);
+  return [c, h];
+}
+function polarToCartesian(ch) {
+  var a = ch[0] * Math.cos(ch[1] * (Math.PI / 180));
+  var b = ch[0] * Math.sin(ch[1] * (Math.PI / 180));
+  return [a, b];
 }
 
 function evaluateColor(color) {
