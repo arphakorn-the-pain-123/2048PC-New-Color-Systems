@@ -90,11 +90,15 @@ html {
     box-sizing: border-box;
     text-shadow: none;
 }
-.dark_background_shadowed, #gm_big_tile {
-    text-shadow: white 0px 0px 5px, white 0px 0px 5px, white 0px 0px 5px, white 0px 0px 5px;
+.dark_background_shadowed #gm_rules_text, #gm_big_tile {
+    text-shadow: white 0px 0px 5px, white 0px 0px 5px, white 0px 0px 5px, white 0px 0px 5px, white 0px 0px 5px, white 0px 0px 5px;
 }
 .aquatic_background_shadowed {
-    text-shadow: #78dff7 0px 0px 5px, #78dff7 0px 0px 5px, #78dff7 0px 0px 5px, #78dff7 0px 0px 5px;
+    text-shadow: #78dff7 0px 0px 5px, #78dff7 0px 0px 5px, #78dff7 0px 0px 5px, #78dff7 0px 0px 5px, #78dff7 0px 0px 5px, #78dff7 0px 0px 5px;
+}
+.dark_background_text_color {
+    color: white;
+    text-shadow: black 0px 0px 5px, black 0px 0px 5px, black 0px 0px 5px;
 }
 .waves_tile {
     border-color: #0043b6;
