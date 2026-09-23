@@ -93,7 +93,7 @@ html {
 .dark_background_shadowed #gm_rules_text, #gm_big_tile {
     text-shadow: white 0px 0px 5px, white 0px 0px 5px, white 0px 0px 5px, white 0px 0px 5px, white 0px 0px 5px, white 0px 0px 5px;
 }
-.aquatic_background_shadowed #gm_rules_text, #gm_big_tile {
+.aquatic_background_shadowed #gm_rules_text {
     text-shadow: #78dff7 0px 0px 5px, #78dff7 0px 0px 5px, #78dff7 0px 0px 5px, #78dff7 0px 0px 5px, #78dff7 0px 0px 5px, #78dff7 0px 0px 5px;
 }
 .dark_background_text_color {
@@ -102,7 +102,7 @@ html {
 }
 .waves_tile {
     border-color: #0043b6;
-    text-shadow: 0px 0px 5px #00007e;
+    text-shadow: 0px 0px 5px #00007e, 0px 0px 5px #00007e, 0px 0px 5px #00007e, 0px 0px 5px #00007e;
     color: #97cbff
 }
 .menu_button {
