@@ -3356,7 +3356,7 @@
                     </p>
                 </div>
                 <div id="guide_customModeTeaser" class="guide_box">
-                    <h2>Custom Mode</h2>
+                    <h2>Custom Modes</h2>
                     <img src="Guide Images/CustomMode Opening.png" style="width: calc(var(--base_size) * 80); height: auto">
                     <p class="img_caption">The screen you see before starting the Custom Game process</p>
                     <p>
@@ -3371,6 +3371,24 @@
                         screen where you can choose to create a new mode, load a Custom Mode save code you already have and re-edit it, or view the Guide for the Custom
                         Game. As with this Guide, it's recommended you read the Custom Mode Guide before making your first Custom Mode.
                     </p>
+                </div>
+                <div id="guide_Infused" class="guide_box">
+                    <h2>Infused Modes</h2>
+                    <img src="Guide Images/Infused Creation.png" style="width: calc(var(--base_size) * 80); height: auto">
+                    <p class="img_caption">The main screen for creating an Infused Mode</p>
+                    <p>
+                        The Custom Mode maker is limited in scope - it can only feasibly recreate modes in the styles of Page 1 and Page 2.
+                        If you want to make your own modes in the styles of Pages 3 or 4, or something even crazier, you'll need to mod the game.
+                        As of v3.0, the Compendium has in-built modding tools to create things called <i>Infused Modes</i>, which like Custom Modes
+                        can be shared via save codes and will respond to Modifiers and the like (and they can have mode modifiers!).
+                    </p>
+                    <p>
+                        These have a Guide too, but since these are modding tools, they're not as visible as the Custom Mode is -
+                        you'll need to understand the Compendium's code first before you can start modding it. The Infused Mode Guide has more to
+                        say about that, so for now, if you want to do anything related to Infused Modes (including viewing that Guide), you'll need
+                        to import the word "Infused" (without the quotes) into any save code textbox in the Compendium.
+                    </p>
+                    <div id="guide_infusedLink" class="hover_grow guide_button" style="display:none">Enter Infused Mode Control Unit</div>
                 </div>
                 <div id="guide_credits" class="guide_box">
                     <h2>Credits</h2>
@@ -3930,24 +3948,31 @@
                       </li>
                       <br>
                       <li>
-                            v3.0.9a snapshot 1 (Sep. 11, 2026): Added more CalcArray color expression values to 44.
+                            New Color Systems snapshot 1 (Sep. 11, 2026): Added more CalcArray color expression values to 44.
                       </li>
                       <br>
                       <li>
-                            v3.0.9a snapshot 2 (Sep. 17, 2026): Added the high-precision number display option for the defaultAbbreviate function that display up to 9 mantissa digits,
+                            New Color Systems snapshot 2 (Sep. 17, 2026): Added the high-precision number display option for the defaultAbbreviate function that display up to 9 mantissa digits,
                             importing save codes for Infused Modes as well as "View Color Schemes" [TVRCE] are no longer case-sensitive, and removed the
                             experimental functions borrowed from CSS Color Module Level 4 page from the purview as a JavaScript comment.
                       </li>
                       <br>
                       <li>
-                            v3.0.9a snapshot 3 (Sep. 20, 2026): Added Cartesian-to-polar coordinate conversion function used for converting from LAB to LCH and from OKLAB to OKLCH,
+                            New Color Systems snapshot 3 (Sep. 20, 2026): Added Cartesian-to-polar coordinate conversion function used for converting from LAB to LCH and from OKLAB to OKLCH,
                             added shadows in both HTML and CSS to bypass accessibility issues.
                       </li>
                       <br>
                       <li>
-                            <b>v3.0.9a snapshot 4 (Sep. 23, 2026): Successfully changed the seed checking algorithm for Aquatic 2496 to be based on the individual component values in the product,
-                            rather than treating the entire value of the product as a separate component, to correct the scale balancing; increased the threshold to switch to numerals
-                            in Four-Sides 625 to 30.</b>
+                            v3.0.10 (Sep. 22, 2026) [Current Version]: Fixed the following bugs: pausing or slowing down non-timed replays
+                            causing a desync error, visible next spawned tiles not updating in a replay, 2592 random goals not being completed,
+                            infused modes that used "@CalcArrayNumber" having issues with Negative Tiles, a Multicolor Tiles bug with
+                            2496 and Pro-Add-Uct (though admittedly I "fixed" this one by just restricting the domain to disallow it), and couple typos, including the plural Custom Modes and in 2310 mode.
+                      </li>
+                      <br>
+                      <li>
+                            <b>New Color Systems snapshot 4 (Sep. 23, 2026): Ported the v3.0.10 bug fix update, successfully changed the seed checking algorithm for Aquatic 2496 to be
+                            based on the individual component values in the product, rather than treating the entire value of the product as a separate component, to correct the scale balancing;
+                            increased the threshold to switch to numerals in Four-Sides 625 to 30, and planned to make the spawning tiles in mod 27 dynamic based on the current modulus.</b>
                       </li>
                     </ul>
                 </div>
@@ -4069,7 +4094,8 @@
                         the "Add a Color Rule" button adds a duplicate of the color rule you're currently looking at to the end of the color rule list.
                     </p>
                     <p>
-                        For each color in the background of a tile, you get to choose its color via one of the three typical computer color systems: RGB, HSL, or HSV.
+                        For each color in the background of a tile, you get to choose its color via one of the thirteen typical/widely recognized computer color systems that can display within sRGB gamut:
+                        RGB, HSL, and HSV (HWB, LAB, LCH, OKLAB, OKLCH, sRGB, Linear RGB, and XYZ (both D50 and D65 illuminants) will be implemented later).
                         HSL is used by default, but you can use the "Change Color System" button to switch to one of the other two. The box next to the "Change Color System"
                         button is not clickable: it's a visual aid that shows you the color you currently have selected. The text box next to that lets you enter a hex code for a color,
                         if you'd rather do that than set each of the three aspects separately. The color you choose for a given color rule
