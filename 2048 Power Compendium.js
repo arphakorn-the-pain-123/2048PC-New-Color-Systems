@@ -6707,7 +6707,7 @@ function loadMode(mode) {
             ];
             MergeRules = [[["@This 0", "bit&B", "@Next 1 0"], "@end_vars", 2, ["@var_retain", "@Var 0", ">", 0], true, [[["@var_retain", "@Var 0", "*B", 2n]]], ["@var_retain", "@Var 0", "*", 2, "@edit_gvar", 0, ["@Parent -2", "logB", 2n, "max", "@GVar 0"]], [false, true]]];
             startTileSpawns = [[[1n], 35], [[2n], 15], [[4n], 10], [[3n], 12], [[5n], 8], [[6n], 8], [[7n], 8], [[[2, "^", ["@GVar 0", "rand_float", 1], "round", 1, "-", 1, "max", 1, "BigInt"]], 4]];
-            winConditions = mode_vars[0] == 1 ? [] : [[2048n]];
+            winConditions = [[2048n]];
             winRequirement = 1;
             knownMergeMaxLength = 2;
             knownMergeLookbackDistance = 0;
@@ -11189,17 +11189,20 @@ function gmDisplayVars() {
         document.getElementById("2592_firstGoalMinimum_change").value = mode_vars[2];
     }
     else if (gamemode == 40) { // Wildcard 2048
-        if (mode_vars[0] == 1) {
+        if (mode_vars[0] == 1) { // Melting Pot Mode (removed the win condition due to the exponential growth shenanigans)
             document.getElementById("Wildcard2048_add_text").innerHTML = "When two tiles merge, all of their possibilities combine.";
             document.getElementById("Wildcard2048_add_text").style.setProperty("color", "#b83f1a");
+            winConditions = [];
         }
-        else if (mode_vars[0] == 2) {
+        else if (mode_vars[0] == 2) { // Multitile Mode
             document.getElementById("Wildcard2048_add_text").innerHTML = "Some tiles contain multiple tiles at once instead of acting as one of multiple tiles.";
             document.getElementById("Wildcard2048_add_text").style.setProperty("color", "#bb9e4d");
+            winConditions = [[2048n]];
         }
-        else {
+        else { // Regular Wildcard 2048
             document.getElementById("Wildcard2048_add_text").innerHTML = "When two tiles merge, only the possibilities they both share remain.";
             document.getElementById("Wildcard2048_add_text").style.setProperty("color", "#524439");
+            winConditions = [[2048n]];
         }
         if (mode_vars[1]) {
             document.getElementById("Wildcard2048_chaosSpawns_text").innerHTML = "All tiles spawned are crazy combination tiles.";
@@ -27992,13 +27995,13 @@ function convertColor(col, system) {
             }
             return hexcode;
         }
-        if (Array.isArray(colorarray) && (color[0] == "@RGB" || color[0] == "@RGBA" || color[0] == "@HSL" || color[0] == "@HSLA" || color[0] == "@HSV" || color[0] == "@HSVA" || color[0] == "@HWB" || color[0] == "@LAB" || color[0] == "@LCH" || color[0] == "@OKLAB" || color[0] == "@OKLCH" || color[0] == "@SRGB" || color[0] == "@LinearRGB" || color[0] == "@DisplayP3" || color[0] == "@A98RGB" || color[0] == "@AdobeRGB" || color[0] == "@ProPhotoRGB" || color[0] == "@ProPhoto" || color[0] == "@Rec2020" || color[0] == "@XYZ" || color[0] == "@XYZ-D50" || color[0] == "@XYZ-D65")) {
+        if (Array.isArray(colorarray) && (color[0] == "@RGB" || color[0] == "@RGBA" || color[0] == "@HSL" || color[0] == "@HSLA" || color[0] == "@HSV" || color[0] == "@HSVA" || color[0] == "@HWB" || color[0] == "@LAB" || color[0] == "@LCH" || color[0] == "@OKLAB" || color[0] == "@OKLCH" || color[0] == "@sRGB" || color[0] == "@LinearRGB" || color[0] == "@sRGBLinear" || color[0] == "@XYZ" || color[0] == "@XYZ-D50" || color[0] == "@XYZ-D65")) {
             // Conversion for color systems beyond RGB/HSL/HSV are under construction.
             let e1 = CalcArray(colorarray[1], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
             let e2 = CalcArray(colorarray[2], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
             let e3 = CalcArray(colorarray[3], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
             let e4 = CalcArray(colorarray[4], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
-            //Conversion formulas are from the subpages of https://www.rapidtables.com/convert/color/
+            // Conversion formulas are from the subpages of https://www.rapidtables.com/convert/color/
             if ((colorarray[0] == "@RGB" || colorarray[0] == "@RGBA") && (system == "@HSL" || system == "@HSLA")) {
                 let rprime = Math.min(Math.max(e1 / 255, 0), 1);
                 let gprime = Math.min(Math.max(e2 / 255, 0), 1);
@@ -28086,13 +28089,13 @@ function convertColor(col, system) {
                 colorarray = ["@HSLA", hue, saturationL * 100, lightness * 100, e4];
             }
             else colorarray = [colorarray[0], e1, e2, e3, e4];
-            // Note that conversion from wide-gamut color systems (such as XYZ, LAB, OKLAB, and Display P3) to HSL/HSV/HWB aren't done directly with each other, they must be converted first through RGB.
+            // Note that conversion from wide-gamut color systems (XYZ, LAB/LCH, and OKLAB/OKLCH) to HSL/HSV/HWB aren't done directly with each other, they must be converted first through RGB.
         }
         return colorarray;
     }
 }
 
-function rotateColor(color, degrees) { //degrees = 180 gives the complementary color
+function rotateColor(color, degrees, system = "HSL") { //degrees = 180 gives the complementary color
     // Color rotation based on LCH and OKLCH color systems will be implemented later. HWB is basically the same as HSL.
     let invertL = false; let vcoord = 0; let hcoord = 0; let gri = Grid; let vars = []; let globalVarStat = 0;
     if (arguments.length > 2 && arguments[2] !== undefined) invertL = arguments[2]; // If this is true, then the lightness of the color is inverted
@@ -28115,7 +28118,25 @@ function rotateColor(color, degrees) { //degrees = 180 gives the complementary c
         return colorcopy;
     }
     else {
-        colorcopy = convertColor(colorcopy, "@HSLA", vcoord, hcoord, gri, vars, globalVarStat);
+        let destSystem = "@HSLA";
+        switch (system.toLowerCase()) {
+          case "lab":
+          case "lch":
+          case "@lab":
+          case "@lch":
+            destSystem = "@LCH";
+          break;
+          case "oklab":
+          case "oklch":
+          case "@oklab":
+          case "@oklch":
+            destSystem = "@OKLCH";
+          break;
+          default:
+            destSystem = "@HSLA";
+          break;
+        }
+        colorcopy = convertColor(colorcopy, destSystem, vcoord, hcoord, gri, vars, globalVarStat);
         colorcopy[1] += degrees;
         if (invertL) colorcopy[3] = 100 - colorcopy[3];
         return colorcopy;
