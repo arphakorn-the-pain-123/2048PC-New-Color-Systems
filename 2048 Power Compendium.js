@@ -28095,7 +28095,7 @@ function convertColor(col, system) {
     }
 }
 
-function rotateColor(color, degrees, system = "HSL") { //degrees = 180 gives the complementary color
+function rotateColor(color, degrees, system) { //degrees = 180 gives the complementary color
     // Color rotation based on LCH and OKLCH color systems will be implemented later. HWB is basically the same as HSL.
     let invertL = false; let vcoord = 0; let hcoord = 0; let gri = Grid; let vars = []; let globalVarStat = 0;
     if (arguments.length > 2 && arguments[2] !== undefined) invertL = arguments[2]; // If this is true, then the lightness of the color is inverted
@@ -28119,7 +28119,7 @@ function rotateColor(color, degrees, system = "HSL") { //degrees = 180 gives the
     }
     else {
         let destSystem = "@HSLA";
-        switch (system.toLowerCase()) {
+        switch (String(system).toLowerCase()) {
           case "lab":
           case "lch":
           case "@lab":
