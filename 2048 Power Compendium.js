@@ -18010,16 +18010,16 @@ function defaultAbbreviate(n, highPrecision = false) { // Tiles whose text value
         else if (Math.abs(n) >= 0.001 && Math.abs(n) < 0.01) return abbreviateNumber(n, "Number", 11, false);
         else return abbreviateNumber(n, "Scientific", 8, true);
       }
-      else { // The default precision setting's minimum precision is 4 mantissa digits. With scientific notation, large numbers use 6 mantissa digits, whereas small numbers use 4 mantissa digits, for consistency with the place-value notation.
-        if (Math.abs(n) >= 1e12) return abbreviateNumber(n, "Scientific", 5, true);
-        else if (Math.abs(n) >= 1000000 && Math.abs(n) < 1e12) return abbreviateNumber(n, "Number", 0, true);
-        else if (Math.abs(n) >= 100000 && Math.abs(n) < 1000000) return abbreviateNumber(n, "Number", 1, true);
-        else if (Math.abs(n) >= 10000 && Math.abs(n) < 100000) return abbreviateNumber(n, "Number", 2, true);
+      else { // The default precision setting's minimum precision is 4 mantissa digits.
+        if (Math.abs(n) >= 1000000 && Math.abs(n) < 1e12) return abbreviateNumber(n, "Number", 0, true);
+        else if (Math.abs(n) >= 10000000 && Math.abs(n) < 100000000) return abbreviateNumber(n, "Number", 1, true);
+        else if (Math.abs(n) >= 1000000 && Math.abs(n) < 10000000) return abbreviateNumber(n, "Number", 2, true);
+        else if (Math.abs(n) >= 10000 && Math.abs(n) < 1000000) return abbreviateNumber(n, "Number", 3, true);
         else if (Math.abs(n) >= 1 && Math.abs(n) < 10000) return abbreviateNumber(n, "Number", 3, false);
         else if (Math.abs(n) >= 0.1 && Math.abs(n) < 1) return abbreviateNumber(n, "Number", 4, false);
         else if (Math.abs(n) >= 0.01 && Math.abs(n) < 1) return abbreviateNumber(n, "Number", 5, false);
         else if (Math.abs(n) >= 0.001 && Math.abs(n) < 1) return abbreviateNumber(n, "Number", 6, false);
-        else return abbreviateNumber(n, "Scientific", 3, true);
+        else return abbreviateNumber(n, "Scientific", 5, true);
       }
     }
     else if (typeof n == "bigint") {
@@ -18572,7 +18572,7 @@ function displayTileSpecialColorScheme(dType, tile, vcoord, hcoord, container, l
         }
         let textColor = "#f9f6f2";
         let values = [1n, 2n, 4n, 8n, 16n, 32n, 64n, 128n, 256n, 512n, 1024n, 2048n, 4096n, 8192n, 16384n, 32768n, 65536n, 131072n, 262144n, 524288n, [["@Var -1", ">=", 1048576n], [2n, "^B", ["@var_retain", "@Var -1", "logB", 2n]]]];
-        let colors = ["#89817b", "#aa937f", "#c69d79", "#f2b179", "#f59563", "#f67c5f", "#f65e3b", "#edcf72", "#edcc61", "#edc850", "#edc53f", "#edc22e", "#f29eff", "#eb75fd", "#e53bff", "#bd00db", "#770089", "#534de8", "#2922e1", "#0a05b6", ["@HSLA", ["@var_retain", -15, "*", ["@var_retain", "@Var -1", "+", 0.5, "log", 2, "floor", 1], "+", 520], 100, ["@var_retain", 1.08, "^", ["@var_retain", "@Var -1", "+", 0.5, "log", 2, "floor", 1, "-", 20], "*", 36, "min", 50], 1]];
+        let colors = ["#89817b", "#aa937f", "#c69d79", "#f2b179", "#f59563", "#f67c5f", "#f65e3b", "#edcf72", "#edcc61", "#edc850", "#edc53f", "#edc22e", "#f29eff", "#eb75fd", "#e53bff", "#bd00db", "#770089", "#534de8", "#2922e1", "#0a05b6", ["@HSLA", ["@var_retain", -15, "*", ["@var_retain", "@Var -1", "+", 0.5, "log", 2, "floor", 1], "+", 520], 100, ["@var_retain", 1.004, "^", ["@var_retain", "@Var -1", "+", 0.5, "log", 2, "floor", 1, "-", 20], "*", 36, "min", 50], 1]];
         let remaining = value;
         let gradientArray = [];
         let textArray = [];
