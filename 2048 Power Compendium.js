@@ -5940,7 +5940,7 @@ function loadMode(mode) {
         ["p", "Spawning tiles: 1 (100%)"]);
     }
     else if (mode == 23) { // 2059
-        // width = 5; height = 5;
+        // width = 6; height = 6;
         TileNumAmount = 2;
         TileTypes = [
             [[1, 1], 1, "#ffffff", "#33312c"], [[1, 2], 2, "#808080", "#f9f5ee"], [[1, 3], 3, "#c4c4c4", "#33312c"],
@@ -5982,7 +5982,7 @@ function loadMode(mode) {
         ["p", "Spawning tiles: 1 (90%), 2 (6%), 3 (4%)"]);
     }
     else if (mode == 24) { // 2315
-        // width = 5; height = 5;
+        // width = 6; height = 6;
         TileNumAmount = 2;
         TileTypes = [
             [[0, 1], 1, "#808080", "#d9e3f4"], [[0, 2], 2, "#dddddd", "#333943"],
@@ -6351,7 +6351,7 @@ function loadMode(mode) {
         }
     }
     else if (mode == 32) { // Bicolor 2187
-        // width = 4; height = 4;
+        // width = 5; height = 5;
         TileNumAmount = 2;
         TileTypes = [[[0, 1], 1, "#ffffff", "#584153"], [[0, 2], 2, "#999999", "#f6ebf4"],
         [[1, 1], 3, ["@linear-gradient", "#ff3030", 0, "#ffffa2", 25, 75, "#ff3030", 100], "#584153"],
@@ -6707,7 +6707,7 @@ function loadMode(mode) {
             ];
             MergeRules = [[["@This 0", "bit&B", "@Next 1 0"], "@end_vars", 2, ["@var_retain", "@Var 0", ">", 0], true, [[["@var_retain", "@Var 0", "*B", 2n]]], ["@var_retain", "@Var 0", "*", 2, "@edit_gvar", 0, ["@Parent -2", "logB", 2n, "max", "@GVar 0"]], [false, true]]];
             startTileSpawns = [[[1n], 35], [[2n], 15], [[4n], 10], [[3n], 12], [[5n], 8], [[6n], 8], [[7n], 8], [[[2, "^", ["@GVar 0", "rand_float", 1], "round", 1, "-", 1, "max", 1, "BigInt"]], 4]];
-            winConditions = [[2048n]];
+            winConditions = mode_vars[0] == 1 ? [] : [[2048n]];
             winRequirement = 1;
             knownMergeMaxLength = 2;
             knownMergeLookbackDistance = 0;
@@ -6805,7 +6805,7 @@ function loadMode(mode) {
         }
     }
     else if (mode == 42) { // Bicolor 2584
-        // width = 4; height = 4;
+        // width = 5; height = 5;
         TileNumAmount = 2;
         TileTypes = [
         [[0, 0], 1, "#ffffff", "#2d2b31"], [[1, 0], 2, "#b3ffe8", "#2d2b31"],
@@ -10197,9 +10197,9 @@ function loadMode(mode) {
 function loadGridSize(mode, mvars = []) {
     if (modifiers[5] == "Custom") return;
     let size3 = [31, 86];
-    let size4 = [1, 2, 4, 7, 16, 17, 26, 27, 29, 30, 32, 40, 42, 47, 48, 51, 53, 54, 60, 66, 69, 72, 74, 78, 79, 81, 82, 83, 84, 85, 87, 88, 89, 91, 92, 93, 101, 102, 50.1, 73.50118, 50.248, 31.50118, 50.7101113, 0.0001];
-    let size5 = [3, 5, 6, 9, 10, 11, 12, 13, 14, 15, 18, 19, 20, 21, 23, 24, 28, 33, 34, 41, 43, 44, 46, 49, 52, 55, 56, 58, 59, 62, 63, 64, 65, 71, 75, 76, 77, 80, 90, 94, 96, 97, 99, 96.50118, 50.22, 37.71, 71.37, 1.5];
-    let size6 = [8, 25, 39, 45, 98, 3.24, 98.01];
+    let size4 = [1, 2, 4, 7, 16, 17, 26, 27, 29, 30, 40, 47, 48, 51, 53, 54, 60, 66, 69, 72, 74, 78, 79, 81, 82, 83, 84, 85, 87, 88, 89, 91, 92, 93, 101, 102, 50.1, 73.50118, 50.248, 31.50118, 50.7101113, 0.0001];
+    let size5 = [3, 5, 9, 10, 11, 12, 13, 14, 15, 18, 19, 20, 21, 28, 32, 33, 34, 41, 42, 43, 44, 46, 49, 52, 55, 56, 58, 59, 62, 63, 64, 65, 71, 75, 76, 77, 80, 90, 94, 96, 97, 99, 96.50118, 50.22, 37.71, 71.37, 1.5];
+    let size6 = [6, 8, 23, 24, 25, 39, 45, 98, 3.24, 98.01];
     let size7 = [22];
     let size8 = [];
     let defaultSize;
@@ -11213,9 +11213,9 @@ function gmDisplayVars() {
         if (mode_vars[1]) spawnText = ["p", "Tiles spawned could be any combination of tiles up to (but not including) the highest power of 2 you've reached, but they're biased towards smaller values."];
         else spawnText = ["p", "Spawning tiles: 1 (35%), 2 (15%), 4 (10%), 1 2 (12%), 1 4 (8%), 2 4 (8%), 1 2 4 (8%). The remaining 4% chance spawns a tile that could be any combination of tiles up to (but not including) the highest power of 2 you've reached, but is biased towards smaller values."];
         if (mode_vars[0] == 1) {
-            displayRules("rules_text", ["h1", "Wildcard 2048 (Melting Pot Mode)"], ["p", "2048, but some tiles can act as multiple tiles, such as a \"2 4\" tile, which could merge with a 2 or with a 4. Two of these \"wildcard\" tiles can merge as long as they share at least one possibility. When two tiles merge, they combine in a \"melting pot\" fashion: for example, a 4 tile and a 2 4 tile merge into an 8 2 tile, while a 1 2 tile and a 1 4 tile merge into an 8 tile. To win, you must make a regular 2048 tile - a tile with 2048 as one of its multiple possibilities doesn't count!"],
+            displayRules("rules_text", ["h1", "Wildcard 2048 (Melting Pot Mode)"], ["p", "2048, but some tiles can act as multiple tiles, such as a \"2 4\" tile, which could merge with a 2 or with a 4. Two of these \"wildcard\" tiles can merge as long as they share at least one possibility. When two tiles merge, they combine in a \"melting pot\" fashion: for example, a 4 tile and a 2 4 tile merge into an 8 2 tile, while a 1 2 tile and a 1 4 tile merge into an 8 tile. Due to the exponential growth shenanigans, this mode has no win condition. Just play and see the logarithm of your score."],
             spawnText);
-            displayRules("gm_rules_text", ["h1", "Wildcard 2048 (Melting Pot Mode)"], ["p", "2048, but some tiles can act as multiple tiles, such as a \"2 4\" tile, which could merge with a 2 or with a 4. Two of these \"wildcard\" tiles can merge as long as they share at least one possibility. When two tiles merge, they combine in a \"melting pot\" fashion: for example, a 4 tile and a 2 4 tile merge into an 8 2 tile, while a 1 2 tile and a 1 4 tile merge into an 8 tile. To win, you must make a regular 2048 tile - a tile with 2048 as one of its multiple possibilities doesn't count!"],
+            displayRules("gm_rules_text", ["h1", "Wildcard 2048 (Melting Pot Mode)"], ["p", "2048, but some tiles can act as multiple tiles, such as a \"2 4\" tile, which could merge with a 2 or with a 4. Two of these \"wildcard\" tiles can merge as long as they share at least one possibility. When two tiles merge, they combine in a \"melting pot\" fashion: for example, a 4 tile and a 2 4 tile merge into an 8 2 tile, while a 1 2 tile and a 1 4 tile merge into an 8 tile. Due to the exponential growth shenanigans, this mode has no win condition. Just play and see the logarithm of your score."],
             spawnText);
         }
         else if (mode_vars[0] == 2) {
@@ -15880,7 +15880,7 @@ function gmDisplayVars() {
                 if(MergeRules[i][3][0] == "@MergeOverflowOverwrite") outputOne = 1;
                 let output = MergeRules[i][3][outputOne];
                 if(MergeRules[i][4].length == 0) {
-                    MergeRules[i][4] = [[arrayProduct, "^", [output[0], "/B", mode_vars[1].length, "Number"]], "*", [arraySubproducts, "arr_elem", [output[0], "%", mode_vars[1].length]], "*", "@This 1", "*", output[1]];
+                    MergeRules[i][4] = [[arrayProduct, "^", [output[0], "/B", mode_vars[1].length, "Number"]], "*", [arraySubproducts, "arr_elem", [output[0], "%", mode_vars[1].length]], "*", output[1]];
                 }
             }
         }
@@ -18572,7 +18572,7 @@ function displayTileSpecialColorScheme(dType, tile, vcoord, hcoord, container, l
         }
         let textColor = "#f9f6f2";
         let values = [1n, 2n, 4n, 8n, 16n, 32n, 64n, 128n, 256n, 512n, 1024n, 2048n, 4096n, 8192n, 16384n, 32768n, 65536n, 131072n, 262144n, 524288n, [["@Var -1", ">=", 1048576n], [2n, "^B", ["@var_retain", "@Var -1", "logB", 2n]]]];
-        let colors = ["#89817b", "#aa937f", "#c69d79", "#f2b179", "#f59563", "#f67c5f", "#f65e3b", "#edcf72", "#edcc61", "#edc850", "#edc53f", "#edc22e", "#f29eff", "#eb75fd", "#e53bff", "#bd00db", "#770089", "#534de8", "#2922e1", "#0a05b6", ["@HSLA", ["@var_retain", -15, "*", ["@var_retain", "@Var -1", "+", 0.5, "log", 2, "floor", 1], "+", 520], 100, ["@var_retain", 0.9, "^", ["@var_retain", "@Var -1", "+", 0.5, "log", 2, "floor", 1, "-", 20], "*", 36], 1]];
+        let colors = ["#89817b", "#aa937f", "#c69d79", "#f2b179", "#f59563", "#f67c5f", "#f65e3b", "#edcf72", "#edcc61", "#edc850", "#edc53f", "#edc22e", "#f29eff", "#eb75fd", "#e53bff", "#bd00db", "#770089", "#534de8", "#2922e1", "#0a05b6", ["@HSLA", ["@var_retain", -15, "*", ["@var_retain", "@Var -1", "+", 0.5, "log", 2, "floor", 1], "+", 520], 100, ["@var_retain", 1.08, "^", ["@var_retain", "@Var -1", "+", 0.5, "log", 2, "floor", 1, "-", 20], "*", 36, "min", 50], 1]];
         let remaining = value;
         let gradientArray = [];
         let textArray = [];
