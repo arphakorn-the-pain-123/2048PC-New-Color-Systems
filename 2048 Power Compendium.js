@@ -26711,7 +26711,7 @@ function CalcArrayString(str) {
             for (let t = 1; t < (split.length == 2 ? Infinity : addInfo[0]); t++) {
                 if (!(!(Number.isNaN(nextv)) && nextv % 1 == 0 && nextv >= 0 && nextv < height) || !(!(Number.isNaN(nexth)) && nexth % 1 == 0 && nexth >= 0 && nexth < width)) break;
                 tile = compendiumStructuredClone(gri[nextv][nexth]);
-                result.unshift(tile);
+                result.push(tile);
                 nextv += vdir;
                 nexth += hdir;
                 while (gri[nextv] !== undefined && gri[nextv][nexth] == "@Slippery") {
