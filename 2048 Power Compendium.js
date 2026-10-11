@@ -4993,11 +4993,11 @@ function loadMode(mode) {
     document.getElementById("gm_big_tile").style.setProperty("display", "block");
     document.getElementById("gm_big_tile").style.setProperty("--gm_tfs", "6");
     document.getElementById("gamemode").style.setProperty("color", "black");
-    if (mode == 34 || mode == 35 || mode == 41 || mode == 42 || mode == 61 || mode == 73 || mode == 74 || mode == 75 || mode == 78 || mode == 80 || mode == 93 || mode == 95 || mode == 98 || mode == 99 || mode == 100) {
+    /* if (mode == 34 || mode == 35 || mode == 41 || mode == 42 || mode == 61 || mode == 73 || mode == 74 || mode == 75 || mode == 78 || mode == 80 || mode == 93 || mode == 95 || mode == 98 || mode == 99 || mode == 100) {
       document.getElementById("gamemode").classList.add("dark_background_shadowed");
     } else {
       document.getElementById("gamemode").classList.remove("dark_background_shadowed");
-    }
+    } */
     if (mode == 50 || mode == 96.50118 || mode == 34.50118 || mode == 50.1 || mode == 50.22 || mode == 91.50118 || mode == 73.50118 || mode == 89.50118 || mode == 97.50118 || mode == 50.248 || mode == 57.50118 || mode == 31.50118) {
       document.getElementById("gamemode").classList.add("aquatic_background_shadowed");
     } else {
@@ -6258,7 +6258,7 @@ function loadMode(mode) {
                 [["@This 0", "=", 4], ["@TextE", ["@Superscript", 16], "O"], "#f59563", "#f9f6f2", "none", 3, 0, ["Innerscript", ["@This 1", "@if", ["@This 1", "=", Infinity], "2nd", ""], "bottom-center", 4, 0]],
                 [["@This 0", "=", 5], ["@TextE", ["@Superscript", 32], "P"], "#f67c5f", "#f9f6f2", "none", 3, 0, ["Innerscript", ["@This 1", "@if", ["@This 1", "=", Infinity], "2nd", ""], "bottom-center", 4, 0]],
                 [["@This 0", "=", 6], ["@TextE", ["@Superscript", 64], "Ni"], "#f65e3b", "#f9f6f2", "none", 3, 0, ["Innerscript", ["@This 1", "@if", ["@This 1", "=", Infinity], "2nd", ""], "bottom-center", 4, 0]],
-                [["@This 0", "=", 7], ["@TextE", ["@Superscript", 128], "Sn"], "#edcf72", "#f9f6f2", "none", 3, 0, ["Innerscript", ["@This 1", "@if", ["@This 1", "=", Infinity], "2nd", ""], "bottom-center", 4, 0], ["Innerscript", ["@This 1", "@if", ["@This 1", "=", Infinity], "2nd", ""], "bottom-center", 4, 0]],
+                [["@This 0", "=", 7], ["@TextE", ["@Superscript", 128], "Sn"], "#edcf72", "#f9f6f2", "none", 3, 0, ["Innerscript", ["@This 1", "@if", ["@This 1", "=", Infinity], "2nd", ""], "bottom-center", 4, 0]],
                 [["@This 0", "=", 8], ["@TextE", ["@Superscript", 256], "No"], "#edcc61", "#f9f6f2", "none", 3, 0, ["Innerscript", ["@This 1", "@if", ["@This 1", "=", Infinity], "2nd", ""], "bottom-center", 4, 0]],
                 [["@This 0", "=", 9], ["@TextE", ["@Superscript", 512], "Uss"], "#edc850", "#f9f6f2", "none", 3, 0, ["Innerscript", ["@This 1", "@if", ["@This 1", "=", Infinity], "2nd", ""], "bottom-center", 4, 0]],
                 [["@This 0", "=", 10], ["@TextE", ["@Superscript", 1024], "Bep"], "#edc53f", "#f9f6f2", "none", 3, 0, ["Innerscript", ["@This 1", "@if", ["@This 1", "=", Infinity], "2nd", ""], "bottom-center", 4, 0]],
