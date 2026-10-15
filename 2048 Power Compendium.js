@@ -11341,9 +11341,9 @@ function gmDisplayVars() {
             document.getElementById("mod27_coprimeMergeLength_text").style.setProperty("color", "#5e1717");
         }
         displayRules("rules_text", ["h2", "Modular Supermerging"], ["h1", "mod " + goal], ["p", rulesDescription],
-        ["p", "The default spawning tile is " + prime(spawningPrime) + ". The spawning tile is the smallest prime number that is not divisible by the current modulus and no less than the one that's not divisible by the initial modulus."]);
+        ["p", "The default spawning tile is " + prime(spawningPrime) + ". The spawning tile is the smallest prime number that is not divisible by the current modulus and no less than the one that's not divisible by the initial modulus (for instance, if your current modulus is 45, and the initial modulus is set to 18, then the spawning tile in that modulus is 7), to prevent softlocks."]);
         displayRules("gm_rules_text", ["h2", "Modular Supermerging"], ["h1", "mod " + goal], ["p", rulesDescription],
-        ["p", "The default spawning tile is " + prime(spawningPrime) + ". The spawning tile is the smallest prime number that is not divisible by the current modulus and no less than the one that's not divisible by the initial modulus."]);
+        ["p", "The default spawning tile is " + prime(spawningPrime) + ". The spawning tile is the smallest prime number that is not divisible by the current modulus and no less than the one that's not divisible by the initial modulus (for instance, if your current modulus is 45, and the initial modulus is set to 18, then the spawning tile in that modulus is 7), to prevent softlocks."]);
     }
     else if (gamemode == 45) { // Directional Merges
         // Not only does this mode have different difficulties, it also behaves differently when the movement directions are altered by the grid modifiers
