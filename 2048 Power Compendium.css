@@ -3180,6 +3180,9 @@ html {
     color: #6ee109;
     border-color: #6ee109;
 }
+#guide_changelog hr {
+    border-color: #6ee109;
+}
 #guide_wavesModes {
     background-color: #001c68;
     color: #55a1ff;
