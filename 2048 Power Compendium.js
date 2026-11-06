@@ -5189,9 +5189,9 @@ function loadMode(mode) {
         document.documentElement.style.setProperty("--grid-color", "#a7b6c7");
         document.documentElement.style.setProperty("--tile-color", "#c2d9ec");
         document.documentElement.style.setProperty("--text-color", "#464d52");
-        displayRules("rules_text", ["h2", "Powers of 6"], ["h1", "1296"], ["p","Merges occur between two or three of the same tile: two-tile merges occur between tiles that are a power of six or triple a power of six, and three-tile merges occur between tiles that are a power of six or double a power of six. Get to the 1296 tile to win!"],
+        displayRules("rules_text", ["h2", "Powers of 6"], ["h1", "1296"], ["p","Merges occur between two or three of the same tile: two-tile merges occur between tiles that are a power of six or triple a power of six, and three-tile merges occur between tiles that are a power of six or double a power of six. Also be careful, tiles have two-dimensional pathway, so a '3', a '2', and a '1' cannot merge into a '6'. Get to the 1296 tile to win!"],
         ["p", "Spawning tiles: 1 (80%), 2 (12%), 3 (6%), 6 (2%)"]);
-        displayRules("gm_rules_text", ["h2", "Powers of 6"], ["h1", "1296"], ["p","Merges occur between two or three of the same tile: two-tile merges occur between tiles that are a power of six or triple a power of six, and three-tile merges occur between tiles that are a power of six or double a power of six. Get to the 1296 tile to win!"],
+        displayRules("gm_rules_text", ["h2", "Powers of 6"], ["h1", "1296"], ["p","Merges occur between two or three of the same tile: two-tile merges occur between tiles that are a power of six or triple a power of six, and three-tile merges occur between tiles that are a power of six or double a power of six. Also be careful, tiles have two-dimensional pathway, so a '3', a '2', and a '1' cannot merge into a '6'. Get to the 1296 tile to win!"],
         ["p", "Spawning tiles: 1 (80%), 2 (12%), 3 (6%), 6 (2%)"]);
     }
     else if (mode == 6) { // 2401
@@ -5228,9 +5228,9 @@ function loadMode(mode) {
         document.documentElement.style.setProperty("--grid-color", "#c7b6a7");
         document.documentElement.style.setProperty("--tile-color", "#ecd8c2");
         document.documentElement.style.setProperty("--text-color", "#524b46");
-        displayRules("rules_text", ["h2", "Powers of 7"], ["h1", "2401"], ["p","Merges occur between two or three tiles that are the same power of seven, two tiles that are double the same power of seven, or one tile that is triple a power of seven and one tile that is quadruple that power of seven. Get to the 2401 tile to win!"],
+        displayRules("rules_text", ["h2", "Powers of 7"], ["h1", "2401"], ["p","Merges occur between two or three tiles that are the same power of seven, two tiles that are double the same power of seven, or one tile that is triple a power of seven and one tile that is quadruple that power of seven. Remember, make tiles that are triple that power of seven before tiles that are either double or quadruple that power of seven. Get to the 2401 tile to win!"],
         ["p", "Spawning tiles: 1 (80%), 2 (10%), 3 (5%), 4 (5%)"]);
-        displayRules("gm_rules_text", ["h2", "Powers of 7"], ["h1", "2401"], ["p","Merges occur between two or three tiles that are the same power of seven, two tiles that are double the same power of seven, or one tile that is triple a power of seven and one tile that is quadruple that power of seven. Get to the 2401 tile to win!"],
+        displayRules("gm_rules_text", ["h2", "Powers of 7"], ["h1", "2401"], ["p","Merges occur between two or three tiles that are the same power of seven, two tiles that are double the same power of seven, or one tile that is triple a power of seven and one tile that is quadruple that power of seven. Remember, make tiles that are triple that power of seven before tiles that are either double or quadruple that power of seven. Get to the 2401 tile to win!"],
         ["p", "Spawning tiles: 1 (80%), 2 (10%), 3 (5%), 4 (5%)"]);
     }
     else if (mode == 7) { // 4096
@@ -5264,9 +5264,9 @@ function loadMode(mode) {
         document.documentElement.style.setProperty("--grid-color", "#a8a7c7");
         document.documentElement.style.setProperty("--tile-color", "#c5c2ec");
         document.documentElement.style.setProperty("--text-color", "#484652");
-        displayRules("rules_text", ["h2", "Powers of 8"], ["h1", "4096"], ["p","Merges occur between two equal tiles that are a power of eight, between a tile that's a power of eight and a tile that's double that power of eight, between a tile that's double a power of eight and a tile that's triple that power of eight, and between a tile that's triple a power of eight and a tile that's quintuple that power of eight. Get to the 4096 tile to win!"],
+        displayRules("rules_text", ["h2", "Powers of 8"], ["h1", "4096"], ["p","Merges occur between two equal tiles that are a power of eight, between a tile that's a power of eight and a tile that's double that power of eight, between a tile that's double a power of eight and a tile that's triple that power of eight, and between a tile that's triple a power of eight and a tile that's quintuple that power of eight (this can also be thought of as \"two tiles can merge following the Fibonacci-style pathway to the next power of eight: 1, 2, 3, 5, 8\"). Get to the 4096 tile to win!"],
         ["p", "Spawning tiles: 1 (85%), 2 (8%), 3 (5%), 5 (2%)"]);
-        displayRules("gm_rules_text", ["h2", "Powers of 8"], ["h1", "4096"], ["p","Merges occur between two equal tiles that are a power of eight, between a tile that's a power of eight and a tile that's double that power of eight, between a tile that's double a power of eight and a tile that's triple that power of eight, and between a tile that's triple a power of eight and a tile that's quintuple that power of eight. Get to the 4096 tile to win!"],
+        displayRules("gm_rules_text", ["h2", "Powers of 8"], ["h1", "4096"], ["p","Merges occur between two equal tiles that are a power of eight, between a tile that's a power of eight and a tile that's double that power of eight, between a tile that's double a power of eight and a tile that's triple that power of eight, and between a tile that's triple a power of eight and a tile that's quintuple that power of eight (this can also be thought of as \"two tiles can merge following the Fibonacci-style pathway to the next power of eight: 1, 2, 3, 5, 8\"). Get to the 4096 tile to win!"],
         ["p", "Spawning tiles: 1 (85%), 2 (8%), 3 (5%), 5 (2%)"]);
     }
     else if (mode == 8) { // 6561
@@ -5367,9 +5367,9 @@ function loadMode(mode) {
         document.documentElement.style.setProperty("--grid-color", "#a8c7a7");
         document.documentElement.style.setProperty("--tile-color", "#caecc2");
         document.documentElement.style.setProperty("--text-color", "#485246");
-        displayRules("rules_text", ["h2", "Powers of 11"], ["h1", "1331"], ["p","  Merges can occur between two tiles that are both the same number and a power of eleven, between a power of eleven and a tile that's double it, between a tile that's a power of eleven, a tile that's double the same power of eleven, and a tile that's triple the same power of eleven, or between a tile that's double a power of eleven, a tile that's triple the same power of eleven, and a tile that's six times the same power of eleven. Get to the 1331 tile to win!"],
+        displayRules("rules_text", ["h2", "Powers of 11"], ["h1", "1331"], ["p","  Merges can occur between two tiles that are both the same number and a power of eleven, between a power of eleven and a tile that's double it, between a tile that's a power of eleven, a tile that's double the same power of eleven, and a tile that's triple the same power of eleven, or between a tile that's double a power of eleven, a tile that's triple the same power of eleven, and a tile that's six times the same power of eleven. (Note: You cannot make a '6' by merging two '3' tiles, you have to go 3+2+1). Get to the 1331 tile to win!"],
         ["p", "Spawning tiles: 1 (80%), 2 (12%), 3 (6%), 6 (2%)"]);
-        displayRules("gm_rules_text", ["h2", "Powers of 11"], ["h1", "1331"], ["p","  Merges can occur between two tiles that are both the same number and a power of eleven, between a power of eleven and a tile that's double it, between a tile that's a power of eleven, a tile that's double the same power of eleven, and a tile that's triple the same power of eleven, or between a tile that's double a power of eleven, a tile that's triple the same power of eleven, and a tile that's six times the same power of eleven. Get to the 1331 tile to win!"],
+        displayRules("gm_rules_text", ["h2", "Powers of 11"], ["h1", "1331"], ["p","  Merges can occur between two tiles that are both the same number and a power of eleven, between a power of eleven and a tile that's double it, between a tile that's a power of eleven, a tile that's double the same power of eleven, and a tile that's triple the same power of eleven, or between a tile that's double a power of eleven, a tile that's triple the same power of eleven, and a tile that's six times the same power of eleven. (Note: You cannot make a '6' by merging two '3' tiles, you have to go 3+2+1). Get to the 1331 tile to win!"],
         ["p", "Spawning tiles: 1 (80%), 2 (12%), 3 (6%), 6 (2%)"]);
     }
     else if (mode == 11) { // 1728
@@ -5415,9 +5415,9 @@ function loadMode(mode) {
         document.documentElement.style.setProperty("--grid-color", "#c2a7c7");
         document.documentElement.style.setProperty("--tile-color", "#e6c2ec");
         document.documentElement.style.setProperty("--text-color", "#514652");
-        displayRules("rules_text", ["h2", "Powers of 12"], ["h1", "1728"], ["p","Merges occur between two, three, or four of the same tile, as long as those tiles add up to a power of twelve or double, triple, quadruple, or sextuple a power of twelve, except a merge cannot occur between four tiles that are sextuple a power of twelve. Get to the 1728 tile to win!"],
+        displayRules("rules_text", ["h2", "Powers of 12"], ["h1", "1728"], ["p","Merges occur between two, three, or four of the same tile, as long as those tiles add up to a power of twelve or double, triple, quadruple, or sextuple a power of twelve, except a merge cannot occur between four tiles that are sextuple a power of twelve. Also be careful, tiles have two-dimensional pathway and do not interact with the other nonequal tiles (e.g. a '3', a '2', and a '1' do not merge into a '6') until the next power of twelve is created. Get to the 1728 tile to win!"],
         ["p", "Spawning tiles: 1 (80%), 2 (10%), 3 (5%), 4 (5%)"]);
-        displayRules("gm_rules_text", ["h2", "Powers of 12"], ["h1", "1728"], ["p","Merges occur between two, three, or four of the same tile, as long as those tiles add up to a power of twelve or double, triple, quadruple, or sextuple a power of twelve, except a merge cannot occur between four tiles that are sextuple a power of twelve. Get to the 1728 tile to win!"],
+        displayRules("gm_rules_text", ["h2", "Powers of 12"], ["h1", "1728"], ["p","Merges occur between two, three, or four of the same tile, as long as those tiles add up to a power of twelve or double, triple, quadruple, or sextuple a power of twelve, except a merge cannot occur between four tiles that are sextuple a power of twelve. Also be careful, tiles have two-dimensional pathway and do not interact with the other nonequal tiles (e.g. a '3', a '2', and a '1' do not merge into a '6') until the next power of twelve is created. Get to the 1728 tile to win!"],
         ["p", "Spawning tiles: 1 (80%), 2 (10%), 3 (5%), 4 (5%)"]);
     }
     else if (mode == 12) { // 2047
@@ -5473,7 +5473,7 @@ function loadMode(mode) {
         document.documentElement.style.setProperty("--grid-color", "#a7c7be");
         document.documentElement.style.setProperty("--tile-color", "#c2ecda");
         document.documentElement.style.setProperty("--text-color", "#46524c");
-        displayRules("rules_text", ["h2", "Powers of 3 Minus 1"], ["h1", "2186"], ["p","Two 1s can merge into a 2, but all other merges occur between three tiles: one of the tiles is always a 1, and one of them is always one less than a power of three, while the third tile can be either one less than that same power of three or one less than double that power of three. Get to the 2186 tile to win!"],
+        displayRules("rules_text", ["h2", "Powers of 3 Minus 1"], ["h1", "2186"], ["p","Two 1s can merge into a 2, but all other merges occur between three tiles: one of the tiles is always a 1, and one of them is always one less than a power of three, while the third tile can be either one less than that same power of three or one less than double that power of three. This mode is basically a combination of 2187 and 2047 modes. Get to the 2186 tile to win!"],
         ["p", "Spawning tiles: 1 (92%), 2 (7%), 5 (1%)"]);
         displayRules("gm_rules_text", ["h2", "Powers of 3 Minus 1"], ["h1", "2186"], ["p","Two 1s can merge into a 2, but all other merges occur between three tiles: one of the tiles is always a 1, and one of them is always one less than a power of three, while the third tile can be either one less than that same power of three or one less than double that power of three. Get to the 2186 tile to win!"],
         ["p", "Spawning tiles: 1 (92%), 2 (7%), 5 (1%)"]);
@@ -5622,9 +5622,9 @@ function loadMode(mode) {
         document.documentElement.style.setProperty("--grid-color", "#c7c6a7");
         document.documentElement.style.setProperty("--tile-color", "#eceac2");
         document.documentElement.style.setProperty("--text-color", "#525146");
-        displayRules("rules_text", ["h2", "Factorials"], ["h1", "5040"], ["p","For any whole number x between 1 and 11, tiles that are at least x! and less than (x+1)! follow the merging rules of the gamemode based around powers of (x+1), with x! taking the place of the powers of (x+1) within that particular ruleset. Get to the 5040 tile to win!"],
+        displayRules("rules_text", ["h2", "Factorials"], ["h1", "5040"], ["p","For any whole number x between 1 and 11, tiles that are at least x! and less than (x+1)! follow the merging rules of the gamemode based around powers of (x+1), with x! taking the place of the powers of (x+1) within that particular ruleset. Remember, to go to 5040, merge three 720s to make 2160 first before making two 1440s and them a 2880, and merge 2160 with 2880. Get to the 5040 tile to win!"],
         ["p", "Spawning tiles: 1 (100%)"]);
-        displayRules("gm_rules_text", ["h2", "Factorials"], ["h1", "5040"], ["p","For any whole number x between 1 and 11, tiles that are at least x! and less than (x+1)! follow the merging rules of the gamemode based around powers of (x+1), with x! taking the place of the powers of (x+1) within that particular ruleset. Get to the 5040 tile to win!"],
+        displayRules("gm_rules_text", ["h2", "Factorials"], ["h1", "5040"], ["p","For any whole number x between 1 and 11, tiles that are at least x! and less than (x+1)! follow the merging rules of the gamemode based around powers of (x+1), with x! taking the place of the powers of (x+1) within that particular ruleset. Remember, to go to 5040, merge three 720s to make 2160 first before making two 1440s and them a 2880, and merge 2160 with 2880. Get to the 5040 tile to win!"],
         ["p", "Spawning tiles: 1 (100%)"]);
     }
     else if (mode == 16) { // 2197
@@ -5669,9 +5669,9 @@ function loadMode(mode) {
         document.documentElement.style.setProperty("--grid-color", "#9d8597");
         document.documentElement.style.setProperty("--tile-color", "#ba9db3");
         document.documentElement.style.setProperty("--text-color", "#272326");
-        displayRules("rules_text", ["h2", "Powers of 13"], ["h1", "2197"], ["p","Merges occur between two equal tiles that are a power of 13, between a tile that's a power of 13 and a tile that's double or triple that power of 13, between a tile that's double a power of 13 and a tile that's quadruple that power of 13, between a tile that's triple a power of 13 and a tile that's sextuple that power of 13, or between a tile that's quadruple a power of 13 and a tile that's 9 times that power of 13. Get to the 2197 tile to win!"],
+        displayRules("rules_text", ["h2", "Powers of 13"], ["h1", "2197"], ["p","Merges occur between two equal tiles that are a power of 13, between a tile that's a power of 13 and a tile that's double or triple that power of 13, between a tile that's double a power of 13 and a tile that's quadruple that power of 13, between a tile that's triple a power of 13 and a tile that's sextuple that power of 13, or between a tile that's quadruple a power of 13 and a tile that's nonuple that power of 13. (Another way of thinking about it is \"two tiles can merge following the Narayana's cows sequence pathway to the next power of 13: 1, 2, 3, 4, 6, 9, 13\"). Get to the 2197 tile to win!"],
         ["p", "Spawning tiles: 1 (85%), 2 (8%), 3 (5%), 4 (2%)"]);
-        displayRules("gm_rules_text", ["h2", "Powers of 13"], ["h1", "2197"], ["p","Merges occur between two equal tiles that are a power of 13, between a tile that's a power of 13 and a tile that's double or triple that power of 13, between a tile that's double a power of 13 and a tile that's quadruple that power of 13, between a tile that's triple a power of 13 and a tile that's sextuple that power of 13, or between a tile that's quadruple a power of 13 and a tile that's 9 times that power of 13. Get to the 2197 tile to win!"],
+        displayRules("gm_rules_text", ["h2", "Powers of 13"], ["h1", "2197"], ["p","Merges occur between two equal tiles that are a power of 13, between a tile that's a power of 13 and a tile that's double or triple that power of 13, between a tile that's double a power of 13 and a tile that's quadruple that power of 13, between a tile that's triple a power of 13 and a tile that's sextuple that power of 13, or between a tile that's quadruple a power of 13 and a tile that's nonuple that power of 13. (Another way of thinking about it is \"two tiles can merge following the Narayana's cows sequence pathway to the next power of 13: 1, 2, 3, 4, 6, 9, 13\"). Get to the 2197 tile to win!"],
         ["p", "Spawning tiles: 1 (85%), 2 (8%), 3 (5%), 4 (2%)"]);
     }
     else if (mode == 17) { // 3375
@@ -5718,9 +5718,9 @@ function loadMode(mode) {
         document.documentElement.style.setProperty("--grid-color", "#e7c4b6");
         document.documentElement.style.setProperty("--tile-color", "#ffddd0");
         document.documentElement.style.setProperty("--text-color", "#665b57");
-        displayRules("rules_text", ["h2", "Powers of 15"], ["h1", "3375"], ["p","Merges occur between a tile that's a power of 15 and a tile that's equal to or eight times that power of 15, between a tile that's double a power of 15 and a tile that's double or nine times that power of 15, or between a tile that's quadruple a power of 15 and a tile that's quadruple or 11 times that power of 15. Get to the 3375 tile to win!"],
+        displayRules("rules_text", ["h2", "Powers of 15"], ["h1", "3375"], ["p","Merges occur between a tile that's a power of 15 and a tile that's equal to or eight times that power of 15, between a tile that's double a power of 15 and a tile that's double or nine times that power of 15, or between a tile that's quadruple a power of 15 and a tile that's quadruple or eleven times that power of 15. Get to the 3375 tile to win!"],
         ["p", "Spawning tiles: 1 (85%), 2 (12%), 4 (3%)"]);
-        displayRules("gm_rules_text", ["h2", "Powers of 15"], ["h1", "3375"], ["p","Merges occur between a tile that's a power of 15 and a tile that's equal to or eight times that power of 15, between a tile that's double a power of 15 and a tile that's double or nine times that power of 15, or between a tile that's quadruple a power of 15 and a tile that's quadruple or 11 times that power of 15. Get to the 3375 tile to win!"],
+        displayRules("gm_rules_text", ["h2", "Powers of 15"], ["h1", "3375"], ["p","Merges occur between a tile that's a power of 15 and a tile that's equal to or eight times that power of 15, between a tile that's double a power of 15 and a tile that's double or nine times that power of 15, or between a tile that's quadruple a power of 15 and a tile that's quadruple or eleven times that power of 15. Get to the 3375 tile to win!"],
         ["p", "Spawning tiles: 1 (85%), 2 (12%), 4 (3%)"]);
     }
     else if (mode == 18) { // 4913
@@ -5837,9 +5837,9 @@ function loadMode(mode) {
         document.documentElement.style.setProperty("--grid-color", "#ecc7e9");
         document.documentElement.style.setProperty("--tile-color", "#eaa4e4");
         document.documentElement.style.setProperty("--text-color", "#554051");
-        displayRules("rules_text", ["h2", "Powers of 21"], ["h1", "9261"], ["p","Merges occur between any two or three tiles that add to a power of 21, triple a power of 21, sextuple a power of 21, 10 times a power of 21, or 15 times a power of 21. Get to the 9261 tile to win!"],
+        displayRules("rules_text", ["h2", "Powers of 21"], ["h1", "9261"], ["p","Merges occur between any two or three tiles that add to a power of 21, triple a power of 21, sextuple a power of 21, 10 times a power of 21, or 15 times a power of 21, all of which follow the pathway based on triangular numbers. Get to the 9261 tile to win!"],
         ["p", "Spawning tiles: 1 (95%), 3 (4%), 6 (1%)"]);
-        displayRules("gm_rules_text", ["h2", "Powers of 21"], ["h1", "9261"], ["p","Merges occur between any two or three tiles that add to a power of 21, triple a power of 21, sextuple a power of 21, 10 times a power of 21, or 15 times a power of 21. Get to the 9261 tile to win!"],
+        displayRules("gm_rules_text", ["h2", "Powers of 21"], ["h1", "9261"], ["p","Merges occur between any two or three tiles that add to a power of 21, triple a power of 21, sextuple a power of 21, 10 times a power of 21, or 15 times a power of 21, all of which follow the pathway based on triangular numbers. Get to the 9261 tile to win!"],
         ["p", "Spawning tiles: 1 (95%), 3 (4%), 6 (1%)"]);
     }
     else if (mode == 21) { // 625
@@ -5880,9 +5880,9 @@ function loadMode(mode) {
         document.documentElement.style.setProperty("--grid-color", "#789a9d");
         document.documentElement.style.setProperty("--tile-color", "#88c8ce");
         document.documentElement.style.setProperty("--text-color", "#323939");
-        displayRules("rules_text", ["h2", "Powers of 25"], ["h1", "625"], ["p","Merges occur between two equal tiles that are a power of 25, double a power of 25, quadruple a power of 25, or 8 times a power of 25, between three equal tiles that are a power of 25 or triple a power of 25, or between a tile that's 9 times a power of 25 and a tile that's 16 times a power of 25. Get to the 625 tile to win!"],
+        displayRules("rules_text", ["h2", "Powers of 25"], ["h1", "625"], ["p","Merges occur between two equal tiles that are a power of 25, double a power of 25, quadruple a power of 25, or octuple a power of 25, between three equal tiles that are a power of 25 or triple a power of 25, or between a tile that's nonuple a power of 25 and a tile that's 16 times a power of 25. Remember, make tiles that are 3 or 9 times that power of 25 before tiles that are 2, 4, or 8 times that power of 25. Get to the 625 tile to win!"],
         ["p", "Spawning tiles: 1 (90%), 2 (5%), 3 (5%)"]);
-        displayRules("gm_rules_text", ["h2", "Powers of 25"], ["h1", "625"], ["p","Merges occur between two equal tiles that are a power of 25, double a power of 25, quadruple a power of 25, or 8 times a power of 25, between three equal tiles that are a power of 25 or triple a power of 25, or between a tile that's 9 times a power of 25 and a tile that's 16 times a power of 25. Get to the 625 tile to win!"],
+        displayRules("gm_rules_text", ["h2", "Powers of 25"], ["h1", "625"], ["p","Merges occur between two equal tiles that are a power of 25, double a power of 25, quadruple a power of 25, or octuple a power of 25, between three equal tiles that are a power of 25 or triple a power of 25, or between a tile that's nonuple a power of 25 and a tile that's 16 times a power of 25. Remember, make tiles that are 3 or 9 times that power of 25 before tiles that are 2, 4, or 8 times that power of 25. Get to the 625 tile to win!"],
         ["p", "Spawning tiles: 1 (90%), 2 (5%), 3 (5%)"]);
     }
     else if (mode == 22) { // 900
@@ -5934,6 +5934,7 @@ function loadMode(mode) {
         document.documentElement.style.setProperty("--grid-color", "#a8a8a8");
         document.documentElement.style.setProperty("--tile-color", "#cbcbcb");
         document.documentElement.style.setProperty("--text-color", "#484848");
+		// Planned: Merges occur between two equal tiles that are equal to, triple, quintuple, or 15 times a power of 30, between three equal tiles that are equal to, double, quintuple, or 10 times a power of 30, or between five equal tiles that are equal to, double, triple, or sextuple a power of 30. A line of four of the same tile will not merge, unless the grid is full, which uses three-tile merges and ignores the fourth. A line of six or more of the same tile is treated as a five-tile merge but ignores the rest. Get to the 900 tile to win!
         displayRules("rules_text", ["h2", "Powers of 30"], ["h1", "900"], ["p", "Merges occur between two equal tiles that are equal to, triple, quintuple, or 15 times a power of 30, between three equal tiles that are equal to, double, quintuple, or 10 times a power of 30, or between five equal tiles that are equal to, double, triple, or sextuple a power of 30. A line of four, six, seven, etc. of the same tile will not merge. Get to the 900 tile to win!"],
         ["p", "Spawning tiles: 1 (100%)"]);
         displayRules("gm_rules_text", ["h2", "Powers of 30"], ["h1", "900"], ["p", "Merges occur between two equal tiles that are equal to, triple, quintuple, or 15 times a power of 30, between three equal tiles that are equal to, double, quintuple, or 10 times a power of 30, or between five equal tiles that are equal to, double, triple, or sextuple a power of 30. A line of four, six, seven, etc. of the same tile will not merge. Get to the 900 tile to win!"],
@@ -5976,9 +5977,9 @@ function loadMode(mode) {
         document.documentElement.style.setProperty("--grid-color", "#efe1be");
         document.documentElement.style.setProperty("--tile-color", "#ddc994");
         document.documentElement.style.setProperty("--text-color", "#33312c");
-        displayRules("rules_text", ["h2", "Powers of 3 Minus Powers of 2"], ["h1", "2059"], ["p",["@TextE","For any nonnegative integer n, merges can occur between two 2",["@Superscript","n"]," tiles, between three (3",["@Superscript","n"]," - 2",["@Superscript","n"],") tiles, or between one (3 * (3",["@Superscript","n"]," - 2",["@Superscript","n"],")) tile and one 2",["@Superscript","n"]," tile. Get to the 2059 (3",["@Superscript","7"]," - 2",["@Superscript","7"],") tile to win! (Tip: 1 is both 2",["@Superscript","0"]," and (3",["@Superscript","1"]," - 2",["@Superscript","1"],"), so two 1s and three 1s both have merges)"]],
+        displayRules("rules_text", ["h2", "Powers of 3 Minus Powers of 2"], ["h1", "2059"], ["p",["@TextE","For any nonnegative integer n, merges can occur between two 2",["@Superscript","n"]," tiles, between three (3",["@Superscript","n"]," - 2",["@Superscript","n"],") tiles, or between one (3 * (3",["@Superscript","n"]," - 2",["@Superscript","n"],")) tile and one 2",["@Superscript","n"]," tile. Get to the 2059 (3",["@Superscript","7"]," - 2",["@Superscript","7"],") tile to win! (Tip: 1 is both 2",["@Superscript","0"]," and (3",["@Superscript","1"]," - 2",["@Superscript","1"],"), so two 1s and three 1s both have merges. The first few merges from 5 are 5+5+5=15, 15+4=19, 19+19+19=57, 57+8=65, ...)."]],
         ["p", "Spawning tiles: 1 (90%), 2 (6%), 3 (4%)"]);
-        displayRules("gm_rules_text", ["h2", "Powers of 3 Minus Powers of 2"], ["h1", "2059"], ["p",["@TextE","For any nonnegative integer n, merges can occur between two 2",["@Superscript","n"]," tiles, between three (3",["@Superscript","n"]," - 2",["@Superscript","n"],") tiles, or between one (3 * (3",["@Superscript","n"]," - 2",["@Superscript","n"],")) tile and one 2",["@Superscript","n"]," tile. Get to the 2059 (3",["@Superscript","7"]," - 2",["@Superscript","7"],") tile to win! (Tip: 1 is both 2",["@Superscript","0"]," and (3",["@Superscript","1"]," - 2",["@Superscript","1"],"), so two 1s and three 1s both have merges)"]],
+        displayRules("gm_rules_text", ["h2", "Powers of 3 Minus Powers of 2"], ["h1", "2059"], ["p",["@TextE","For any nonnegative integer n, merges can occur between two 2",["@Superscript","n"]," tiles, between three (3",["@Superscript","n"]," - 2",["@Superscript","n"],") tiles, or between one (3 * (3",["@Superscript","n"]," - 2",["@Superscript","n"],")) tile and one 2",["@Superscript","n"]," tile. Get to the 2059 (3",["@Superscript","7"]," - 2",["@Superscript","7"],") tile to win! (Tip: 1 is both 2",["@Superscript","0"]," and (3",["@Superscript","1"]," - 2",["@Superscript","1"],"), so two 1s and three 1s both have merges. The first few merges from 5 are 5+5+5=15, 15+4=19, 19+19+19=57, 57+8=65, ...)."]],
         ["p", "Spawning tiles: 1 (90%), 2 (6%), 3 (4%)"]);
     }
     else if (mode == 24) { // 2315
@@ -6016,9 +6017,9 @@ function loadMode(mode) {
         document.documentElement.style.setProperty("--grid-color", "#b1c4e0");
         document.documentElement.style.setProperty("--tile-color", "#bad3fa");
         document.documentElement.style.setProperty("--text-color", "#333943");
-        displayRules("rules_text", ["h2", "Powers of 3 Plus Powers of 2"], ["h1", "2315"], ["p", ["@TextE","Two or three 1s can merge, and for any nonnegative integer n, merges can occur between three 3",["@Superscript","n"]," tiles, or between two (3",["@Superscript","n"]," + 2",["@Superscript","n"],") tiles and one 3",["@Superscript","n"]," tile. Get to the 2315 (3",["@Superscript","7"]," + 2",["@Superscript","7"],") tile to win!"]],
+        displayRules("rules_text", ["h2", "Powers of 3 Plus Powers of 2"], ["h1", "2315"], ["p", ["@TextE","Two or three 1s can merge, and for any nonnegative integer n, merges can occur between three 3",["@Superscript","n"]," tiles, or between two (3",["@Superscript","n"]," + 2",["@Superscript","n"],") tiles and one 3",["@Superscript","n"]," tile. Get to the 2315 (3",["@Superscript","7"]," + 2",["@Superscript","7"],") tile to win! (Tip: The first few merges from 5 are 5+5+3=13, 13+13+9=35, 35+35+27=97, ...)."]],
         ["p", "Spawning tiles: 1 (90%), 2 (6%), 3 (4%)"]);
-        displayRules("gm_rules_text", ["h2", "Powers of 3 Plus Powers of 2"], ["h1", "2315"], ["p", ["@TextE","Two or three 1s can merge, and for any nonnegative integer n, merges can occur between three 3",["@Superscript","n"]," tiles, or between two (3",["@Superscript","n"]," + 2",["@Superscript","n"],") tiles and one 3",["@Superscript","n"]," tile. Get to the 2315 (3",["@Superscript","7"]," + 2",["@Superscript","7"],") tile to win!"]],
+        displayRules("gm_rules_text", ["h2", "Powers of 3 Plus Powers of 2"], ["h1", "2315"], ["p", ["@TextE","Two or three 1s can merge, and for any nonnegative integer n, merges can occur between three 3",["@Superscript","n"]," tiles, or between two (3",["@Superscript","n"]," + 2",["@Superscript","n"],") tiles and one 3",["@Superscript","n"]," tile. Get to the 2315 (3",["@Superscript","7"]," + 2",["@Superscript","7"],") tile to win! (Tip: The first few merges from 5 are 5+5+3=13, 13+13+9=35, 35+35+27=97, ...)."]],
         ["p", "Spawning tiles: 1 (90%), 2 (6%), 3 (4%)"]);
     }
     else if (mode == 25) { // XXXX
@@ -6045,9 +6046,9 @@ function loadMode(mode) {
         document.documentElement.style.setProperty("--grid-color", "#e1c3c3");
         document.documentElement.style.setProperty("--tile-color", "#c6c3e1");
         document.documentElement.style.setProperty("--text-color", "#41433f");
-        displayRules("rules_text", ["h2", "Powers of n"], ["h1", "XXXX"], ["p", "Any number of 1s can merge, but upon doing so, they merge into a tile that must merge with the same number of itself on each higher tier: for example, merging two 1s makes a 2, then it takes two 2s to merge, then two of those 4s, and so on, but merging three 1s makes a 3, then it takes three 3s to merge, then three of those 9s, and so on. To win, you must make at least four different tiles that have at least four digits. Sure, you could just win with 1024, 2048, 4096, and 8192, but where's the fun in that? How many different tiles can you discover?"],
+        displayRules("rules_text", ["h2", "Powers of n"], ["h1", "XXXX"], ["p", "Any number of 1s can merge, but upon doing so, they merge into a tile that must merge with the same number of itself on each higher tier: for example, merging two 1s makes a 2, then it takes two 2s to merge, then two of those 4s, and so on, but merging three 1s makes a 3, then it takes three 3s to merge, then three of those 9s, and so on. To win, you must make at least four different tiles that have at least four digits. Sure, you could just win with 1024, 2048, 4096, and 8192, but where's the fun in that? You're much faster to win with 1024, 2048, 2187, and 4096. How many different tiles can you discover?"],
         ["p", "Spawning tiles: 1 (100%)"]);
-        displayRules("gm_rules_text", ["h2", "Powers of n"], ["h1", "XXXX"], ["p", "Any number of 1s can merge, but upon doing so, they merge into a tile that must merge with the same number of itself on each higher tier: for example, merging two 1s makes a 2, then it takes two 2s to merge, then two of those 4s, and so on, but merging three 1s makes a 3, then it takes three 3s to merge, then three of those 9s, and so on. To win, you must make at least four different tiles that have at least four digits. Sure, you could just win with 1024, 2048, 4096, and 8192, but where's the fun in that? How many different tiles can you discover?"],
+        displayRules("gm_rules_text", ["h2", "Powers of n"], ["h1", "XXXX"], ["p", "Any number of 1s can merge, but upon doing so, they merge into a tile that must merge with the same number of itself on each higher tier: for example, merging two 1s makes a 2, then it takes two 2s to merge, then two of those 4s, and so on, but merging three 1s makes a 3, then it takes three 3s to merge, then three of those 9s, and so on. To win, you must make at least four different tiles that have at least four digits. Sure, you could just win with 1024, 2048, 4096, and 8192, but where's the fun in that? You're much faster to win with 1024, 2048, 2187, and 4096. How many different tiles can you discover?"],
         ["p", "Spawning tiles: 1 (100%)"]);
         statBoxes = [["Score", "@Score"], ["Discovered Winning Tiles", ["@DiscWinning", "arr_length"], false, ...[,,,], ["@GVar 1", "=", 0], [0, "@edit_gvar", 1, 1], true], ["Discovered Winning Tiles", ["@DiscWinning"], true, false, "TileArray", "Self", ["@GVar 1", "=", 1], [0, "@edit_gvar", 1, 0], true]];
         document.getElementById("mode_vars_line").style.setProperty("display", "block");
@@ -6079,9 +6080,9 @@ function loadMode(mode) {
         document.documentElement.style.setProperty("--grid-color", "#645f71");
         document.documentElement.style.setProperty("--tile-color", "#9f94b4");
         document.documentElement.style.setProperty("--text-color", "#2d2b31");
-        displayRules("rules_text", ["h2", "Fibonacci Sequence"], ["h1", "2584"], ["p", "Merges occur between two 1s or between any tile above 1 and the tile before it. Get to the 2584 tile to win!"],
+        displayRules("rules_text", ["h2", "Fibonacci Sequence"], ["h1", "2584"], ["p", "Merges occur between two 1s or between any tile above 1 and the tile before it. (Tip: Let F(n) be the nth Fibonacci number, with F(0) = 0 and F(1) = 1, and F(n+1) = F(n) + F(n-1). 1 is both F(1) and F(2), so 1+1 is a valid merge. The first few Fibonacci numbers are 0, 1, 1, 2, 3, 5, 8, 13, 21, ...) Get to the 2584 tile to win!"],
         ["p", "Spawning tiles: 1 (85%), 2 (10%), 3 (5%)"]);
-        displayRules("gm_rules_text", ["h2", "Fibonacci Sequence"], ["h1", "2584"], ["p", "Merges occur between two 1s or between any tile above 1 and the tile before it. Get to the 2584 tile to win!"],
+        displayRules("gm_rules_text", ["h2", "Fibonacci Sequence"], ["h1", "2584"], ["p", "Merges occur between two 1s or between any tile above 1 and the tile before it. (Tip: Let F(n) be the nth Fibonacci number, with F(0) = 0 and F(1) = 1, and F(n+1) = F(n) + F(n-1). 1 is both F(1) and F(2), so 1+1 is a valid merge. The first few Fibonacci numbers are 0, 1, 1, 2, 3, 5, 8, 13, 21, ...) Get to the 2584 tile to win!"],
         ["p", "Spawning tiles: 1 (85%), 2 (10%), 3 (5%)"]);
         if (modifiers[13] != "None") {
             document.getElementById("mode_vars_line").style.setProperty("display", "block");
@@ -6126,9 +6127,9 @@ function loadMode(mode) {
         document.documentElement.style.setProperty("--grid-color", "#dbc2ad");
         document.documentElement.style.setProperty("--tile-color", "#f9e1ce");
         document.documentElement.style.setProperty("--text-color", "#796c64");
-        displayRules("rules_text", ["h2", "Narayana's Cows Sequence"], ["h1", "2745"], ["p", "Merges occur between two 1s, between a 1 and a 2, or between any tile above 2 and the tile two tiles before it. Get to the 2745 tile to win!"],
+        displayRules("rules_text", ["h2", "Narayana's Cows Sequence"], ["h1", "2745"], ["p", "Merges occur between two 1s, between a 1 and a 2, or between any tile above 2 and the tile two tiles before it. (Tip: Let a(n) be the nth number in the Narayana's cows sequence, with a(0) = a(1) = a(2) = 1, and a(n+1) = a(n) + a(n-2). The first few numbers in the Narayana's cows sequence are 1, 1, 1, 2, 3, 4, 6, 9, 13, 19, ...) Get to the 2745 tile to win!"],
         ["p", "Spawning tiles: 1 (85%), 2 (10%), 3 (5%)"]);
-        displayRules("gm_rules_text", ["h2", "Narayana's Cows Sequence"], ["h1", "2745"], ["p", "Merges occur between two 1s, between a 1 and a 2, or between any tile above 2 and the tile two tiles before it. Get to the 2745 tile to win!"],
+        displayRules("gm_rules_text", ["h2", "Narayana's Cows Sequence"], ["h1", "2745"], ["p", "Merges occur between two 1s, between a 1 and a 2, or between any tile above 2 and the tile two tiles before it. (Tip: Let a(n) be the nth number in the Narayana's cows sequence, with a(0) = a(1) = a(2) = 1, and a(n+1) = a(n) + a(n-2). The first few numbers in the Narayana's cows sequence are 1, 1, 1, 2, 3, 4, 6, 9, 13, 19, ...) Get to the 2745 tile to win!"],
         ["p", "Spawning tiles: 1 (85%), 2 (10%), 3 (5%)"]);
     }
     else if (mode == 28) { // 1705
@@ -6157,9 +6158,9 @@ function loadMode(mode) {
         document.documentElement.style.setProperty("--grid-color", "#7c8f79");
         document.documentElement.style.setProperty("--tile-color", "#a6c09f");
         document.documentElement.style.setProperty("--text-color", "#2b352a");
-        displayRules("rules_text", ["h2", "Tribonacci Sequence"], ["h1", "1705"], ["p", "Merges occur between two 1s, between two 1s and a 2, or between any tile above 2, the tile before it, and the tile two before it. Get to the 1705 tile to win!"],
+        displayRules("rules_text", ["h2", "Tribonacci Sequence"], ["h1", "1705"], ["p", "Merges occur between two 1s, between two 1s and a 2, or between any tile above 2, the tile before it, and the tile two before it. (Tip: Let a(n) be the nth tribonacci number, with a(0) = a(1) = 0 and a(2) = 1, and a(n+1) = a(n) + a(n-1) + a(n-2) for n from 3. The first few tribonacci numbers are 0, 0, 1, 1, 2, 4, 7, 13, 24, ... Note that 4 is formed by merging 1+1+2, not 2+2.) Get to the 1705 tile to win!"],
         ["p", "Spawning tiles: 1 (85%), 2 (12%), 4 (3%)"]);
-        displayRules("gm_rules_text", ["h2", "Tribonacci Sequence"], ["h1", "1705"], ["p", "Merges occur between two 1s, between two 1s and a 2, or between any tile above 2, the tile before it, and the tile two before it. Get to the 1705 tile to win!"],
+        displayRules("gm_rules_text", ["h2", "Tribonacci Sequence"], ["h1", "1705"], ["p", "Merges occur between two 1s, between two 1s and a 2, or between any tile above 2, the tile before it, and the tile two before it. (Tip: Let a(n) be the nth tribonacci number, with a(0) = a(1) = 0 and a(2) = 1, and a(n+1) = a(n) + a(n-1) + a(n-2) for n from 3. The first few tribonacci numbers are 0, 0, 1, 1, 2, 4, 7, 13, 24, ... Note that 4 is formed by merging 1+1+2, not 2+2.) Get to the 1705 tile to win!"],
         ["p", "Spawning tiles: 1 (85%), 2 (12%), 4 (3%)"]);
     }
     else if (mode == 29) { // 1535, 1536, 1537
@@ -6447,9 +6448,9 @@ function loadMode(mode) {
         document.documentElement.style.setProperty("--grid-color", "#bec59d");
         document.documentElement.style.setProperty("--tile-color", "#e0eab7");
         document.documentElement.style.setProperty("--text-color", "#3e3f36");
-        displayRules("rules_text", ["h1", "Harder 3125"], ["p","Merges occur between three equal tiles that are a power of five, or between two equal tiles that are a power of five and one tile that's triple that power of 5. Get to the 3125 tile to win!"],
+        displayRules("rules_text", ["h1", "Harder 3125"], ["p","Merges occur between three equal tiles that are a power of five, or between two equal tiles that are a power of five and one tile that's triple that power of 5. Remember, 3+3+1 is not a valid merge, as 7 is not a valid tile in this mode. Get to the 3125 tile to win!"],
         ["p", "Spawning tiles: 1 (90%), 3 (10%)"]);
-        displayRules("gm_rules_text", ["h1", "Harder 3125"], ["p","3125 is a little too easy, so here's a mode that makes it more challenging. Merges occur between three equal tiles that are a power of five, or between two equal tiles that are a power of five and one tile that's triple that power of 5. Get to the 3125 tile to win!"],
+        displayRules("gm_rules_text", ["h1", "Harder 3125"], ["p","3125 is way too easy, so here's a mode that makes it much more challenging. Merges occur between three equal tiles that are a power of five, or between two equal tiles that are a power of five and one tile that's triple that power of 5. Remember, 3+3+1 is not a valid merge, as 7 is not a valid tile in this mode. Get to the 3125 tile to win!"],
         ["p", "Spawning tiles: 1 (90%), 3 (10%)"]);
     }
     else if (mode == 34) { // Partial Absorb 243 (note: these next three modes were overhauled in v2.2)
@@ -6618,6 +6619,7 @@ function loadMode(mode) {
     }
     else if (mode == 38) { // 180
         // width = 7; height = 7;
+		// Also planned to let tiles to merge when the grid is full: note that a line of four, six, etc. of the same tile will not merge (unless if the grid is full, which prioritizes the longest valid merge length while ignoring the rest)!
         mode_vars = [0, 0, 6, [[5n, 1n], [3n, 1n], [2n, 1n]], false, [[true, 3, [false, true, false], [true, true, true], [false, true, false]], [false, 7, [false, false, false, false, false, false, false], [false, false, false, false, false, false, false], [false, false, false, false, false, false, false], [false, false, false, true, true, true, true], [false, false, false, false, false, false, false], [false, false, false, false, false, false, false], [false, false, false, false, false, false, false]], [true, 3, [false, false, true], [false, true, false], [false, false, true]]], -0.5, 7, false]; // For the first entry, 0 means merges are between 2, 3 or 5 of the same tile, 1 allows any prime merge length, 2 allows any merge length, and 3 allows particular chosen merge lengths. The second entry controls the random goals, and the third entry is the minimum of the first random goal. The fourth entry is the array of allowed merge lengths (as [numerator, denominator]) when the first entry is 3. The fifth entry is whether merges can happen in the middle of movement in Arrangement 180, the sixth entry is the list of merge arrangement grids in Arrangement 180, the seventh entry is the selected preset in Arrangement 180, the eighth entry stores the default grid size for Arrangement 180 presets so that all the stuff about presets can be in one place in the code. The ninth entry is the toggle for Partial Absorb.
         start_game_vars = [2n, 0, false, 0, 0, 6, 0, [], [], []] // The first entry is the current random goal, the second entry is the amount of random goals met so far, the third entry is whether a random goal has been met this turn, the fourth and fifth entries are used to randomize the random goals, and the sixth entry is the minimum of the first random goal. Seventh entry controls the display of Discovered Tiles. Eighth entry is the list of merges for Arrangement 180, the ninth entry is Arrangement 180's discovered tiles (since the normal discovered tiles double-counts)
         TileNumAmount = 3;
@@ -7022,9 +7024,9 @@ function loadMode(mode) {
         document.documentElement.style.setProperty("--grid-color", "#a58d46");
         document.documentElement.style.setProperty("--tile-color", "#c8b270");
         document.documentElement.style.setProperty("--text-color", "#403f3a");
-        displayRules("rules_text", ["h2", "Pell Numbers"], ["h1", "2378"], ["p", "Merges occur between two 1s or between two of the same tile and one of the tile before that. Get to the 2378 tile to win!"],
+        displayRules("rules_text", ["h2", "Pell Numbers"], ["h1", "2378"], ["p", "Merges occur between two 1s or between two of the same tile and one of the tile before that. (Tip: Let a(n) be the nth Pell number, with a(0) = 0 and a(1) = 1, and a(n+1) = 2*a(n) + a(n-1) for n from 2. The first few Pell numbers are 0, 1, 2, 5, 12, 29, 70, ...) Get to the 2378 tile to win!"],
         ["p", "Spawning tiles: 1 (85%), 2 (12%), 5 (3%)"]);
-        displayRules("gm_rules_text", ["h2", "Pell Numbers"], ["h1", "2378"], ["p", "Merges occur between two 1s or between two of the same tile and one of the tile before that. Get to the 2378 tile to win!"],
+        displayRules("gm_rules_text", ["h2", "Pell Numbers"], ["h1", "2378"], ["p", "Merges occur between two 1s or between two of the same tile and one of the tile before that. (Tip: Let a(n) be the nth Pell number, with a(0) = 0 and a(1) = 1, and a(n+1) = 2*a(n) + a(n-1) for n from 2. The first few Pell numbers are 0, 1, 2, 5, 12, 29, 70, ...) Get to the 2378 tile to win!"],
         ["p", "Spawning tiles: 1 (85%), 2 (12%), 5 (3%)"]);
     }
     else if (mode == 47) { // 1093 1094
@@ -7089,9 +7091,9 @@ function loadMode(mode) {
         document.documentElement.style.setProperty("--grid-color", "#82dbdb");
         document.documentElement.style.setProperty("--tile-color", "#539a9a");
         document.documentElement.style.setProperty("--text-color", "#1a2727");
-        displayRules("rules_text", ["h2", "Primorials"], ["h1", "2310"], ["p", "Tiles that are not a multiple of any square number merge with themselves. A tile that's a multiple of 4 merges with a tile that's half of it. A tile that's a multiple of 9 merges with a tile that's two-thirds of it. A tile that's a multiple of 25 merges with a tile that's two-fifths of it. A tile that's a multiple of 49 merges with two tiles that are each two-sevenths of it. This continues for each squared prime: a tile that's a multiple of a squared prime merges with one or two tiles that get it to either be the next primorial or a multiple of the next squared prime. Three-tile merges cannot include tiles that are primorials. Get to the 2310 tile to win!"],
+        displayRules("rules_text", ["h2", "Primorials"], ["h1", "2310"], ["p", "Tiles that are not a multiple of any square number merge with themselves. A tile that's a multiple of 4 merges with a tile that's half of it. A tile that's a multiple of 9 merges with a tile that's two-thirds of it. A tile that's a multiple of 25 merges with a tile that's two-fifths of it. A tile that's a multiple of 49 merges with two tiles that are each two-sevenths of it. This continues for each squared prime: a tile that's a multiple of a squared prime merges with one or two tiles that get it to either be the next primorial or a multiple of the next squared prime. Three-tile merges cannot include tiles that are primorials, so you cannot make a 2310 by merging a 1470 tile with a 630 tile and a 210 tile. You have to merge a 1470 tile with two 420 tiles instead. Get to the 2310 tile to win!"],
         ["p", "Spawning tiles: 1 (85%), 2 (12%), 4 (3%)"]);
-        displayRules("gm_rules_text", ["h2", "Primorials"], ["h1", "2310"], ["p", "Tiles that are not a multiple of any square number merge with themselves. A tile that's a multiple of 4 merges with a tile that's half of it. A tile that's a multiple of 9 merges with a tile that's two-thirds of it. A tile that's a multiple of 25 merges with a tile that's two-fifths of it. A tile that's a multiple of 49 merges with two tiles that are each two-sevenths of it. This continues for each squared prime: a tile that's a multiple of a squared prime merges with one or two tiles that get it to either be the next primorial or a multiple of the next squared prime. Three-tile merges cannot include tiles that are primorials. Get to the 2310 tile to win!"],
+        displayRules("gm_rules_text", ["h2", "Primorials"], ["h1", "2310"], ["p", "Tiles that are not a multiple of any square number merge with themselves. A tile that's a multiple of 4 merges with a tile that's half of it. A tile that's a multiple of 9 merges with a tile that's two-thirds of it. A tile that's a multiple of 25 merges with a tile that's two-fifths of it. A tile that's a multiple of 49 merges with two tiles that are each two-sevenths of it. This continues for each squared prime: a tile that's a multiple of a squared prime merges with one or two tiles that get it to either be the next primorial or a multiple of the next squared prime. Three-tile merges cannot include tiles that are primorials, so you cannot make a 2310 by merging a 1470 tile with a 630 tile and a 210 tile. You have to merge a 1470 tile with two 420 tiles instead. Get to the 2310 tile to win!"],
         ["p", "Spawning tiles: 1 (85%), 2 (12%), 4 (3%)"]);
     }
     else if (mode == 49) { // 378
@@ -7280,9 +7282,9 @@ function loadMode(mode) {
         document.documentElement.style.setProperty("--grid-color", "#7b905e");
         document.documentElement.style.setProperty("--tile-color", "#aac486");
         document.documentElement.style.setProperty("--text-color", "#373a30");
-        displayRules("rules_text", ["h2", "Fibonacci Sequence Minus 1"], ["h1", "2583"], ["p", "Merges occur between two 1s or between any tile above 1, the tile before that tile, and a 1. Get to the 2583 tile to win!"],
+        displayRules("rules_text", ["h2", "Fibonacci Sequence Minus 1"], ["h1", "2583"], ["p", "Merges occur between two 1s or between any tile above 1, the tile before that tile, and a 1. (Note: a 4 is made by merging a 2 and two 1s, not two 2s.) Get to the 2583 tile to win!"],
         ["p", "Spawning tiles: 1 (93%), 2 (5%), 4 (2%)"]);
-        displayRules("gm_rules_text", ["h2", "Fibonacci Sequence Minus 1"], ["h1", "2583"], ["p", "Merges occur between two 1s or between any tile above 1, the tile before that tile, and a 1. Get to the 2583 tile to win!"],
+        displayRules("gm_rules_text", ["h2", "Fibonacci Sequence Minus 1"], ["h1", "2583"], ["p", "Merges occur between two 1s or between any tile above 1, the tile before that tile, and a 1. (Note: a 4 is made by merging a 2 and two 1s, not two 2s.) Get to the 2583 tile to win!"],
         ["p", "Spawning tiles: 1 (93%), 2 (5%), 4 (2%)"]);
     }
     else if (mode == 53) { // 2131
@@ -7319,9 +7321,9 @@ function loadMode(mode) {
         document.documentElement.style.setProperty("--grid-color", "#843b29");
         document.documentElement.style.setProperty("--tile-color", "#ba715e");
         document.documentElement.style.setProperty("--text-color", "#2c1610");
-        displayRules("rules_text", ["h1", "2131"], ["p", "Merges occur between two equal tiles that are an odd number, or between an even number tile and the tile two before it. Get to the 2131 tile to win!"],
+        displayRules("rules_text", ["h1", "2131"], ["p", "Two 1s can merge into a 2, and a 2 and a 1 can merge into a 3, respectively. Merges occur between two equal tiles that are an odd number, or between an even number tile and the tile two before it (technically, let a(n) = 4*a(n-1) - a(n-2), with a(0) = 1, a(1) = 1. For tiles from 3, a tile 2*a(n) merges with a tile 2*a(n-1) + 2*a(n-2)). Get to the 2131 tile to win!"],
         ["p", "Spawning tiles: 1 (85%), 2 (10%), 3 (5%)"]);
-        displayRules("gm_rules_text", ["h1", "2131"], ["p", "Merges occur between two equal tiles that are an odd number, or between an even number tile and the tile two before it. Get to the 2131 tile to win!"],
+        displayRules("gm_rules_text", ["h1", "2131"], ["p", "Two 1s can merge into a 2, and a 2 and a 1 can merge into a 3, respectively. Merges occur between two equal tiles that are an odd number, or between an even number tile and the tile two before it (technically, let a(n) = 4*a(n-1) - a(n-2), with a(0) = 1, a(1) = 1. For tiles from 3, a tile 2*a(n) merges with a tile 2*a(n-1) + 2*a(n-2)). Get to the 2131 tile to win!"],
         ["p", "Spawning tiles: 1 (85%), 2 (10%), 3 (5%)"]);
     }
     else if (mode == 54) { // 3888
@@ -7675,9 +7677,9 @@ function loadMode(mode) {
         document.documentElement.style.setProperty("--grid-color", "#dfb09d");
         document.documentElement.style.setProperty("--tile-color", "#f1cec0");
         document.documentElement.style.setProperty("--text-color", "#665b57");
-        displayRules("rules_text", ["h1", "Harder 3375"], ["p","Merges occur between a power of 15 and two equal tiles that are equal to, three times, or seven times that power of 15. Get to the 3375 tile to win!"],
+        displayRules("rules_text", ["h1", "Harder 3375"], ["p","Merges occur between a power of 15 and two equal tiles that are equal to, three times, or seven times that power of 15, based on the 2047-style merges. Get to the 3375 tile to win!"],
         ["p", "Spawning tiles: 1 (92%), 3 (8%)"]);
-        displayRules("gm_rules_text", ["h1", "Harder 3375"], ["p","Merges occur between a power of 15 and two equal tiles that are equal to, three times, or seven times that power of 15. Get to the 3375 tile to win!"],
+        displayRules("gm_rules_text", ["h1", "Harder 3375"], ["p","Merges occur between a power of 15 and two equal tiles that are equal to, three times, or seven times that power of 15, based on the 2047-style merges. Get to the 3375 tile to win!"],
         ["p", "Spawning tiles: 1 (92%), 3 (8%)"]);
     }
     else if (mode == 64) { // Interleaved 3125
@@ -7732,9 +7734,9 @@ function loadMode(mode) {
         document.documentElement.style.setProperty("--grid-color", "#cadb80");
         document.documentElement.style.setProperty("--tile-color", "#9faf58");
         document.documentElement.style.setProperty("--text-color", "#505246");
-        displayRules("rules_text", ["h1", "Interleaved 3125"], ["p","Two 1s can merge into a 2, and a 2 and a 1 can merge into a 3. Merges occur between a tile that's double a power of five and a tile that's triple that power of five, between a tile that's five times a power of five and a tile that's double, triple, or five times that power of five, or between a tile that's seven times a power of five and a tile that's eight times that power of five. Get to the 3125 tile to win!"],
+        displayRules("rules_text", ["h1", "Interleaved 3125"], ["p","Two 1s can merge into a 2, and a 2 and a 1 can merge into a 3. Merges occur between a tile that's double a power of five and a tile that's triple that power of five, between a tile that's five times a power of five and a tile that's double, triple, or five times that power of five, or between a tile that's seven times a power of five and a tile that's eight times that power of five. Remember, make a '10' tile by merging two '5' tiles before making either a '7' or an '8' tile by merging a '5' tile with either a '2' or a '3' tile. Get to the 3125 tile to win!"],
         ["p", "Spawning tiles: 1 (85%), 2 (10%), 3 (5%)"]);
-        displayRules("gm_rules_text", ["h1", "Interleaved 3125"], ["p","Two 1s can merge into a 2, and a 2 and a 1 can merge into a 3. Merges occur between a tile that's double a power of five and a tile that's triple that power of five, between a tile that's five times a power of five and a tile that's double, triple, or five times that power of five, or between a tile that's seven times a power of five and a tile that's eight times that power of five. Get to the 3125 tile to win!"],
+        displayRules("gm_rules_text", ["h1", "Interleaved 3125"], ["p","Two 1s can merge into a 2, and a 2 and a 1 can merge into a 3. Merges occur between a tile that's double a power of five and a tile that's triple that power of five, between a tile that's five times a power of five and a tile that's double, triple, or five times that power of five, or between a tile that's seven times a power of five and a tile that's eight times that power of five. Remember, make a '10' tile by merging two '5' tiles before making either a '7' or an '8' tile by merging a '5' tile with either a '2' or a '3' tile. Get to the 3125 tile to win!"],
         ["p", "Spawning tiles: 1 (85%), 2 (10%), 3 (5%)"]);
     }
     else if (mode == 65) { // Interleaved 3375
@@ -7817,9 +7819,9 @@ function loadMode(mode) {
         document.documentElement.style.setProperty("--grid-color", "#be86e0");
         document.documentElement.style.setProperty("--tile-color", "#a35dce");
         document.documentElement.style.setProperty("--text-color", "#372e3a");
-        displayRules("rules_text", ["h1", "Interleaved 5832"], ["p","Two 1s can merge into a 2, a 2 and a 1 can merge into a 3, two 3s can merge into a 6, and a 6 and a 3 can merge into a 9. For tiles 9 and above, if that tile is a power of 18 or triple a power of eighteen, it merges with a tile that's half of itself. Otherwise, it merges with a tile equal to itself. Get to the 5832 tile to win!"],
+        displayRules("rules_text", ["h1", "Interleaved 5832"], ["p","Two 1s can merge into a 2, a 2 and a 1 can merge into a 3, two 3s can merge into a 6, and a 6 and a 3 can merge into a 9. For tiles 9 and above, if that tile is a power of 18 or triple a power of eighteen, it merges with a tile that's half of itself. Otherwise, it merges with a tile equal to itself. The first few merges work the same way as in 2187 mode, except tiles start to differ from 324, where a 162 tile merges with another 162 tile instead of an 81 tile. Get to the 5832 tile to win!"],
         ["p", "Spawning tiles: 1 (85%), 2 (9%), 3 (6%)"]);
-        displayRules("gm_rules_text", ["h1", "Interleaved 5832"], ["p","Two 1s can merge into a 2, a 2 and a 1 can merge into a 3, two 3s can merge into a 6, and a 6 and a 3 can merge into a 9. For tiles 9 and above, if that tile is a power of 18 or triple a power of eighteen, it merges with a tile that's half of itself. Otherwise, it merges with a tile equal to itself. Get to the 5832 tile to win!"],
+        displayRules("gm_rules_text", ["h1", "Interleaved 5832"], ["p","Two 1s can merge into a 2, a 2 and a 1 can merge into a 3, two 3s can merge into a 6, and a 6 and a 3 can merge into a 9. For tiles 9 and above, if that tile is a power of 18 or triple a power of eighteen, it merges with a tile that's half of itself. Otherwise, it merges with a tile equal to itself. The first few merges work the same way as in 2187 mode, except tiles start to differ from 324, where a 162 tile merges with another 162 tile instead of an 81 tile. Get to the 5832 tile to win!"],
         ["p", "Spawning tiles: 1 (85%), 2 (9%), 3 (6%)"]);
     }
     else if (mode == 67) { // 1762
@@ -8293,9 +8295,9 @@ function loadMode(mode) {
         document.documentElement.style.setProperty("--grid-color", "#c7b6a7");
         document.documentElement.style.setProperty("--tile-color", "#f7d6b2");
         document.documentElement.style.setProperty("--text-color", "#55463b");
-        displayRules("rules_text", ["h1", "Easier 2401"], ["p","Merges occur between two equal tiles that are either a power of seven or double a power of seven, or between a tile that's a power of seven, a tile that's double that power of seven, and a tile that's quadruple that power of 7. Get to the 2401 tile to win!"],
+        displayRules("rules_text", ["h1", "Easier 2401"], ["p","Merges occur between two equal tiles that are either a power of seven or double a power of seven, or between a tile that's a power of seven, a tile that's double that power of seven, and a tile that's quadruple that power of seven. Get to the 2401 tile to win!"],
         ["p", "Spawning tiles: 1 (85%), 2 (12%), 4 (3%)"]);
-        displayRules("gm_rules_text", ["h1", "Easier 2401"], ["p","Merges occur between two equal tiles that are either a power of seven or double a power of seven, or between a tile that's a power of seven, a tile that's double that power of seven, and a tile that's quadruple that power of 7. Get to the 2401 tile to win!"],
+        displayRules("gm_rules_text", ["h1", "Easier 2401"], ["p","2401 is way too difficult, so here's a mode that makes it much more playable. Merges occur between two equal tiles that are either a power of seven or double a power of seven, or between a tile that's a power of seven, a tile that's double that power of seven, and a tile that's quadruple that power of seven. Get to the 2401 tile to win!"],
         ["p", "Spawning tiles: 1 (85%), 2 (12%), 4 (3%)"]);
     }
     else if (mode == 77) { // 1668
@@ -11341,9 +11343,9 @@ function gmDisplayVars() {
             document.getElementById("mod27_coprimeMergeLength_text").style.setProperty("color", "#5e1717");
         }
         displayRules("rules_text", ["h2", "Modular Supermerging"], ["h1", "mod " + goal], ["p", rulesDescription],
-        ["p", "The default spawning tile is " + prime(spawningPrime) + ". The spawning tile is the smallest prime number that is not divisible by the current modulus and no less than the one that's not divisible by the initial modulus (for instance, if your current modulus is 45, and the initial modulus is set to 18, then the spawning tile in that modulus is 7), to prevent softlocks."]);
+        ["p", "The default spawning tile is " + prime(spawningPrime) + ". To prevent potential softlocks in certain modular combinations, the spawning tile is the smallest prime number that is not divisible by the current modulus and no less than the one that's not divisible by the initial modulus (for instance, if your current modulus is 45, and the initial modulus is set to 18, then the spawning tile in that modulus is 7)."]);
         displayRules("gm_rules_text", ["h2", "Modular Supermerging"], ["h1", "mod " + goal], ["p", rulesDescription],
-        ["p", "The default spawning tile is " + prime(spawningPrime) + ". The spawning tile is the smallest prime number that is not divisible by the current modulus and no less than the one that's not divisible by the initial modulus (for instance, if your current modulus is 45, and the initial modulus is set to 18, then the spawning tile in that modulus is 7), to prevent softlocks."]);
+        ["p", "The default spawning tile is " + prime(spawningPrime) + ". To prevent potential softlocks in certain modular combinations, the spawning tile is the smallest prime number that is not divisible by the current modulus and no less than the one that's not divisible by the initial modulus (for instance, if your current modulus is 45, and the initial modulus is set to 18, then the spawning tile in that modulus is 7)."]);
     }
     else if (gamemode == 45) { // Directional Merges
         // Not only does this mode have different difficulties, it also behaves differently when the movement directions are altered by the grid modifiers
@@ -13909,9 +13911,9 @@ function gmDisplayVars() {
             document.documentElement.style.setProperty("--background-color", "linear-gradient(#4e4b6b,#cdcaec)");
             document.getElementById("PA377_PA233_text").innerHTML = "The first merge is between two 1s.";
             document.getElementById("PA377_PA233_text").style.setProperty("color", "#e1715d");
-            displayRules("rules_text", ["h1", "Partial Absorb 233"], ["p", "Two 1s will merge into a single 2. Three equal tiles larger than 1 will merge into one of the next tile and one of the previous tile. Get to the 233 tile to win!"],
+            displayRules("rules_text", ["h1", "Partial Absorb 233"], ["p", "Two 1s will merge into a single 2. Three equal tiles larger than 1 will merge into one of the next tile and one of the previous tile. The first few merges are: 2+2+2=5+1, 5+5+5=13+2, 13+13+13=34+5, ... Get to the 233 tile to win!"],
             ["p", "Spawning tiles: 1 (90%), 2 (10%)"]);
-            displayRules("gm_rules_text", ["h1", "Partial Absorb 233"], ["p", "Two 1s will merge into a single 2. Three equal tiles larger than 1 will merge into one of the next tile and one of the previous tile. Get to the 233 tile to win!"],
+            displayRules("gm_rules_text", ["h1", "Partial Absorb 233"], ["p", "Two 1s will merge into a single 2. Three equal tiles larger than 1 will merge into one of the next tile and one of the previous tile. The first few merges are: 2+2+2=5+1, 5+5+5=13+2, 13+13+13=34+5, ... Get to the 233 tile to win!"],
             ["p", "Spawning tiles: 1 (90%), 2 (10%)"]);
         }
         else {
@@ -13919,9 +13921,9 @@ function gmDisplayVars() {
             document.documentElement.style.setProperty("--background-color", "linear-gradient(#cdcaec,#4e4b6b)");
             document.getElementById("PA377_PA233_text").innerHTML = "The first merge is between three 1s.";
             document.getElementById("PA377_PA233_text").style.setProperty("color", "#e1d05d");
-            displayRules("rules_text", ["h1", "Partial Absorb 377"], ["p", "Merges occur between three equal tiles. Three 1s will merge into a single 3, but three larger tiles will merge into one of the next tile and one of the previous tile. Get to the 377 tile to win!"],
+            displayRules("rules_text", ["h1", "Partial Absorb 377"], ["p", "Merges occur between three equal tiles. Three 1s will merge into a single 3, but three larger tiles will merge into one of the next tile and one of the previous tile. The first few merges are: 3+3+3=8+1, 8+8+8=21+3, 21+21+21=55+8, ... Get to the 377 tile to win!"],
             ["p", "Spawning tiles: 1 (95%), 3 (5%)"]);
-            displayRules("gm_rules_text", ["h1", "Partial Absorb 377"], ["p", "Merges occur between three equal tiles. Three 1s will merge into a single 3, but three larger tiles will merge into one of the next tile and one of the previous tile. Get to the 377 tile to win!"],
+            displayRules("gm_rules_text", ["h1", "Partial Absorb 377"], ["p", "Merges occur between three equal tiles. Three 1s will merge into a single 3, but three larger tiles will merge into one of the next tile and one of the previous tile. The first few merges are: 3+3+3=8+1, 8+8+8=21+3, 21+21+21=55+8, ... Get to the 377 tile to win!"],
             ["p", "Spawning tiles: 1 (95%), 3 (5%)"]);
         }
     }
@@ -16227,7 +16229,7 @@ function gmDisplayVars() {
         let randomGoalsGVStart = -1;
         if (gamemode == 96.50118) { // HICEM
             title = "HICEM";
-            modeRulesDescription = "Three tiles can merge if one of the tiles is the greatest common divisor of the other two. When three tiles merge, the score gained from the merge is only the smaller value out of the three tiles (rather than the value of the new tile). This mode has no win condition, so just try to get as high of a score as you can!";
+            modeRulesDescription = "Three tiles can merge if one of the tiles is the greatest common divisor of the other two. When three tiles merge, the score gained from the merge is only the smaller value out of the three tiles (rather than the value of the new tile). This mode has no win condition, so just try to get as high of a score as you can! Remember, this mode is not suitable with multiple merges, due to the potential of having astronomically long chains of merge that may escalate the technical resource usage while behaving like a freeplay with the exponential growth.";
             modeSpawnDescription = "The starting seed is " + (mode_vars[1] ? 1 : 3) + ". Seeds are unlocked in the same way as DIVE.";
             randomGoalsMVStart = 3;
             randomGoalsGVStart = 7;
@@ -16307,14 +16309,14 @@ function gmDisplayVars() {
         if (gamemode == 89.50118) { // Aquatic 2496
             title = "Aquatic 2496";
             modeRulesDescription = "Tiles are products of two integers, and two tiles can merge if they have at least one integer in common, even if they're not in the same position: for example, a 2 × 6 tile and a 6 × 7 tile can merge into a 6 × 9 tile. If the tiles are equal, the larger number is the one considered to be matching. The score given from a merge is whatever the matching number is. This mode has no win condition, so just try to get as high of a score as you can!";
-            modeSpawnDescription = "The starting seed is " + (mode_vars[1] ? 1 : 2) + ". Seeds are unlocked in the same way as DIVE, using the values of the products. Seeds are single integers, so the spawning tile is a product of two (not necessarily distinct) seeds, such that the product is not larger than the largest tile discovered so far.";
+            modeSpawnDescription = "The starting seed is " + (mode_vars[1] ? 1 : 2) + ". Seeds are unlocked in the same way as DIVE, using the right-hand side value of the product (rather than treating the entire product value of both components as their own seeds, due to the scale balancing shenanigans involving exotic modifiers such as Visible Next Spawned Tiles and Multiple Merges, as well as planning to introduce the second set of seeds specifically for the left-hand side value of the product, which does not use DIVE-style recursive division). Seeds are single integers, so the spawning tile is a product of two (not necessarily distinct) seeds, such that the product is not larger than the largest tile discovered so far.";
             if (!mode_vars[3]) {
-                modeSpawnDescription = "The starting seed is " + (mode_vars[1] ? 1 : 2) + ". Seeds are unlocked in the same way as DIVE, using the component values of the products individually (rather than treating the entire product value of both components as their own seeds, due to the scale balancing shenanigans involving exotic modifiers such as Visible Next Spawned Tiles and Multiple Merges). Seeds are single integers, so the spawning tile is a product of two (not necessarily distinct) seeds, such that the product is not larger than the largest tile discovered so far.";
+                modeSpawnDescription = "The starting seed is " + (mode_vars[1] ? 1 : 2) + ". Seeds are unlocked in the same way as DIVE, using the right-hand side value of the product (rather than treating the entire product value of both components as their own seeds, due to the scale balancing shenanigans involving exotic modifiers such as Visible Next Spawned Tiles and Multiple Merges, as well as planning to introduce the second set of seeds specifically for the left-hand side value of the product, which does not use DIVE-style recursive division). Seeds are single integers, so the spawning tile is a product of two (not necessarily distinct) seeds, such that the product is not larger than the largest tile discovered so far.";
                 document.getElementById("Aquatic2496_productLimit_text").innerHTML = "Spawning tiles cannot be larger than all existing tiles.";
                 document.getElementById("Aquatic2496_productLimit_text").style.setProperty("color", "#721c00");
             }
             else {
-                modeSpawnDescription = "The starting seed is " + (mode_vars[1] ? 1 : 2) + ". Seeds are unlocked in the same way as DIVE, using the component values of the products individually (rather than treating the entire product value of both components as their own seeds, due to the scale balancing shenanigans involving exotic modifiers such as Visible Next Spawned Tiles and Multiple Merges). Seeds are single integers, so the spawning tile is a product of two (not necessarily distinct) seeds.";
+                modeSpawnDescription = "The starting seed is " + (mode_vars[1] ? 1 : 2) + ". Seeds are unlocked in the same way as DIVE, using the right-hand side value of the product (rather than treating the entire product value of both components as their own seeds, due to the scale balancing shenanigans involving exotic modifiers such as Visible Next Spawned Tiles and Multiple Merges, as well as planning to introduce the second set of seeds specifically for the left-hand side value of the product, which does not use DIVE-style recursive division). Seeds are single integers, so the spawning tile is a product of two (not necessarily distinct) seeds.";
                 document.getElementById("Aquatic2496_productLimit_text").innerHTML = "Spawning tiles can be larger than all existing tiles.";
                 document.getElementById("Aquatic2496_productLimit_text").style.setProperty("color", "#d43500");
             }
@@ -23460,7 +23462,7 @@ function loadModifiers() {
             }
             start_game_vars[6] = mode_vars[2];
             start_game_vars[4] = modifiers[21];
-            if (gamemode == 96.50118 && mode_vars[3] > 0) { // HICEG
+            if (gamemode == 96.50118 && mode_vars[3] > 0) { // HICEM
                 start_game_vars[10] = mode_vars[4];
                 scripts.push([["@var_retain", 0, "@if", ["@var_retain", "@Var -1", "arr_elem", 0, "arr_elem", 0, "absB", "=", "@GVar 7"], "@edit_gvar", 9, true, "@end-if"], "Merge"]);
                 scripts.push([["@var_retain", 0, "@add_var", 0, "@repeat", ["@var_retain", "@Var 0", "arr_length", ">", "@Var 1"], "@if", ["@var_retain", "@Var 0", "arr_elem", "@Var 1", "arr_elem", 0, "=", "@GVar 7"], "@edit_gvar", 9, true, "@end-if", "@edit_var", 1, ["@var_retain", "@Var 1", "+", 1], "@end-repeat"], "PostSpawn"]);
@@ -27123,546 +27125,7 @@ function removeMergeRuleApplies(rule) { // Replaces all "mergeRuleApplies" check
     return rule;
 }
 
-// Color conversion system formula is inspired from: https://www.w3.org/TR/css-color-4/
-/*
-function multiplyMatrices(A, B) {
-	let m = A.length;
-
-	if (!Array.isArray(A[0])) {
-		// A is vector, convert to [[a, b, c, ...]]
-		A = [A];
-	}
-
-	if (!Array.isArray(B[0])) {
-		// B is vector, convert to [[a], [b], [c], ...]]
-		B = B.map(x => [x]);
-	}
-
-	let p = B[0].length;
-	let B_cols = B[0].map((_, i) => B.map(x => x[i])); // transpose B
-	let product = A.map(row => B_cols.map(col => {
-		if (!Array.isArray(row)) {
-			return col.reduce((a, c) => a + c * row, 0);
-		}
-
-		return row.reduce((a, c, i) => a + c * (col[i] || 0), 0);
-	}));
-
-	if (m === 1) {
-		product = product[0]; // Avoid [[a, b, c, ...]]
-	}
-
-	if (p === 1) {
-		return product.map(x => x[0]); // Avoid [[a], [b], [c], ...]]
-	}
-
-	return product;
-}
-// Sample code for color conversions
-// Conversion can also be done using ICC profiles and a Color Management System
-// For clarity, a library is used for matrix multiplication (multiply-matrices.js)
-
-// standard white points, defined by 4-figure CIE x,y chromaticities
-const D50 = [0.3457 / 0.3585, 1.00000, (1.0 - 0.3457 - 0.3585) / 0.3585];
-const D65 = [0.3127 / 0.3290, 1.00000, (1.0 - 0.3127 - 0.3290) / 0.3290];
-
-// sRGB-related functions
-
-function lin_sRGB(RGB) {
-	// convert an array of sRGB values
-	// where in-gamut values are in the range [0 - 1]
-	// to linear light (un-companded) form.
-	// https://en.wikipedia.org/wiki/SRGB
-	// Extended transfer function:
-	// for negative values,  linear portion is extended on reflection of axis,
-	// then reflected power function is used.
-	return RGB.map(function (val) {
-		let sign = val < 0? -1 : 1;
-		let abs = Math.abs(val);
-
-		if (abs <= 0.04045) {
-			return val / 12.92;
-		}
-
-		return sign * (Math.pow((abs + 0.055) / 1.055, 2.4));
-	});
-}
-
-function gam_sRGB(RGB) {
-	// convert an array of linear-light sRGB values in the range 0.0-1.0
-	// to gamma corrected form
-	// https://en.wikipedia.org/wiki/SRGB
-	// Extended transfer function:
-	// For negative values, linear portion extends on reflection
-	// of axis, then uses reflected pow below that
-	return RGB.map(function (val) {
-		let sign = val < 0? -1 : 1;
-		let abs = Math.abs(val);
-
-		if (abs > 0.0031308) {
-			return sign * (1.055 * Math.pow(abs, 1/2.4) - 0.055);
-		}
-
-		return 12.92 * val;
-	});
-}
-
-function lin_sRGB_to_XYZ(rgb) {
-	// convert an array of linear-light sRGB values to CIE XYZ
-	// using sRGB's own white, D65 (no chromatic adaptation)
-
-	var M = [
-		[ 506752 / 1228815,  87881 / 245763,   12673 /   70218 ],
-		[  87098 /  409605, 175762 / 245763,   12673 /  175545 ],
-		[   7918 /  409605,  87881 / 737289, 1001167 / 1053270 ],
-	];
-	return multiplyMatrices(M, rgb);
-}
-
-function XYZ_to_lin_sRGB(XYZ) {
-	// convert XYZ to linear-light sRGB
-
-	var M = [
-		[   12831 /   3959,    -329 /    214, -1974 /   3959 ],
-		[ -851781 / 878810, 1648619 / 878810, 36519 / 878810 ],
-		[     705 /  12673,   -2585 /  12673,   705 /    667 ],
-	];
-
-	return multiplyMatrices(M, XYZ);
-}
-
-//  display-p3-related functions
-
-
-function lin_P3(RGB) {
-	// convert an array of display-p3 RGB values in the range 0.0 - 1.0
-	// to linear light (un-companded) form.
-
-	return lin_sRGB(RGB);	// same as sRGB
-}
-
-function gam_P3(RGB) {
-	// convert an array of linear-light display-p3 RGB  in the range 0.0-1.0
-	// to gamma corrected form
-
-	return gam_sRGB(RGB);	// same as sRGB
-}
-
-function lin_P3_to_XYZ(rgb) {
-	// convert an array of linear-light display-p3 values to CIE XYZ
-	// using  D65 (no chromatic adaptation)
-	// http://www.brucelindbloom.com/index.html?Eqn_RGB_XYZ_Matrix.html
-	var M = [
-		[ 608311 / 1250200, 189793 / 714400,  198249 / 1000160 ],
-		[  35783 /  156275, 247089 / 357200,  198249 / 2500400 ],
-		[      0 /       1,  32229 / 714400, 5220557 / 5000800 ],
-	];
-
-	return multiplyMatrices(M, rgb);
-}
-
-function XYZ_to_lin_P3(XYZ) {
-	// convert XYZ to linear-light P3
-	var M = [
-		[ 446124 / 178915, -333277 / 357830, -72051 / 178915 ],
-		[ -14852 /  17905,   63121 /  35810,    423 /  17905 ],
-		[  11844 / 330415,  -50337 / 660830, 316169 / 330415 ],
-	];
-
-	return multiplyMatrices(M, XYZ);
-}
-
-// prophoto-rgb functions
-
-function lin_ProPhoto(RGB) {
-	// convert an array of prophoto-rgb values
-	// where in-gamut colors are in the range [0.0 - 1.0]
-	// to linear light (un-companded) form.
-	// Transfer curve is gamma 1.8 with a small linear portion
-	// Extended transfer function
-	const Et2 = 16/512;
-	return RGB.map(function (val) {
-		let sign = val < 0? -1 : 1;
-		let abs = Math.abs(val);
-
-		if (abs <= Et2) {
-			return val / 16;
-		}
-
-		return sign * Math.pow(abs, 1.8);
-	});
-}
-
-function gam_ProPhoto(RGB) {
-	// convert an array of linear-light prophoto-rgb  in the range 0.0-1.0
-	// to gamma corrected form
-	// Transfer curve is gamma 1.8 with a small linear portion
-	// TODO for negative values, extend linear portion on reflection of axis, then add pow below that
-	const Et = 1/512;
-	return RGB.map(function (val) {
-		let sign = val < 0? -1 : 1;
-		let abs = Math.abs(val);
-
-		if (abs >= Et) {
-			return sign * Math.pow(abs, 1/1.8);
-		}
-
-		return 16 * val;
-	});
-}
-
-function lin_ProPhoto_to_XYZ(rgb) {
-	// convert an array of linear-light prophoto-rgb values to CIE D50 XYZ
-	// matrix cannot be expressed in rational form, but is calculated to 64 bit accuracy
-	// see https://github.com/w3c/csswg-drafts/issues/7675
-	var M = [
-		[ 0.79776664490064230,  0.13518129740053308,  0.03134773412839220 ],
-		[ 0.28807482881940130,  0.71183523424187300,  0.00008993693872564 ],
-		[ 0.00000000000000000,  0.00000000000000000,  0.82510460251046020 ]
-	];
-
-	return multiplyMatrices(M, rgb);
-}
-
-function XYZ_to_lin_ProPhoto(XYZ) {
-	// convert D50 XYZ to linear-light prophoto-rgb
-	var M = [
-		[  1.34578688164715830, -0.25557208737979464, -0.05110186497554526 ],
-        [ -0.54463070512490190,  1.50824774284514680,  0.02052744743642139 ],
-        [  0.00000000000000000,  0.00000000000000000,  1.21196754563894520 ]
-	];
-
-	return multiplyMatrices(M, XYZ);
-}
-
-// a98-rgb functions
-
-function lin_a98rgb(RGB) {
-	// convert an array of a98-rgb values in the range 0.0 - 1.0
-	// to linear light (un-companded) form.
-	// negative values are also now accepted
-	return RGB.map(function (val) {
-		let sign = val < 0? -1 : 1;
-		let abs = Math.abs(val);
-
-	  	return sign * Math.pow(abs, 563/256);
-	});
-}
-
-function gam_a98rgb(RGB) {
-	// convert an array of linear-light a98-rgb  in the range 0.0-1.0
-	// to gamma corrected form
-	// negative values are also now accepted
-	return RGB.map(function (val) {
-		let sign = val < 0? -1 : 1;
-		let abs = Math.abs(val);
-
-		return sign * Math.pow(abs, 256/563);
-	});
-}
-
-function lin_a98rgb_to_XYZ(rgb) {
-	// convert an array of linear-light a98-rgb values to CIE XYZ
-	// http://www.brucelindbloom.com/index.html?Eqn_RGB_XYZ_Matrix.html
-	// has greater numerical precision than section 4.3.5.3 of
-	// https://www.adobe.com/digitalimag/pdfs/AdobeRGB1998.pdf
-	// but the values below were calculated from first principles
-	// from the chromaticity coordinates of R G B W
-	// see matrixmaker.html
-	var M = [
-		[ 573536 /  994567,  263643 / 1420810,  187206 /  994567 ],
-		[ 591459 / 1989134, 6239551 / 9945670,  374412 / 4972835 ],
-		[  53769 / 1989134,  351524 / 4972835, 4929758 / 4972835 ],
-	];
-
-	return multiplyMatrices(M, rgb);
-}
-
-function XYZ_to_lin_a98rgb(XYZ) {
-	// convert XYZ to linear-light a98-rgb
-	var M = [
-		[ 1829569 /  896150, -506331 /  896150, -308931 /  896150 ],
-		[ -851781 /  878810, 1648619 /  878810,   36519 /  878810 ],
-		[   16779 / 1248040, -147721 / 1248040, 1266979 / 1248040 ],
-	];
-
-	return multiplyMatrices(M, XYZ);
-}
-
-//Rec. 2020-related functions
-
-function lin_2020(RGB) {
-	// convert an array of rec2020 RGB values in the range 0.0 - 1.0
-	// to linear light (un-companded) form.
-	//  Reference electro-optical transfer function from Rec. ITU-R BT.1886 Annex 1
-	//  with b (black lift) = 0 and a (user gain) = 1
-	//  defined over the extended range, not clamped
-
-	return RGB.map(function (val) {
-		let sign = val < 0? -1 : 1;
-		let abs = Math.abs(val);
-		return sign * Math.pow(abs, 2.4);
-	});
-}
-
-function gam_2020(RGB) {
-	// convert an array of linear-light rec2020 RGB  in the range 0.0-1.0
-	// to gamma corrected form
-	//  Reference electro-optical transfer function from Rec. ITU-R BT.1886 Annex 1
-	//  with b (black lift) = 0 and a (user gain) = 1
-	//  defined over the extended range, not clamped
-
-	return RGB.map(function (val) {
-		let sign = val < 0? -1 : 1;
-		let abs = Math.abs(val);
-		return sign * Math.pow(abs, 1 / 2.4);
-	});
-}
-
-function lin_2020_to_XYZ(rgb) {
-	// convert an array of linear-light rec2020 values to CIE XYZ
-	// using  D65 (no chromatic adaptation)
-	var M = [
-		[ 63426534 / 99577255,  20160776 / 139408157,  47086771 / 278816314 ],
-		[ 26158966 / 99577255, 472592308 / 697040785,   8267143 / 139408157 ],
-		[        0 /        1,  19567812 / 697040785, 295819943 / 278816314 ],
-	];
-	// 0 is actually calculated as  4.994106574466076e-17
-
-	return multiplyMatrices(M, rgb);
-}
-
-function XYZ_to_lin_2020(XYZ) {
-	// convert XYZ to linear-light rec2020
-	var M = [
-		[  30757411 / 17917100, -6372589 / 17917100, -4539589 / 17917100 ],
-		[ -19765991 / 29648200, 47925759 / 29648200,   467509 / 29648200 ],
-		[    792561 / 44930125, -1921689 / 44930125, 42328811 / 44930125 ],
-	];
-
-	return multiplyMatrices(M, XYZ);
-}
-
-// Chromatic adaptation
-
-function D65_to_D50(XYZ) {
-	// Bradford chromatic adaptation from D65 to D50
-	// The matrix below is the result of three operations:
-	// - convert from XYZ to retinal cone domain
-	// - scale components from one reference white to another
-	// - convert back to XYZ
-	// see https://github.com/LeaVerou/color.js/pull/354/files
-	
-	var M =  [
-		[  1.0479297925449969,    0.022946870601609652,  -0.05019226628920524  ],
-		[  0.02962780877005599,   0.9904344267538799,    -0.017073799063418826 ],
-		[ -0.009243040646204504,  0.015055191490298152,   0.7518742814281371   ]
-	];
-
-	return multiplyMatrices(M, XYZ);
-}
-
-function D50_to_D65(XYZ) {
-	// Bradford chromatic adaptation from D50 to D65
-	// See https://github.com/LeaVerou/color.js/pull/360/files
-	var M = [
-		[  0.955473421488075,    -0.02309845494876471,   0.06325924320057072  ],
-		[ -0.0283697093338637,    1.0099953980813041,    0.021041441191917323 ],
-		[  0.012314014864481998, -0.020507649298898964,  1.330365926242124    ]
-	];
-
-	return multiplyMatrices(M, XYZ);
-}
-
-// CIE Lab and LCH
-
-function XYZ_to_Lab(XYZ) {
-	// Assuming XYZ is relative to D50, convert to CIE Lab
-	// from CIE standard, which now defines these as a rational fraction
-	var ε = 216/24389;  // 6^3/29^3
-	var κ = 24389/27;   // 29^3/3^3
-
-	// compute xyz, which is XYZ scaled relative to reference white
-	var xyz = XYZ.map((value, i) => value / D50[i]);
-
-	// now compute f
-	var f = xyz.map(value => value > ε ? Math.cbrt(value) : (κ * value + 16)/116);
-
-	return [
-		(116 * f[1]) - 16, 	 // L
-		500 * (f[0] - f[1]), // a
-		200 * (f[1] - f[2])  // b
-	];
-	// L in range [0,100]. For use in CSS, add a percent
-}
-
-function Lab_to_XYZ(Lab) {
-	// Convert Lab to D50-adapted XYZ
-	// http://www.brucelindbloom.com/index.html?Eqn_Lab_to_XYZ.html
-	var κ = 24389/27;   // 29^3/3^3
-	var ε = 216/24389;  // 6^3/29^3
-	var f = [];
-
-	// compute f, starting with the luminance-related term
-	f[1] = (Lab[0] + 16)/116;
-	f[0] = Lab[1]/500 + f[1];
-	f[2] = f[1] - Lab[2]/200;
-
-	// compute xyz
-	var xyz = [
-		Math.pow(f[0],3) > ε ?   Math.pow(f[0],3)            : (116*f[0]-16)/κ,
-		Lab[0] > κ * ε ?         Math.pow((Lab[0]+16)/116,3) : Lab[0]/κ,
-		Math.pow(f[2],3)  > ε ?  Math.pow(f[2],3)            : (116*f[2]-16)/κ
-	];
-
-	// Compute XYZ by scaling xyz by reference white
-	return xyz.map((value, i) => value * D50[i]);
-}
-
-function Lab_to_LCH(Lab) {
-	var epsilon = 0.0015;
-	var chroma = Math.sqrt(Math.pow(Lab[1], 2) + Math.pow(Lab[2], 2)); // Chroma
-	var hue = Math.atan2(Lab[2], Lab[1]) * 180 / Math.PI;
-	if (hue < 0) {
-		hue = hue + 360;
-	}
-	if (chroma <= epsilon) {
-		hue = NaN;
-	}
-	return [
-		Lab[0], // L is still L
-		chroma, // Chroma
-		hue // Hue, in degrees [0 to 360)
-	];
-}
-
-function LCH_to_Lab(LCH) {
-	// Convert from polar form
-	return [
-		LCH[0], // L is still L
-		LCH[1] * Math.cos(LCH[2] * Math.PI / 180), // a
-		LCH[1] * Math.sin(LCH[2] * Math.PI / 180) // b
-	];
-}
-
-// OKLab and OKLCH
-// https://bottosson.github.io/posts/oklab/
-
-// XYZ <-> LMS matrices recalculated for consistent reference white
-// see https://github.com/w3c/csswg-drafts/issues/6642#issuecomment-943521484
-// recalculated for 64bit precision
-// see https://github.com/color-js/color.js/pull/357
-
-function XYZ_to_OKLab(XYZ) {
-	// Given XYZ relative to D65, convert to OKLab
-	var XYZtoLMS = [
-		[ 0.8190224379967030, 0.3619062600528904, -0.1288737815209879 ],
-		[ 0.0329836539323885, 0.9292868615863434,  0.0361446663506424 ],
-		[ 0.0481771893596242, 0.2642395317527308,  0.6335478284694309 ]
-	];
-	var LMStoOKLab = [
-		[ 0.2104542683093140,  0.7936177747023054, -0.0040720430116193 ],
-		[ 1.9779985324311684, -2.4285922420485799,  0.4505937096174110 ],
-		[ 0.0259040424655478,  0.7827717124575296, -0.8086757549230774 ]
-	];
-
-	var LMS = multiplyMatrices(XYZtoLMS, XYZ);
-	// JavaScript Math.cbrt returns a sign-matched cube root
-	// beware if porting to other languages
-	// especially if tempted to use a general power function
-	return multiplyMatrices(LMStoOKLab, LMS.map(c => Math.cbrt(c)));
-	// L in range [0,1]. For use in CSS, multiply by 100 and add a percent
-}
-
-function OKLab_to_XYZ(OKLab) {
-	// Given OKLab, convert to XYZ relative to D65
-	var LMStoXYZ =  [
-		[  1.2268798758459243, -0.5578149944602171,  0.2813910456659647 ],
-		[ -0.0405757452148008,  1.1122868032803170, -0.0717110580655164 ],
-		[ -0.0763729366746601, -0.4214933324022432,  1.5869240198367816 ]
-	];
-	var OKLabtoLMS = [
-		[ 1.0000000000000000,  0.3963377773761749,  0.2158037573099136 ],
-		[ 1.0000000000000000, -0.1055613458156586, -0.0638541728258133 ],
-		[ 1.0000000000000000, -0.0894841775298119, -1.2914855480194092 ]
-    ];
-
-	var LMSnl = multiplyMatrices(OKLabtoLMS, OKLab);
-	return multiplyMatrices(LMStoXYZ, LMSnl.map(c => c ** 3));
-}
-
-function OKLab_to_OKLCH(OKLab) {
-	var epsilon = 0.000004;
-	var hue = Math.atan2(OKLab[2], OKLab[1]) * 180 / Math.PI;
-	var chroma = Math.sqrt(OKLab[1] ** 2 + OKLab[2] ** 2);
-	if (hue < 0) {
-		hue = hue + 360;
-	}
-	if (chroma <= epsilon) {
-		hue = NaN;
-	}
-	return [
-		OKLab[0], // L is still L
-		chroma,
-		hue
-	];
-}
-
-function OKLCH_to_OKLab(OKLCH) {
-	return [
-		OKLCH[0], // L is still L
-		OKLCH[1] * Math.cos(OKLCH[2] * Math.PI / 180), // a
-		OKLCH[1] * Math.sin(OKLCH[2] * Math.PI / 180)  // b
-	];
-}
-
-// Premultiplied alpha conversions
-
-function rectangular_premultiply(color, alpha) {
-// given a color in a rectangular orthogonal colorspace
-// and an alpha value
-// return the premultiplied form
-	return color.map((c) => c * alpha)
-}
-
-function rectangular_un_premultiply(color, alpha) {
-// given a premultiplied color in a rectangular orthogonal colorspace
-// and an alpha value
-// return the actual color
-	if (alpha === 0) {
-		return color; // avoid divide by zero
-	}
-	return color.map((c) => c / alpha)
-}
-
-function polar_premultiply(color, alpha, hueIndex) {
-	// given a color in a cylindicalpolar colorspace
-	// and an alpha value
-	// return the premultiplied form.
-	// the index says which entry in the color array corresponds to hue angle
-	// for example, in OKLCH it would be 2
-	// while in HSL it would be 0
-	return color.map((c, i) => c * (hueIndex === i? 1 : alpha))
-}
-
-function polar_un_premultiply(color, alpha, hueIndex) {
-	// given a color in a cylindicalpolar colorspace
-	// and an alpha value
-	// return the actual color.
-	// the hueIndex says which entry in the color array corresponds to hue angle
-	// for example, in OKLCH it would be 2
-	// while in HSL it would be 0
-	if (alpha === 0) {
-		return color; // avoid divide by zero
-	}
-	return color.map((c, i) => c / (hueIndex === i? 1 : alpha))
-}
-
-// Convenience functions can easily be defined, such as
-function hsl_premultiply(color, alpha) {
-	return polar_premultiply(color, alpha, 0);
-}
-*/
+// Here is the multi-step color system conversion, because converting from HSL/HSV/HWB to perceptually uniform color spaces like LAB and OKLAB requires conversion to RGB and then XYZ as some key intermediate steps.
 
 function linearRGB(s) {
   var linear = 0;
@@ -27691,6 +27154,18 @@ function polarToCartesian(ch) {
   var a = ch[0] * Math.cos(ch[1] * (Math.PI / 180));
   var b = ch[0] * Math.sin(ch[1] * (Math.PI / 180));
   return [a, b];
+}
+function linearRgbToXyzD65(r, g, b) {
+	var x = r * 0.412391 + g * 0.357584 + b * 0.180481;
+    var y = r * 0.212639 + g * 0.715169 + b * 0.072192;
+    var z = r * 0.019331 + g * 0.119195 + b * 0.950532;
+	return [x, y, z];
+}
+function xyzD65ToLinearRgb(x, y, z) {
+	var r = x *  3.2404542 + y * -1.5371385 + z * -0.4985314;
+    var g = x * -0.9692660 + y *  1.8760108 + z *  0.0415560;
+    var b = x *  0.0556434 + y * -0.2040259 + z *  1.0572252;
+	return [r, g, b];
 }
 
 function evaluateColor(color) {
