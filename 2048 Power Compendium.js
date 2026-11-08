@@ -13725,13 +13725,13 @@ function gmDisplayVars() {
             else if (mode_vars[0] == 3n) powerWord = "cube";
             else powerWord = mode_vars[0] + "th power";
 			let threeTileWord = "";
-			if (mode_vars[0] == 3n && mode_vars[1]) {threeTileWord = " This mode is basically a more lenient version of the 3307 variant of 2379, as merges that doesn't use the straight ratio between adjacent-sized tiles such as 27+1+1=29 are valid.";}
+			if (mode_vars[0] == 3n && mode_vars[1]) {threeTileWord = "This mode is basically a more lenient version of the 3307 variant of 2379, as merges that doesn't use the straight ratio between adjacent-sized tiles such as 27+1+1=29 are valid.";}
 			else {threeTileWord = "";}
             let numberNames = ["Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen", "Twenty"];
             let numberWord = (mode_vars[0] < 21n) ? numberNames[Number(mode_vars[0])] : String(mode_vars[0]);
-            displayRules("rules_text", ["h1", goal], ["p", numberWord + " tiles can merge if their product is a perfect " + powerWord + "." + threeTileWord + " Get to the " + goal + " tile to win, or see what other tiles you can make!" + negativeBehaviorString],
+            displayRules("rules_text", ["h1", goal], ["p", numberWord + " tiles can merge if their product is a perfect " + powerWord + ". " + threeTileWord + " Get to the " + goal + " tile to win, or see what other tiles you can make!" + negativeBehaviorString],
             ["p", "Spawning tiles: 1 (100%)"]);
-            displayRules("gm_rules_text", ["h1", goal], ["p", numberWord + " tiles can merge if their product is a perfect " + powerWord + "." + threeTileWord + " Get to the " + goal + " tile to win, or see what other tiles you can make!" + negativeBehaviorString],
+            displayRules("gm_rules_text", ["h1", goal], ["p", numberWord + " tiles can merge if their product is a perfect " + powerWord + ". " + threeTileWord + " Get to the " + goal + " tile to win, or see what other tiles you can make!" + negativeBehaviorString],
             ["p", "Spawning tiles: 1 (100%)"]);
         }
         else {
