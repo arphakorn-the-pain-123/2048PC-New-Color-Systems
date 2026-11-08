@@ -3934,17 +3934,32 @@
                             variant of Alternate 5040, and the "1s are as likely to spawn as any other spawning tile." setting not working in FIVE when
                             "Seeds are disabled, only the valid primes spawn." is chosen. Fixed a small typo in 2058.
                       </li>
-                      <hr>
-                      <li>
-                            New Color Systems experimental snapshot (Sep. 3, 2026): Sneak peek for the new color systems #1: Early implementation to the new color systems
-                            beyond RGB/HSL/HSV: HWB, LAB (CIELAB), LCH, OKLAB, OKLCH, sRGB (based on RGB but the value ranges from 0 to 1 instead of 0 to 255),
-                            Linear RGB (without gamma correction to sRGB), Display P3, Adobe 1998 RGB, ProPhoto RGB, Rec2020, and XYZ (D50 and D65 illuminants).
-                      </li>
                       <br>
                       <li>
                             v3.0.9 (Sep. 7, 2026): Fixed the following bugs: infused grid selections going out-of-bounds,
                             the seventh entry of Input modifiers for infused modes not working correctly, modifiers save codes not importing the
                             custom grid correctly, and Non-Interacting Negatives acting as if it's Interacting Negatives in FIVE and Isotopic DIVE.
+                      </li>
+                      <br>
+                      <li>
+                            v3.0.10 (Sep. 22, 2026): Fixed the following bugs: pausing or slowing down non-timed replays
+                            causing a desync error, visible next spawned tiles not updating in a replay, 2592 random goals not being completed,
+                            infused modes that used "@CalcArrayNumber" having issues with Negative Tiles, a Multicolor Tiles bug with
+                            2496 and Pro-Add-Uct (though admittedly I "fixed" this one by just restricting the domain to disallow it), and couple typos, including the plural Custom Modes and in 2310 mode.
+                      </li>
+                      <br>
+                      <li>
+                            v3.0.11 (Sep. 23, 2026): Fixed an inflated score bug in Alternate 5040 with base cycles.
+                      </li>
+                      <br>
+                      <li>
+                            v3.0.12 (Oct. 11, 2026): Fixed Multicolor Tiles occasionally having the wrong output color(s).
+                      </li>
+                      <hr>
+                      <li>
+                            New Color Systems experimental snapshot (Sep. 3, 2026): Sneak peek for the new color systems #1: Early implementation to the new color systems
+                            beyond RGB/HSL/HSV: HWB, LAB (CIELAB), LCH, OKLAB, OKLCH, sRGB (based on RGB but the value ranges from 0 to 1 instead of 0 to 255),
+                            Linear RGB (without gamma correction to sRGB), Display P3, Adobe 1998 RGB, ProPhoto RGB, Rec2020, and XYZ (D50 and D65 illuminants).
                       </li>
                       <br>
                       <li>
@@ -3963,30 +3978,15 @@
                       </li>
                       <br>
                       <li>
-                            v3.0.10 (Sep. 22, 2026): Fixed the following bugs: pausing or slowing down non-timed replays
-                            causing a desync error, visible next spawned tiles not updating in a replay, 2592 random goals not being completed,
-                            infused modes that used "@CalcArrayNumber" having issues with Negative Tiles, a Multicolor Tiles bug with
-                            2496 and Pro-Add-Uct (though admittedly I "fixed" this one by just restricting the domain to disallow it), and couple typos, including the plural Custom Modes and in 2310 mode.
-                      </li>
-                      <br>
-                      <li>
                             New Color Systems snapshot 4 (Sep. 23, 2026): Ported the v3.0.10 bug fix update, successfully changed the seed checking algorithm for Aquatic 2496 to be
                             based on the individual component values in the product, rather than treating the entire value of the product as a separate component, to correct the scale balancing;
                             increased the threshold to switch to numerals in Four-Sides 625 to 30, and planned to make the spawning tiles in mod 27 dynamic based on the current modulus.
                       </li>
                       <br>
                       <li>
-                            v3.0.11 (Sep. 23, 2026): Fixed an inflated score bug in Alternate 5040 with base cycles.
-                      </li>
-                      <br>
-                      <li>
                             New Color Systems snapshot 5 (Sep. 24, 2026): Ported the v3.0.11 bug fix update regarding the score formula in Alternate 5040 with base cycles,
                             Increased the default grid size for 2401, 2059, 2315, Bicolor 2187, and Bicolor 2584 by one, removed the win condition for the Melting Pot variant of Wildcard 2048,
                             and made the Wildcard 2048 color scheme non-convergent for larger values due to the presence of the Melting Pot mode that allows exponential growth.
-                      </li>
-                      <br>
-                      <li>
-                            v3.0.12 (Oct. 11, 2026): Fixed Multicolor Tiles occasionally having the wrong output color(s).
                       </li>
                       <br>
                       <li>
@@ -4000,8 +4000,14 @@
                       </li>
                       <br>
                       <li>
-                            <b>New Color Systems snapshot 8 (Nov. 6, 2026) [Current snapshot]: Added the conversion from Linear RGB to XYZ D65 in the purview itself (will be used later),
-                            added horizontal lines in the guide to separate the major updates, and added additional sentences in some modes to make them clearer and reduce misunderstanding.</b>
+                            New Color Systems snapshot 8 (Nov. 6, 2026): Added the conversion from Linear RGB to XYZ D65 in the purview itself (will be used later),
+                            added horizontal lines in the guide to separate the major updates, and added additional sentences in some modes to make them clearer and reduce misunderstanding.
+                      </li>
+                      <br>
+                      <li>
+                            <b>New Color Systems snapshot 9 (Nov. 8, 2026) [Current snapshot]: Refined the rule description in 1845 mode and three-tile 2379 variant of 3385, fixed the warning in
+                            the description of Partial Flow DIVE with Multiple Merges that was added wrongly into HICEM, made the seed algorithm in Aquatic 2496 to be unlocked exclusively for
+                            the right-hand side value of the product, and rearranged the horizontal lines in the guide to separate the official versions and my modded snapshots to make them clearer.</b>
                       </li>
                     </ul>
                 </div>
