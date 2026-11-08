@@ -13725,7 +13725,7 @@ function gmDisplayVars() {
             else if (mode_vars[0] == 3n) powerWord = "cube";
             else powerWord = mode_vars[0] + "th power";
 			let threeTileWord = "";
-			if (mode_vars[0] == 3n && mode_vars[1]) {threeTileWord = "This mode is basically a more lenient version of the 3307 variant of 2379, as merges that doesn't use the straight ratio between adjacent-sized tiles such as 27+1+1=29 are valid.";}
+			if (mode_vars[0] == 3n && mode_vars[1]) {threeTileWord = " This mode is basically a more lenient version of the 3307 variant of 2379, as merges that doesn't use the straight ratio between adjacent-sized tiles such as 27+1+1=29 are valid.";}
 			else {threeTileWord = "";}
             let numberNames = ["Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen", "Twenty"];
             let numberWord = (mode_vars[0] < 21n) ? numberNames[Number(mode_vars[0])] : String(mode_vars[0]);
