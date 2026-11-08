@@ -16240,12 +16240,12 @@ function gmDisplayVars() {
         }
         if (gamemode == 34.50118) { // Partial Flow DIVE
             title = "Partial Flow DIVE";
-            modeRulesDescription = "Any two tiles can merge, but the larger tile only absorbs an amount from the smaller tile equal to the GCD of the two tiles. When two tiles merge, score is only gained if the merge was full, and the score gained from the merge is only the smaller value out of the two tiles (rather than the value of the new tile). Remember, this mode is not suitable with multiple merges, due to the potential of having astronomically long chains of merge that may escalate the technical resource usage while behaving like a freeplay mode with the potentially exponential growth.";
+            modeRulesDescription = "Any two tiles can merge, but the larger tile only absorbs an amount from the smaller tile equal to the GCD of the two tiles. When two tiles merge, score is only gained if the merge was full, and the score gained from the merge is only the smaller value out of the two tiles (rather than the value of the new tile).";
             if (!mode_vars[3]) {
                 title = "Non-Coprime Partial Flow DIVE";
-                modeRulesDescription = "Any two tiles can merge (unless they are coprime and neither tile has an absolute value of 1), but the larger tile only absorbs an amount from the smaller tile equal to the GCD of the two tiles. When two tiles merge, score is only gained if the merge was full, and the score gained from the merge is only the smaller value out of the two tiles (rather than the value of the new tile). Remember, this mode is not suitable with multiple merges, due to the potential of having astronomically long chains of merge that may escalate the technical resource usage while behaving like a freeplay mode with the potentially exponential growth."
+                modeRulesDescription = "Any two tiles can merge (unless they are coprime and neither tile has an absolute value of 1), but the larger tile only absorbs an amount from the smaller tile equal to the GCD of the two tiles. When two tiles merge, score is only gained if the merge was full, and the score gained from the merge is only the smaller value out of the two tiles (rather than the value of the new tile)."
             }
-            modeSpawnDescription = "The starting seed is " + (mode_vars[1] ? 1 : 2) + ". Seeds are unlocked in the same way as DIVE. Seed eliminations do not give score.";
+            modeSpawnDescription = "The starting seed is " + (mode_vars[1] ? 1 : 2) + ". Seeds are unlocked in the same way as DIVE. Seed eliminations do not give score. Also remember, this mode is not suitable with multiple merges, due to the potential of having astronomically long chains of merge that may escalate the technical resource usage while behaving like a freeplay mode with the potentially exponential growth.";
             if (mode_vars[3]) {
                 document.getElementById("PartialFlowDIVE_coprimeMerge_text").innerHTML = "Coprime tiles can merge.";
                 document.getElementById("PartialFlowDIVE_coprimeMerge_text").style.setProperty("color", "#c2f0ff");
