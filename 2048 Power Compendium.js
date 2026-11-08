@@ -8882,9 +8882,9 @@ function loadMode(mode) {
         document.documentElement.style.setProperty("--grid-color", "#89c5f4");
         document.documentElement.style.setProperty("--tile-color", "#e04daf");
         document.documentElement.style.setProperty("--text-color", "#0f361f");
-        displayRules("rules_text", ["h1", "1845"], ["p", "Two equal tiles can merge. Two nonequal tiles can merge if, when you divide both of them by their greatest common divisor, the difference between the two is 1. Get to the 1845 tile to win (your first task is figuring out how to get there...), or just play and see what tiles you end up making!"],
+        displayRules("rules_text", ["h1", "1845"], ["p", "Two equal tiles can merge. Two nonequal tiles can merge if, when you divide both of them by their greatest common divisor, the difference between the two is 1 (this can also be thought of as \"two nonequal tiles can merge if, when you subtract the larger number by the smaller one, both of them are divisible by their difference\"). Get to the 1845 tile to win (your first task is figuring out how to get there...), or just play and see what tiles you end up making!"],
         ["p", "Spawning tiles: 1 (100%)"]);
-        displayRules("gm_rules_text", ["h1", "1845"], ["p", "Two equal tiles can merge. Two nonequal tiles can merge if, when you divide both of them by their greatest common divisor, the difference between the two is 1. Get to the 1845 tile to win (your first task is figuring out how to get there...), or just play and see what tiles you end up making!"],
+        displayRules("gm_rules_text", ["h1", "1845"], ["p", "Two equal tiles can merge. Two nonequal tiles can merge if, when you divide both of them by their greatest common divisor, the difference between the two is 1 (this can also be thought of as \"two nonequal tiles can merge if, when you subtract the larger number by the smaller one, both of them are divisible by their difference\"). Get to the 1845 tile to win (your first task is figuring out how to get there...), or just play and see what tiles you end up making!"],
         ["p", "Spawning tiles: 1 (100%)"]);
         document.getElementById("mode_vars_line").style.setProperty("display", "block");
         document.getElementById("1845_vars").style.setProperty("display", "flex");
@@ -9581,8 +9581,9 @@ function loadMode(mode) {
         document.documentElement.style.setProperty("--tile-color", "#1b7288");
         document.documentElement.style.setProperty("--text-color", "#233851");
         statBoxes = [["Score", "@Score", false, false, "Tile", "mod 27"], ["Seeds", "@GVar 0", false, false, "TileArray", "mod 27"], ["Seeds Seen", ["@GVar 1", "arr_length"], ...[,,,,], ["@GVar 5", "=", 0], [0, "@edit_gvar", 5, 1], true], ["All Seeds Seen", "@GVar 1", true, false, "TileArray", "mod 27", ["@GVar 5", "=", 1], [0, "@edit_gvar", 5, 0], true]];
-        scripts = [
-            [[["@Grid", "arr_flat", 1, "arr_map", [["@var_retain", "@Var -1", "arr_elem", 0]]], 0n, "@end_vars", 0, "@repeat", ["@var_retain", "@Var 0", "arr_length"], "2nd", ["@global_var_retain", "@Var 0", "arr_elem", "@Var 1"], "absB", "DIVESeedUnlock", "@GVar 0", "@GVar 6", "@if", [["@Parent -3", ">", 1n], "&&", ["@GVar 2", "arr_indexOf", "@Parent -3", "=", -1]], "@edit_gvar", 2, ["@GVar 2", "arr_push", "@Parent -2"], "@end-if", "@edit_var", 1, ["@var_retain", "@Var 1", "+", 1], "@end-repeat"], "EndMovement"],
+        // The third and the fourth lines in the script are deprecated, due to the potential anti-thematic magnitude blowout involving exotic modifiers such as visible next spawned tiles and multiple merges.
+		scripts = [
+            //[[["@Grid", "arr_flat", 1, "arr_map", [["@var_retain", "@Var -1", "arr_elem", 0]]], 0n, "@end_vars", 0, "@repeat", ["@var_retain", "@Var 0", "arr_length"], "2nd", ["@global_var_retain", "@Var 0", "arr_elem", "@Var 1"], "absB", "DIVESeedUnlock", "@GVar 0", "@GVar 6", "@if", [["@Parent -3", ">", 1n], "&&", ["@GVar 2", "arr_indexOf", "@Parent -3", "=", -1]], "@edit_gvar", 2, ["@GVar 2", "arr_push", "@Parent -2"], "@end-if", "@edit_var", 1, ["@var_retain", "@Var 1", "+", 1], "@end-repeat"], "EndMovement"],
             [[["@Grid", "arr_flat", 1, "arr_map", [["@var_retain", "@Var -1", "arr_elem", 1]]], 0n, "@end_vars", 0, "@repeat", ["@var_retain", "@Var 0", "arr_length"], "2nd", ["@global_var_retain", "@Var 0", "arr_elem", "@Var 1"], "absB", "DIVESeedUnlock", "@GVar 0", "@GVar 6", "@if", [["@Parent -3", ">", 1n], "&&", ["@GVar 2", "arr_indexOf", "@Parent -3", "=", -1]], "@edit_gvar", 2, ["@GVar 2", "arr_push", "@Parent -2"], "@end-if", "@edit_var", 1, ["@var_retain", "@Var 1", "+", 1], "@end-repeat"], "EndMovement"],
             //[[["@Grid", "arr_flat", 1, "arr_map", [["@var_retain", "@Var -1", "arr_elem", 0], "*B", ["@var_retain", "@Var -1", "arr_elem", 1]]], 0n, "@end_vars", 0, "@repeat", ["@var_retain", "@Var 0", "arr_length"], "2nd", ["@global_var_retain", "@Var 0", "arr_elem", "@Var 1"], "absB", "DIVESeedUnlock", "@GVar 0", "@GVar 6", "@if", [["@Parent -3", ">", 1n], "&&", ["@GVar 2", "arr_indexOf", "@Parent -3", "=", -1]], "@edit_gvar", 2, ["@GVar 2", "arr_push", "@Parent -2"], "@end-if", "@edit_var", 1, ["@var_retain", "@Var 1", "+", 1], "@end-repeat"], "EndMovement"],
             // [["@var_retain", ["@var_retain", "@Var -1", "arr_elem", 0], "@end_vars", ["@var_retain", "@Var -1", "arr_elem", 0], "*B", ["@var_retain", "@Var -1", "arr_elem", 1], "absB", "DIVESeedUnlock", "@GVar 0", "@GVar 6", "@if", [["@Parent -3", ">", 1n], "&&", ["@GVar 2", "arr_indexOf", "@Parent -3", "=", -1]], "@edit_gvar", 2, ["@GVar 2", "arr_push", "@Parent -2"], "@end-if"], "Merge"],
@@ -13706,9 +13707,9 @@ function gmDisplayVars() {
             document.getElementById("3385_exponent_counter").innerHTML = "2";
             document.getElementById("3385_exponent_minus").style.setProperty("display", "block");
             document.getElementById("3385_ratioProduct").style.setProperty("display", "none");
-            displayRules("rules_text", ["h1", "3385"], ["p", 'Two tiles can merge if their ratio is the square of some rational number (this can also be thought of as "two tiles can merge if their product is a perfect square"). Get to the 3385 tile to win, or see what other tiles you can make!' + negativeBehaviorString],
+            displayRules("rules_text", ["h1", "3385"], ["p", "Two tiles can merge if their ratio is the square of some rational number (this can also be thought of as \"two tiles can merge if their product is a perfect square\"). Get to the 3385 tile to win, or see what other tiles you can make!" + negativeBehaviorString],
             ["p", "Spawning tiles: 1 (100%)"]);
-            displayRules("gm_rules_text", ["h1", "3385"], ["p", "Two tiles can merge if their ratio is the square of some rational number. Get to the 3385 tile to win, or see what other tiles you can make!" + negativeBehaviorString],
+            displayRules("gm_rules_text", ["h1", "3385"], ["p", "Two tiles can merge if their ratio is the square of some rational number (this can also be thought of as \"two tiles can merge if their product is a perfect square\"). Get to the 3385 tile to win, or see what other tiles you can make!" + negativeBehaviorString],
             ["p", "Spawning tiles: 1 (100%)"]);
         }
         else if (mode_vars[1]) {
@@ -13719,15 +13720,18 @@ function gmDisplayVars() {
             else if (mode_vars[0] < 18n) goal = (mode_vars[0] * (mode_vars[0] * 2n - 2n) + 1n) * mode_vars[0];
             else if (mode_vars[0] < 225n) goal = mode_vars[0] * (mode_vars[0] * 2n - 2n) + 1n;
             else goal = mode_vars[0];
-            let powerWord;
+            let powerWord = "";
             if (mode_vars[0] == 2n) powerWord = "square";
             else if (mode_vars[0] == 3n) powerWord = "cube";
             else powerWord = mode_vars[0] + "th power";
+			let threeTileWord = "";
+			if (mode_vars[0] == 3n && mode_vars[1]) {threeTileWord = "This mode is basically a more lenient version of the 3307 variant of 2379, as merges that doesn't use the straight ratio between adjacent-sized tiles such as 27+1+1=29 are valid.";}
+			else {threeTileWord = "";}
             let numberNames = ["Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen", "Twenty"];
             let numberWord = (mode_vars[0] < 21n) ? numberNames[Number(mode_vars[0])] : String(mode_vars[0]);
-            displayRules("rules_text", ["h1", goal], ["p", numberWord + " tiles can merge if their product is a perfect " + powerWord + ". Get to the " + goal + " tile to win, or see what other tiles you can make!" + negativeBehaviorString],
+            displayRules("rules_text", ["h1", goal], ["p", numberWord + " tiles can merge if their product is a perfect " + powerWord + "." + threeTileWord + " Get to the " + goal + " tile to win, or see what other tiles you can make!" + negativeBehaviorString],
             ["p", "Spawning tiles: 1 (100%)"]);
-            displayRules("gm_rules_text", ["h1", goal], ["p", numberWord + " tiles can merge if their product is a perfect " + powerWord + ". Get to the " + goal + " tile to win, or see what other tiles you can make!" + negativeBehaviorString],
+            displayRules("gm_rules_text", ["h1", goal], ["p", numberWord + " tiles can merge if their product is a perfect " + powerWord + "." + threeTileWord + " Get to the " + goal + " tile to win, or see what other tiles you can make!" + negativeBehaviorString],
             ["p", "Spawning tiles: 1 (100%)"]);
         }
         else {
@@ -16229,17 +16233,17 @@ function gmDisplayVars() {
         let randomGoalsGVStart = -1;
         if (gamemode == 96.50118) { // HICEM
             title = "HICEM";
-            modeRulesDescription = "Three tiles can merge if one of the tiles is the greatest common divisor of the other two. When three tiles merge, the score gained from the merge is only the smaller value out of the three tiles (rather than the value of the new tile). This mode has no win condition, so just try to get as high of a score as you can! Remember, this mode is not suitable with multiple merges, due to the potential of having astronomically long chains of merge that may escalate the technical resource usage while behaving like a freeplay with the exponential growth.";
+            modeRulesDescription = "Three tiles can merge if one of the tiles is the greatest common divisor of the other two. When three tiles merge, the score gained from the merge is only the smaller value out of the three tiles (rather than the value of the new tile). This mode has no win condition, so just try to get as high of a score as you can!";
             modeSpawnDescription = "The starting seed is " + (mode_vars[1] ? 1 : 3) + ". Seeds are unlocked in the same way as DIVE.";
             randomGoalsMVStart = 3;
             randomGoalsGVStart = 7;
         }
         if (gamemode == 34.50118) { // Partial Flow DIVE
             title = "Partial Flow DIVE";
-            modeRulesDescription = "Any two tiles can merge, but the larger tile only absorbs an amount from the smaller tile equal to the GCD of the two tiles. When two tiles merge, score is only gained if the merge was full, and the score gained from the merge is only the smaller value out of the two tiles (rather than the value of the new tile).";
+            modeRulesDescription = "Any two tiles can merge, but the larger tile only absorbs an amount from the smaller tile equal to the GCD of the two tiles. When two tiles merge, score is only gained if the merge was full, and the score gained from the merge is only the smaller value out of the two tiles (rather than the value of the new tile). Remember, this mode is not suitable with multiple merges, due to the potential of having astronomically long chains of merge that may escalate the technical resource usage while behaving like a freeplay mode with the potentially exponential growth.";
             if (!mode_vars[3]) {
                 title = "Non-Coprime Partial Flow DIVE";
-                modeRulesDescription = "Any two tiles can merge (unless they are coprime and neither tile has an absolute value of 1), but the larger tile only absorbs an amount from the smaller tile equal to the GCD of the two tiles. When two tiles merge, score is only gained if the merge was full, and the score gained from the merge is only the smaller value out of the two tiles (rather than the value of the new tile)."
+                modeRulesDescription = "Any two tiles can merge (unless they are coprime and neither tile has an absolute value of 1), but the larger tile only absorbs an amount from the smaller tile equal to the GCD of the two tiles. When two tiles merge, score is only gained if the merge was full, and the score gained from the merge is only the smaller value out of the two tiles (rather than the value of the new tile). Remember, this mode is not suitable with multiple merges, due to the potential of having astronomically long chains of merge that may escalate the technical resource usage while behaving like a freeplay mode with the potentially exponential growth."
             }
             modeSpawnDescription = "The starting seed is " + (mode_vars[1] ? 1 : 2) + ". Seeds are unlocked in the same way as DIVE. Seed eliminations do not give score.";
             if (mode_vars[3]) {
