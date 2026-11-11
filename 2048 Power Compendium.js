@@ -26003,6 +26003,7 @@ function operation(n1, operator, n2) {
         case "cosRBR":
             result = n1.cosRR(n2);
         break;
+		case "primeGB":
         case "gaussian_prime":
             result = gaussian_prime(n1);
         break;
