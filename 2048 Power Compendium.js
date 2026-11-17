@@ -17289,7 +17289,7 @@ function displayModifiers(page) {
     }
     else if (page == 2) {
         if (modifiers[3]) {
-            document.getElementById("modifiers_multiMerge_text").innerHTML = "A tile that was just merged can itself be part of another merge on the same move.";
+            document.getElementById("modifiers_multiMerge_text").innerHTML = "A tile that was just merged can itself be part of another merge on the same move. (Does not affect Partial Flow DIVE, due to the game-breaking recursion that allowed the resource usage to skyrocket dramatically while treating that mode as a freeplay with the potential exponential growth.)";
             document.getElementById("modifiers_multiMerge_text").style.setProperty("color", "#c48828");
         }
         else {
