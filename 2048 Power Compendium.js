@@ -16255,7 +16255,7 @@ function gmDisplayVars() {
                 title = "Non-Coprime Partial Flow DIVE";
                 modeRulesDescription = "Any two tiles can merge (unless they are coprime and neither tile has an absolute value of 1), but the larger tile only absorbs an amount from the smaller tile equal to the GCD of the two tiles. When two tiles merge, score is only gained if the merge was full, and the score gained from the merge is only the smaller value out of the two tiles (rather than the value of the new tile)."
             }
-            modeSpawnDescription = "The starting seed is " + (mode_vars[1] ? 1 : 2) + ". Seeds are unlocked in the same way as DIVE. Seed eliminations do not give score. Also remember, this mode is not suitable with multiple merges, due to the potential of having astronomically long chains of merge that may escalate the technical resource usage while behaving like a freeplay mode with the potentially exponential growth.";
+            modeSpawnDescription = "The starting seed is " + (mode_vars[1] ? 1 : 2) + ". Seeds are unlocked in the same way as DIVE. Seed eliminations do not give score.";
             if (mode_vars[3]) {
                 document.getElementById("PartialFlowDIVE_coprimeMerge_text").innerHTML = "Coprime tiles can merge.";
                 document.getElementById("PartialFlowDIVE_coprimeMerge_text").style.setProperty("color", "#c2f0ff");
@@ -17289,7 +17289,7 @@ function displayModifiers(page) {
     }
     else if (page == 2) {
         if (modifiers[3]) {
-            document.getElementById("modifiers_multiMerge_text").innerHTML = "A tile that was just merged can itself be part of another merge on the same move. (Does not affect Partial Flow DIVE, due to the game-breaking recursion that allowed the resource usage to skyrocket dramatically while treating that mode as a freeplay with the potential exponential growth.)";
+            document.getElementById("modifiers_multiMerge_text").innerHTML = "A tile that was just merged can itself be part of another merge on the same move.";
             document.getElementById("modifiers_multiMerge_text").style.setProperty("color", "#c48828");
         }
         else {
