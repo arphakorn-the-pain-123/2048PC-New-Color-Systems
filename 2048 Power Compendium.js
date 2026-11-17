@@ -1,8 +1,12 @@
 /* There are secrets hidden in the Compendium. If you want to find those secrets legitimately, I'd recommend not looking at the code. If you don't know whether you've found all the secrets yet, then you have not.
- Also, this script is very WIP. The most important part of my modding is working at implementation of the new color systems beyond RGB/HSL/HSV, which includes HWB, LAB, LCH, OKLAB, OKLCH,
- sRGB (based on RGB but numbers range from 0 to 1 instead of 0 to 255), XYZ D50, and XYZ D65, as well as APCA, WCAG, and ΔE color contrast checking functions
- primarily for the purpose of accessibility tweaks. Color spaces outside of sRGB gamut will be introduced much later. However, in the meantime,
- I only add the conditions for the color system checking in the code (edited after line ~27000), which are kept purely for future implementation purposes. The whole site still rely on RGB and HSL (as the input).
+   Although the biggest part of my modding is the implementation of color spaces beyond RGB/HSL, namely XYZ (D65), LAB/LCH, and OKLAB/OKLCH [edited after around line 27200], this includes many other changes and plans, including:
+   * Major clarification of rule texts in certain modes to reduce misunderstanding
+   * Aquatic 2496 seed algorithm overhaul
+   * Dynamic mod 27 spawning tiles to eliminate softlocks in certain combinations (planned)
+   * Partial Absorb merges and numerical inconsistencies for Custom Modes (planned)
+   * Bypassing pre-game screen text accessibility
+   * Readding old features that were removed in v3.0 (such as pre-3.0 DIVE seed algorithm) (planned)
+   * Case-insensitive input for entering infused modes via save codes
  */
 
 //Opening setup (the code that executes on its own)
@@ -9588,12 +9592,11 @@ function loadMode(mode) {
         document.documentElement.style.setProperty("--tile-color", "#1b7288");
         document.documentElement.style.setProperty("--text-color", "#233851");
         statBoxes = [["Score", "@Score", false, false, "Tile", "mod 27"], ["Seeds", "@GVar 0", false, false, "TileArray", "mod 27"], ["Seeds Seen", ["@GVar 1", "arr_length"], ...[,,,,], ["@GVar 5", "=", 0], [0, "@edit_gvar", 5, 1], true], ["All Seeds Seen", "@GVar 1", true, false, "TileArray", "mod 27", ["@GVar 5", "=", 1], [0, "@edit_gvar", 5, 0], true]];
-        // The third and the fourth lines in the script are deprecated, due to the potential anti-thematic magnitude blowout involving exotic modifiers such as visible next spawned tiles and multiple merges.
+        // The old seed algorithm were scrapped due to the modifier shenanigans that potentially allowed anti-thematic dramatic numerical scale blowouts.
 		scripts = [
-            //[[["@Grid", "arr_flat", 1, "arr_map", [["@var_retain", "@Var -1", "arr_elem", 0]]], 0n, "@end_vars", 0, "@repeat", ["@var_retain", "@Var 0", "arr_length"], "2nd", ["@global_var_retain", "@Var 0", "arr_elem", "@Var 1"], "absB", "DIVESeedUnlock", "@GVar 0", "@GVar 6", "@if", [["@Parent -3", ">", 1n], "&&", ["@GVar 2", "arr_indexOf", "@Parent -3", "=", -1]], "@edit_gvar", 2, ["@GVar 2", "arr_push", "@Parent -2"], "@end-if", "@edit_var", 1, ["@var_retain", "@Var 1", "+", 1], "@end-repeat"], "EndMovement"],
+            [[["@Grid", "arr_flat", 1, "arr_map", [["@var_retain", "@Var -1", "arr_elem", 0]]], 0n, "@end_vars", 0, "@repeat", ["@var_retain", "@Var 0", "arr_length"], "2nd", ["@global_var_retain", "@Var 0", "arr_elem", "@Var 1"], "absB", "DIVESeedUnlock", "@GVar 0", "@GVar 6", "@if", [["@Parent -3", ">", 1n], "&&", ["@GVar 2", "arr_indexOf", "@Parent -3", "=", -1]], "@edit_gvar", 2, ["@GVar 2", "arr_push", "@Parent -2"], "@end-if", "@edit_var", 1, ["@var_retain", "@Var 1", "+", 1], "@end-repeat"], "EndMovement"],
             [[["@Grid", "arr_flat", 1, "arr_map", [["@var_retain", "@Var -1", "arr_elem", 1]]], 0n, "@end_vars", 0, "@repeat", ["@var_retain", "@Var 0", "arr_length"], "2nd", ["@global_var_retain", "@Var 0", "arr_elem", "@Var 1"], "absB", "DIVESeedUnlock", "@GVar 0", "@GVar 6", "@if", [["@Parent -3", ">", 1n], "&&", ["@GVar 2", "arr_indexOf", "@Parent -3", "=", -1]], "@edit_gvar", 2, ["@GVar 2", "arr_push", "@Parent -2"], "@end-if", "@edit_var", 1, ["@var_retain", "@Var 1", "+", 1], "@end-repeat"], "EndMovement"],
-            //[[["@Grid", "arr_flat", 1, "arr_map", [["@var_retain", "@Var -1", "arr_elem", 0], "*B", ["@var_retain", "@Var -1", "arr_elem", 1]]], 0n, "@end_vars", 0, "@repeat", ["@var_retain", "@Var 0", "arr_length"], "2nd", ["@global_var_retain", "@Var 0", "arr_elem", "@Var 1"], "absB", "DIVESeedUnlock", "@GVar 0", "@GVar 6", "@if", [["@Parent -3", ">", 1n], "&&", ["@GVar 2", "arr_indexOf", "@Parent -3", "=", -1]], "@edit_gvar", 2, ["@GVar 2", "arr_push", "@Parent -2"], "@end-if", "@edit_var", 1, ["@var_retain", "@Var 1", "+", 1], "@end-repeat"], "EndMovement"],
-            // [["@var_retain", ["@var_retain", "@Var -1", "arr_elem", 0], "@end_vars", ["@var_retain", "@Var -1", "arr_elem", 0], "*B", ["@var_retain", "@Var -1", "arr_elem", 1], "absB", "DIVESeedUnlock", "@GVar 0", "@GVar 6", "@if", [["@Parent -3", ">", 1n], "&&", ["@GVar 2", "arr_indexOf", "@Parent -3", "=", -1]], "@edit_gvar", 2, ["@GVar 2", "arr_push", "@Parent -2"], "@end-if"], "Merge"],
+			[[["@Grid", "arr_flat", 1, "arr_map", [["@var_retain", "@Var -1", "arr_elem", 0]]], 0n, "@end_vars", 0, "@repeat", ["@var_retain", "@Var 0", "arr_length"], "2nd", ["@global_var_retain", "@Var 0", "arr_elem", "@Var 1"], "absB", "@if", [["@Parent -3", ">", 1n], "&&", ["@GVar 2", "arr_indexOf", "@Parent -3", "=", -1], "&&", ["@GVar 0", "arr_indexOf", "@Parent -3", "=", -1]], "@edit_gvar", 2, ["@GVar 2", "arr_push", "@Parent -2"], "@end-if", "@edit_var", 1, ["@var_retain", "@Var 1", "+", 1], "@end-repeat"], "EndMovement"],
             [["@GVar 0", 0, 0n, "@end_vars", true, "@repeat", ["@var_retain", "@Var 0", "arr_length"], "@edit_var", 2, ["@var_retain", "@Var 0", "arr_elem", "@Var 1"], "2nd", ["@var_retain", "@Grid", "arr_flat", 1, "arr_map", [["@var_retain", "@Var -1", "arr_elem", 0], "*B", ["@var_retain", "@Var -1", "arr_elem", 1]], "arr_filter", ["@Var -1", "typeof", "=", "bigint", "&&", ["@var_retain", "@Var 1", "!=", 0n]], "arr_reduce", true, ["@var_retain", "@if", ["@var_retain", "@Var -1", "%B", "@Var 2", "=", 0n], "2nd", false, "@end-if"]], "@if", "@Parent -1", "@edit_gvar", 3, ["@var_retain", "@GVar 3", "arr_push", "@Var 1"], "@end-if", "@edit_var", 1, ["@var_retain", "@Var 1", "+", 1], "@end-repeat"], "EndMovement"],
             [[0, 0n, "@end_vars", 0, "@repeat", ["@GVar 2", "arr_length"], "@edit_var", 1, ["@var_retain", "@GVar 2", "arr_elem", "@Var 0"], "@edit_gvar", 0, ["@var_retain", "@GVar 0", "arr_push", "@Var 1"], "@if", ["@var_retain", "@GVar 1", "arr_indexOf", "@Var 1", "=", -1], "@edit_gvar", 1, ["@var_retain", "@GVar 1", "arr_binaryInsert", "@Var 1"], "@end-if", "@edit_var", 0, ["@var_retain", "@Var 0", "+", 1], "@end-repeat", "@if", ["@GVar 2", "arr_length", ">", 0], "@if", ["@GVar 2", "arr_length", "=", 1], "announce", ["@GVar 2", "arr_elem", 0, "String", "@if", "@GVar 4", "2nd", "?", "@end-if", "str_concat", " unlocked!"], 2500, "@end-if", "@else-if", ["@GVar 2", "arr_length", "=", 2], "announce", ["@GVar 2", "arr_elem", 0, "String", "@if", "@GVar 4", "2nd", "?", "@end-if", "str_concat", " and ", "str_concat", ["@GVar 2", "arr_elem", 1, "String", "@if", "@GVar 4", "2nd", "?", "@end-if"], "str_concat", " unlocked!"], 2500, "@end-else-if", "@else", "announce", ["@GVar 2", "arr_pop", "arr_reduce", "", ["str_concat", ["@var_retain", "@Var -1", "@if", "@GVar 4", "2nd", "?", "@end-if"], "str_concat", ", "], "str_concat", "and ", "str_concat", ["@GVar 2", "arr_elem", ["@GVar 2", "arr_length", "-", 1]], "@if", "@GVar 4", "2nd", "?", "@end-if", "str_concat", " unlocked!"], 2500, "@end-else", "@end-if", "@edit_gvar", 2, ["@Literal"]], "EndMovement"],
             [[0, 0, "@end_vars", 0, "@if", [["@GVar 3", "arr_length", ">", 0], "&&", [["@GVar 3", "arr_length"], "<", ["@GVar 0", "arr_length"]]], "@if", ["@GVar 3", "arr_length", "=", 1], "announce", ["@GVar 0", "arr_elem", ["@GVar 3", "arr_elem", 0], "String", "@if", "@GVar 4", "2nd", "?", "@end-if", "str_concat", " eliminated!"], 2500, "@end-if", "@else-if", ["@GVar 3", "arr_length", "=", 2], "announce", ["@GVar 0", "arr_elem", ["@GVar 3", "arr_elem", 0], "String", "@if", "@GVar 4", "2nd", "?", "@end-if", "str_concat", " and ", "str_concat", ["@GVar 0", "arr_elem", ["@GVar 3", "arr_elem", 1], "String", "@if", "@GVar 4", "2nd", "?", "@end-if"], "str_concat", " eliminated!"], 2500, "@end-else-if", "@else", "announce", ["@GVar 3", "arr_pop", "arr_reduce", "", ["str_concat", ["@var_retain", "@GVar 0", "arr_elem", "@Var -1", "@if", "@GVar 4", "2nd", "?", "@end-if"], "str_concat", ", "], "str_concat", "and ", "str_concat", ["@GVar 0", "arr_elem", ["@GVar 3", "arr_elem", ["@GVar 3", "arr_length", "-", 1]]], "@if", "@GVar 4", "2nd", "?", "@end-if", "str_concat", " eliminated!"], 2500, "@end-else", "@repeat", ["@GVar 3", "arr_length"], "@edit_var", 1, ["@var_retain", "@GVar 3", "arr_elem", "@Var 0"], "@add_score", ["@var_retain", "@GVar 0", "arr_elem", "@Var 1"], "@edit_gvar", 0, ["@var_retain", "@GVar 0", "arr_splice", ["@var_retain", "@Var 1", "-", "@Var 0"], 1, ["@Literal"]], "@edit_var", 0, ["@var_retain", "@Var 0", "+", 1], "@end-repeat", "@end-if", "@edit_gvar", 3, ["@Literal"]], "EndMovement"],
@@ -16320,14 +16323,14 @@ function gmDisplayVars() {
         if (gamemode == 89.50118) { // Aquatic 2496
             title = "Aquatic 2496";
             modeRulesDescription = "Tiles are products of two integers, and two tiles can merge if they have at least one integer in common, even if they're not in the same position: for example, a 2 × 6 tile and a 6 × 7 tile can merge into a 6 × 9 tile. If the tiles are equal, the larger number is the one considered to be matching. The score given from a merge is whatever the matching number is. This mode has no win condition, so just try to get as high of a score as you can!";
-            modeSpawnDescription = "The starting seed is " + (mode_vars[1] ? 1 : 2) + ". Seeds are unlocked in the same way as DIVE, using the right-hand side value of the product (rather than treating the entire product value of both components as their own seeds, due to the scale balancing shenanigans involving exotic modifiers such as Visible Next Spawned Tiles and Multiple Merges, as well as planning to introduce the second set of seeds specifically for the left-hand side value of the product, which does not use DIVE-style recursive division). Seeds are single integers, so the spawning tile is a product of two (not necessarily distinct) seeds, such that the product is not larger than the largest tile discovered so far.";
+            modeSpawnDescription = "The starting seed is " + (mode_vars[1] ? 1 : 2) + ". Seeds are unlocked in the same way as DIVE, using both of each individual component value in the product (rather than treating the entire product value as their own seeds, due to the modifier shenanigans), but there's also the special subset of seeds that only works with the left-hand side value of the product (which does not use the DIVE-style recursive division, meaning that the special subset of seeds is mostly composite). Seeds are single integers, so the spawning tile is a product of two (not necessarily distinct) seeds, such that the product is not larger than the largest tile discovered so far.";
             if (!mode_vars[3]) {
-                modeSpawnDescription = "The starting seed is " + (mode_vars[1] ? 1 : 2) + ". Seeds are unlocked in the same way as DIVE, using the right-hand side value of the product (rather than treating the entire product value of both components as their own seeds, due to the scale balancing shenanigans involving exotic modifiers such as Visible Next Spawned Tiles and Multiple Merges, as well as planning to introduce the second set of seeds specifically for the left-hand side value of the product, which does not use DIVE-style recursive division). Seeds are single integers, so the spawning tile is a product of two (not necessarily distinct) seeds, such that the product is not larger than the largest tile discovered so far.";
+                modeSpawnDescription = "The starting seed is " + (mode_vars[1] ? 1 : 2) + ". Seeds are unlocked in the same way as DIVE, using both of each individual component value in the product (rather than treating the entire product value as their own seeds, due to the modifier shenanigans), but there's also the special subset of seeds that only works with the left-hand side value of the product (which does not use the DIVE-style recursive division, meaning that the special subset of seeds is mostly composite). Seeds are single integers, so the spawning tile is a product of two (not necessarily distinct) seeds, such that the product is not larger than the largest tile discovered so far.";
                 document.getElementById("Aquatic2496_productLimit_text").innerHTML = "Spawning tiles cannot be larger than all existing tiles.";
                 document.getElementById("Aquatic2496_productLimit_text").style.setProperty("color", "#721c00");
             }
             else {
-                modeSpawnDescription = "The starting seed is " + (mode_vars[1] ? 1 : 2) + ". Seeds are unlocked in the same way as DIVE, using the right-hand side value of the product (rather than treating the entire product value of both components as their own seeds, due to the scale balancing shenanigans involving exotic modifiers such as Visible Next Spawned Tiles and Multiple Merges, as well as planning to introduce the second set of seeds specifically for the left-hand side value of the product, which does not use DIVE-style recursive division). Seeds are single integers, so the spawning tile is a product of two (not necessarily distinct) seeds.";
+                modeSpawnDescription = "The starting seed is " + (mode_vars[1] ? 1 : 2) + ". Seeds are unlocked in the same way as DIVE, using both of each individual component value in the product (rather than treating the entire product value as their own seeds, due to the modifier shenanigans), but there's also the special subset of seeds that only works with the left-hand side value of the product (which does not use the DIVE-style recursive division, meaning that the special subset of seeds is mostly composite). Seeds are single integers, so the spawning tile is a product of two (not necessarily distinct) seeds.";
                 document.getElementById("Aquatic2496_productLimit_text").innerHTML = "Spawning tiles can be larger than all existing tiles.";
                 document.getElementById("Aquatic2496_productLimit_text").style.setProperty("color", "#d43500");
             }
@@ -17286,7 +17289,7 @@ function displayModifiers(page) {
     }
     else if (page == 2) {
         if (modifiers[3]) {
-            document.getElementById("modifiers_multiMerge_text").innerHTML = "A tile that was just merged can itself be part of another merge on the same move.";
+            document.getElementById("modifiers_multiMerge_text").innerHTML = "A tile that was just merged can itself be part of another merge on the same move. (Does not affect Partial Flow DIVE, due to the game-breaking recursion that allowed the resource usage to skyrocket dramatically while treating that mode as a freeplay with the potential exponential growth.)";
             document.getElementById("modifiers_multiMerge_text").style.setProperty("color", "#c48828");
         }
         else {
@@ -17303,11 +17306,11 @@ function displayModifiers(page) {
             document.getElementById("modifiers_spawnLocation_text").style.setProperty("color", "#c6af00");
         }
         if (modifiers[15] == "Simple") {
-            document.getElementById("modifiers_simpleSpawns_text").innerHTML = "Only the first spawnable tile type in each mode can spawn. (In 3072 and 1093 1094, this gets rid of spawning 3s and bonus tiles, keeping only 1s and 2s in the box. Does not affect 2049, 1535 1536 1537, Wildcard 2048, versions of 2216.838 with ÷2 tiles, 1321, DIVE, 10, 1825, (232, 240), 16+16i, 3,188,646, 1429, 2058, 1716, Pro-Add-Uct, any Waves Mode, any Custom Mode, or any mode that already only spawns one tile)";
+            document.getElementById("modifiers_simpleSpawns_text").innerHTML = "Only the first spawnable tile type in each mode can spawn. (In 3072 and 1093 1094, this gets rid of spawning 3s and bonus tiles, keeping only 1s and 2s in the box. Does not affect 2049, 1535 1536 1537, Wildcard 2048, versions of 2216.838 with ÷2 tiles, 1321, DIVE, 10, 1825, (232, 240), 16+16i, 3,188,646, 1429, 2058, 1716, Pro-Add-Uct, any Waves Mode, any Custom Mode, or any mode that already only spawns one tile.)";
             document.getElementById("modifiers_simpleSpawns_text").style.setProperty("color", "#d3c480");
         }
         else if (modifiers[15] == "Equal") {
-            document.getElementById("modifiers_simpleSpawns_text").innerHTML = "All tiles that can spawn have equal spawning probability. (Does not affect 3072, 1535 1536 1537, 1093 1094, any Custom Mode, or any mode that already only spawns one tile)";
+            document.getElementById("modifiers_simpleSpawns_text").innerHTML = "All tiles that can spawn have equal spawning probability. (Does not affect 3072, 1535 1536 1537, 1093 1094, any Custom Mode, or any mode that already only spawns one tile.)";
             document.getElementById("modifiers_simpleSpawns_text").style.setProperty("color", "#fab444");
         }
         else {
@@ -21173,6 +21176,11 @@ function loadModifiers() {
         spawnLocation = modifiers[4];
         start_modifier_vars = [];
         mvar_indices = [];
+		if (gamemode == 34.50118) { // Disables multiple merges in Partial Flow DIVE due to the game-breaking technical issues.
+			multiMerge = false;
+		} else {
+			multiMerge = modifiers[3];
+		}
         if (gamemode == 1) { // 2048
             if (mode_vars[0]) startTileSpawns = [[[1], 90], [[2], 10]];
         }
@@ -27184,47 +27192,102 @@ function removeMergeRuleApplies(rule) { // Replaces all "mergeRuleApplies" check
     return rule;
 }
 
-// Here is the multi-step color system conversion, because converting from HSL/HSV/HWB to perceptually uniform color spaces like LAB and OKLAB requires conversion to RGB and then XYZ as some key intermediate steps.
+/* Here is the multi-step color system conversion, because converting from HSL/HSV/HWB to perceptually uniform color spaces like LAB and OKLAB requires conversion to RGB and then XYZ as some key intermediate steps.
+   There are various sources for the conversion, including:
+   * Using Google's AI
+   * https://oklch.com/
+   * https://apps.colorjs.io/picker/
+   
+   Note: color conversions to color systems beyond RGB/HSL/HSV are still in alpha status.
+*/
 
-function linearRGB(s) {
-  var linear = 0;
-  if (s <= 0.04045) {
-    linear = s / 12.92;
-  } else {
-    linear = ((s + 0.055) / 1.055) ** 2.4;
-  }
-  return linear;
+function linearRgb(s) {
+    var linear = 0;
+    if (s <= 0.04045) {
+        linear = s / 12.92;
+    } else {
+        linear = ((s + 0.055) / 1.055) ** 2.4;
+    }
+    return linear;
 }
-function gammaRGB(l) {
-  var gamma = 0;
-  if (l <= 0.0031308) {
-    gamma = l * 12.92;
-  } else {
-    gamma = 1.055 * (l ** (1 / 2.4)) - 0.055;
-  }
-  return gamma;
+function gammaRgb(l) {
+    var gamma = 0;
+    if (l <= 0.0031308) {
+        gamma = l * 12.92;
+    } else {
+        gamma = 1.055 * (l ** (1 / 2.4)) - 0.055;
+    }
+    return gamma;
 }
 function cartesianToPolar(ab) {
-  var c = Math.sqrt(ab[0]**2 + ab[1]**2);
-  var h = Math.atan(ab[1] / ab[0]) * (180 / Math.PI);
-  return [c, h];
+    var c = Math.sqrt(ab[0] ** 2 + ab[1] ** 2);
+    var h = (Math.atan2(ab[0], ab[1]) * (180 / Math.PI) + 360) % 360;
+    return [c, h];
 }
 function polarToCartesian(ch) {
-  var a = ch[0] * Math.cos(ch[1] * (Math.PI / 180));
-  var b = ch[0] * Math.sin(ch[1] * (Math.PI / 180));
-  return [a, b];
+    var a = ch[0] * Math.cos(ch[1] * (Math.PI / 180));
+    var b = ch[0] * Math.sin(ch[1] * (Math.PI / 180));
+    return [a, b];
 }
 function linearRgbToXyzD65(r, g, b) {
-	var x = r * 0.412391 + g * 0.357584 + b * 0.180481;
+    var x = r * 0.412391 + g * 0.357584 + b * 0.180481;
     var y = r * 0.212639 + g * 0.715169 + b * 0.072192;
     var z = r * 0.019331 + g * 0.119195 + b * 0.950532;
-	return [x, y, z];
+    return [x, y, z];
 }
 function xyzD65ToLinearRgb(x, y, z) {
-	var r = x *  3.2404542 + y * -1.5371385 + z * -0.4985314;
-    var g = x * -0.9692660 + y *  1.8760108 + z *  0.0415560;
-    var b = x *  0.0556434 + y * -0.2040259 + z *  1.0572252;
-	return [r, g, b];
+    var r = x * 3.2404542 + y * -1.5371385 + z * -0.4985314;
+    var g = x * -0.9692660 + y * 1.8760108 + z * 0.0415560;
+    var b = x * 0.0556434 + y * -0.2040259 + z * 1.0572252;
+    return [r, g, b];
+}
+function xyzToLab(x, y, z) {
+    // D65 reference point (2° observer, normalized where the unit is 1)
+    const refX = 0.950456;
+    const refY = 1;
+    const refZ = 1.089058;
+    // 1. Normalize XYZ relative to reference white
+    let varX = x / refX;
+    let varY = y;
+    // Division by 1 is redundant, as anything divided by 1 equals itself.
+    let varZ = z / refZ;
+    // 2. Apply non-linear cube root / linear transformation
+    const epsilon = 216 / 24389;
+    const kappa = 24389 / 27;
+    const f = (t) => (t > epsilon ? Math.cbrt(t) : (kappa * t + 16) / 116);
+    varX = f(varX);
+    varY = f(varY);
+    varZ = f(varZ);
+    // 3. Calculate L*, a*, and b*
+    const L = 116 * varY - 16;
+    const a = 500 * (varX - varY);
+    const b = 200 * (varY - varZ);
+    return [L, a, b];
+}
+function labToXyz(L, a, b) {
+    // D65 reference point (2° observer, normalized where the unit is 1)
+    const refX = 0.950456;
+    const refY = 1;
+    const refZ = 1.089058;
+    // 1. Normalize XYZ relative to reference white
+    let varY = (L + 16) / 116;
+    let varX = a / 500 + varY;
+    let varZ = varY - b / 200;
+    // 2. Apply inverse piecewise cube / linear transformation
+    const epsilon = 216 / 24389;
+    const kappa = 24389 / 27;
+    const fInv = (t) => {
+        const tCubed = Math.pow(t, 3);
+        return tCubed > epsilon ? tCubed : (116 * t - 16) / kappa;
+    }
+    varX = fInv(varX);
+    varY = fInv(varY);
+    varZ = fInv(varZ);
+    // 3. Scale by reference white point
+    const x = varX * refX;
+    const y = varY * refY;
+    const z = varZ * refZ;
+    return [x, y, z];
 }
 
 function evaluateColor(color) {
@@ -27473,6 +27536,7 @@ function evaluateColor(color) {
 
 function convertColor(col, system) {
     // Converts colors between systems; mostly useful because rotateColor uses HSLA colors by default. Conversion from/to color spaces beyond RGB and HSL such as XYZ, LAB/LCH, and OKLAB/OKLCH are still under construction.
+	// Note that conversion from/to gamut-independent color systems (XYZ, LAB/LCH, and OKLAB/OKLCH) to HSL/HSV/HWB aren't done directly with each other, they must be converted first through RGB.
     let vcoord = 0; let hcoord = 0; let gri = Grid; let vars = []; let globalVarStat = 0;
     if (arguments.length > 2 && arguments[2] !== undefined) vcoord = arguments[2];
     if (arguments.length > 3 && arguments[3] !== undefined) hcoord = arguments[3];
@@ -27629,7 +27693,6 @@ function convertColor(col, system) {
                 colorarray = ["@HSLA", hue, saturationL * 100, lightness * 100, e4];
             }
             else colorarray = [colorarray[0], e1, e2, e3, e4];
-            // Note that conversion from wide-gamut color systems (XYZ, LAB/LCH, and OKLAB/OKLCH) to HSL/HSV/HWB aren't done directly with each other, they must be converted first through RGB.
         }
         return colorarray;
     }
