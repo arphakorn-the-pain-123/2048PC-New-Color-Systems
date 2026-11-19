@@ -9607,7 +9607,7 @@ function loadMode(mode) {
         document.documentElement.style.setProperty("--tile-color", "#1b7288");
         document.documentElement.style.setProperty("--text-color", "#233851");
         statBoxes = [["Score", "@Score", false, false, "Tile", "mod 27"], ["Seeds", "@GVar 0", false, false, "TileArray", "mod 27"], ["Seeds Seen", ["@GVar 1", "arr_length"], ...[,,,,], ["@GVar 5", "=", 0], [0, "@edit_gvar", 5, 1], true], ["All Seeds Seen", "@GVar 1", true, false, "TileArray", "mod 27", ["@GVar 5", "=", 1], [0, "@edit_gvar", 5, 0], true]];
-		switch (mod_vars[4]) { // The old seed algorithm was disabled by default due to the modifier shenanigans that potentially allowed anti-thematic dramatic numerical scale blowouts. However, there is now a mode modifier that reintroduce the unpatched seed algorithm if you wish, but that is not recommended for normal gameplay.
+		switch (mode_vars[4]) { // The old seed algorithm was disabled by default due to the modifier shenanigans that potentially allowed anti-thematic dramatic numerical scale blowouts. However, there is now a mode modifier that reintroduce the unpatched seed algorithm if you wish, but that is not recommended for normal gameplay.
 			default: scripts = [ // Default modifier for Aquatic 2496
 				[[["@Grid", "arr_flat", 1, "arr_map", [["@var_retain", "@Var -1", "arr_elem", 0]]], 0n, "@end_vars", 0, "@repeat", ["@var_retain", "@Var 0", "arr_length"], "2nd", ["@global_var_retain", "@Var 0", "arr_elem", "@Var 1"], "absB", "DIVESeedUnlock", "@GVar 0", "@GVar 6", "@if", [["@Parent -3", ">", 1n], "&&", ["@GVar 2", "arr_indexOf", "@Parent -3", "=", -1]], "@edit_gvar", 2, ["@GVar 2", "arr_push", "@Parent -2"], "@end-if", "@edit_var", 1, ["@var_retain", "@Var 1", "+", 1], "@end-repeat"], "EndMovement"],
 				[[["@Grid", "arr_flat", 1, "arr_map", [["@var_retain", "@Var -1", "arr_elem", 1]]], 0n, "@end_vars", 0, "@repeat", ["@var_retain", "@Var 0", "arr_length"], "2nd", ["@global_var_retain", "@Var 0", "arr_elem", "@Var 1"], "absB", "DIVESeedUnlock", "@GVar 0", "@GVar 6", "@if", [["@Parent -3", ">", 1n], "&&", ["@GVar 2", "arr_indexOf", "@Parent -3", "=", -1]], "@edit_gvar", 2, ["@GVar 2", "arr_push", "@Parent -2"], "@end-if", "@edit_var", 1, ["@var_retain", "@Var 1", "+", 1], "@end-repeat"], "EndMovement"],
@@ -16404,7 +16404,7 @@ function gmDisplayVars() {
 				    document.getElementById("Aquatic2496_seedPreset_text").style.setProperty("color", "#8e22e2");
 				break;
 				case -1:
-					document.getElementById("Aquatic2496_seedPreset_text").innerHTML = "To undo the modifier shenanigan fix, seeds work by treating the entire value of the product as their own seeds.";
+					document.getElementById("Aquatic2496_seedPreset_text").innerHTML = "To undo the modifier shenanigan fix, seeds work by treating the entire value of the product as their own seeds. (Only for testing purposes, not recommended for normal gameplay.)";
 				    document.getElementById("Aquatic2496_seedPreset_text").style.setProperty("color", "#a93759");
 				break;
 			}
