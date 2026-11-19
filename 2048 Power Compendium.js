@@ -1,5 +1,6 @@
 /* There are secrets hidden in the Compendium. If you want to find those secrets legitimately, I'd recommend not looking at the code. If you don't know whether you've found all the secrets yet, then you have not.
-   Although the biggest part of my modding is the implementation of color spaces beyond RGB/HSL, namely XYZ (D65), LAB/LCH, and OKLAB/OKLCH [edited after around line 27200], this includes many other changes and plans, including:
+   Although the biggest part of my modding is the implementation of color spaces beyond RGB/HSL, namely XYZ (D65), LAB/LCH, and OKLAB/OKLCH [edited after around line 27300, save for the updateAtSign after line 32400],
+   this includes many other changes and plans, including:
    * Major clarification of rule texts in certain modes to reduce misunderstanding
    * Aquatic 2496 seed algorithm overhaul
    * Dynamic mod 27 spawning tiles to eliminate softlocks in certain combinations (planned)
@@ -236,7 +237,7 @@ let tempAutoDirections;
 
 //These lists of operators are used by CalcArrayConvert
 let any_operators = ["=", "!=", ">", "<", ">=", "<=", "max", "min", "1st", "first", "2nd", "second", "Number", "String", "Boolean", "Array", "BigInt", "GaussianBigInt", "typeof", "output", "console.log", "CalcArrayParent", "evaluateColor", "customDIVESeedUnlock", "defaultAbbrevAny", "tileValue", "discoveredTilesFilter", "@ScriptSignal"];
-let number_operators = ["+", "-", "*", "/", "%", "mod", "^", "**", "log", "round", "floor", "ceil", "ceiling", "trunc", "abs", "sign", "sin", "cos", "tan", "gcd", "lcm", "factorial", "prime", "expomod", "bit&", "bit|", "bit~", "bit^", "bit<<", "bit>>", "bit>>>", "rand_int", "rand_float", "defaultAbbrev", "highPrecAbbrev", "mergeRuleApplies", "mergeRuleApplies_nonRecursive"];
+let number_operators = ["+", "-", "*", "/", "%", "mod", "^", "**", "sqrt", "cbrt", "log", "log2", "log10", "ln", "exp", "round", "floor", "ceil", "ceiling", "trunc", "abs", "sign", "sin", "cos", "tan", "gcd", "lcm", "factorial", "prime", "expomod", "bit&", "bit|", "bit~", "bit^", "bit<<", "bit>>", "bit>>>", "rand_int", "rand_float", "defaultAbbrev", "highPrecAbbrev", "mergeRuleApplies", "mergeRuleApplies_nonRecursive"];
 let string_operators = ["str_char", "str_concat", "str_concat_front", "str_length", "str_slice", "str_substr", "str_replace", "str_indexOf", "str_lastIndexOf", "str_indexOfFrom", "str_lastIndexOfFrom", "str_includes", "str_splice", "str_toUpperCase", "str_toLowerCase", "str_split", "baseDeconvertB", "deevaluateColor"];
 let boolean_operators = ["&&", "||", "!", "&&nsc", "||nsc"];
 let array_operators = ["arr_copy", "arr_elem", "arr_edit_elem", "arr_length", "arr_push", "arr_pop", "arr_shift", "arr_unshift", "arr_concat", "arr_concat_front", "arr_flat", "arr_splice", "arr_slice", "arr_indexOf", "arr_lastIndexOf", "arr_indexOfFrom", "arr_lastIndexOfFrom", "arr_includes", "arr_reverse", "arr_sort", "arr_map", "arr_filter", "arr_reduce", "arr_reduceRight", "arr_binarySearch", "arr_binaryInsert", "arr_binarySearchCF", "arr_binaryInsertCF", "arr_eqRearrange", "CalcArray", "primeDefactorizeB", "weightedRandomArrayEntry", "multicolor"];
@@ -1595,6 +1596,15 @@ document.getElementById("GaussianDIVE_quadrant3SpawnRatio_change").addEventListe
 });
 document.getElementById("Aquatic2496_productLimit_button").addEventListener("click", function(){
     mode_vars[3] = !mode_vars[3];
+    gmDisplayVars();
+});
+document.getElementById("Aquatic2496_seedPreset_button").addEventListener("click", function(){
+    switch (mode_vars[4]) {
+		case 2: mode_vars[4] = -1; // -1 means the unpatched seed algorithm with modifier shenanigans that potentially allow erroneous composite seeds to be unlocked after moving that tile after seed elimination
+		break;
+		default: mode_vars[4]++;
+		break;
+    }
     gmDisplayVars();
 });
 document.getElementById("PartialFlowDIVE_coprimeMerge_button").addEventListener("click", function(){
@@ -9550,7 +9560,12 @@ function loadMode(mode) {
     else if (mode == 89.50118) { // Aquatic 2496
         // width = 4; height = 4;
         TileNumAmount = 2;
-        mode_vars = [0, false, 0, true]; // For the first entry, 0 means seeds can be unlocked and eliminated, -1 means seeds can be unlocked but not eliminated. The second entry is whether 1s can spawn. The third entry controls the seed unlock testing rules: 0 is largest to smallest, 2 is smallest to largest, 3 is "whatever order the seeds happen to be in", and 1 guarantees the minimum result but runs in exponential time. Fourth entry is whether spawning tiles can be larger than existing tiles.
+        mode_vars = [0, false, 0, true, 0]; // For the first entry, 0 means seeds can be unlocked and eliminated, -1 means seeds can be unlocked but not eliminated. The second entry is whether 1s can spawn. The third entry controls the seed unlock testing rules: 0 is largest to smallest, 2 is smallest to largest, 3 is "whatever order the seeds happen to be in", and 1 guarantees the minimum result but runs in exponential time. Fourth entry is whether spawning tiles can be larger than existing tiles. Fifth entry is the preset of the seed algorithm.
+		// The seed algorithm presets including:
+		// "0" is for the default spawning algorithm, using the individual values on each side of the product, and do the exact same replication of DIVE's recursive division even for the left-hand side value of the product.
+		// "1" is seeds are checked exclusively for the right-hand side value of the product and ignores the left-hand side.
+		// "2" uses the completely different algorithm for the left-hand side value of the product, which does not use the DIVE-style recursive division.
+		// "-1" is the unpatched seed algorithm that undo the modifier shenanigan fix for Visible Next Spawned Tiles and Multiple Merges, by reapplying pre-DIVESeedUnlock multiplication into the script, which potentially allows composite seeds (especially squares of primes) to be easily unlocked right after seed elimination.
         start_game_vars = [[2n], [2n], [], [], false, 0, 0, [[2n, 2n]], 4n, 0] // The first entry is the current seeds, the second entry is all seeds discovered, the third entry is the seeds that are currently being added, the fourth entry is the seeds that are currently being removed. The fifth entry is used when tile text is hidden to replace the announcement numbers with question marks. The sixth entry controls the display of "all seeds seen". The seventh entry matches the third entry of mode_vars. The eighth entry is the list of possible spawning tiles, the ninth entry is the largest tile discovered so far, and the tenth entry is used for spawns.
         TileTypes = [
             [["@This 0", ">", 0n], ["@This 0", "*B", "@This 1"], "#000000", "#ffffff", "0px 0px 5px #000000", 2.5, 0, ["Innerscript", [["@This 0", "defaultAbbrevB"], "str_concat", " × ", "str_concat", ["@This 1", "defaultAbbrevB"]], "bottom-center", 6, 0], ["PrimeImage", ["@ColorScheme", "mod 27", ["@This 0", "absB"], 180, false]], ["PrimeImage", ["@ColorScheme", "mod 27", "@This 1", 180, false], ["@linear-gradient", 90, "#0000", 0, 30, "#000", 70, 100]]],
@@ -9592,16 +9607,42 @@ function loadMode(mode) {
         document.documentElement.style.setProperty("--tile-color", "#1b7288");
         document.documentElement.style.setProperty("--text-color", "#233851");
         statBoxes = [["Score", "@Score", false, false, "Tile", "mod 27"], ["Seeds", "@GVar 0", false, false, "TileArray", "mod 27"], ["Seeds Seen", ["@GVar 1", "arr_length"], ...[,,,,], ["@GVar 5", "=", 0], [0, "@edit_gvar", 5, 1], true], ["All Seeds Seen", "@GVar 1", true, false, "TileArray", "mod 27", ["@GVar 5", "=", 1], [0, "@edit_gvar", 5, 0], true]];
-        // The old seed algorithm were scrapped due to the modifier shenanigans that potentially allowed anti-thematic dramatic numerical scale blowouts.
-		scripts = [
-            //[[["@Grid", "arr_flat", 1, "arr_map", [["@var_retain", "@Var -1", "arr_elem", 0]]], 0n, "@end_vars", 0, "@repeat", ["@var_retain", "@Var 0", "arr_length"], "2nd", ["@global_var_retain", "@Var 0", "arr_elem", "@Var 1"], "absB", "DIVESeedUnlock", "@GVar 0", "@GVar 6", "@if", [["@Parent -3", ">", 1n], "&&", ["@GVar 2", "arr_indexOf", "@Parent -3", "=", -1]], "@edit_gvar", 2, ["@GVar 2", "arr_push", "@Parent -2"], "@end-if", "@edit_var", 1, ["@var_retain", "@Var 1", "+", 1], "@end-repeat"], "EndMovement"],
-            [[["@Grid", "arr_flat", 1, "arr_map", [["@var_retain", "@Var -1", "arr_elem", 1]]], 0n, "@end_vars", 0, "@repeat", ["@var_retain", "@Var 0", "arr_length"], "2nd", ["@global_var_retain", "@Var 0", "arr_elem", "@Var 1"], "absB", "DIVESeedUnlock", "@GVar 0", "@GVar 6", "@if", [["@Parent -3", ">", 1n], "&&", ["@GVar 2", "arr_indexOf", "@Parent -3", "=", -1]], "@edit_gvar", 2, ["@GVar 2", "arr_push", "@Parent -2"], "@end-if", "@edit_var", 1, ["@var_retain", "@Var 1", "+", 1], "@end-repeat"], "EndMovement"],
-			[[["@Grid", "arr_flat", 1, "arr_map", [["@var_retain", "@Var -1", "arr_elem", 0]]], 0n, "@end_vars", 0, "@repeat", ["@var_retain", "@Var 0", "arr_length"], "2nd", ["@global_var_retain", "@Var 0", "arr_elem", "@Var 1"], "absB", "@if", [["@Parent -3", ">", 1n], "&&", ["@GVar 2", "arr_indexOf", "@Parent -3", "=", -1], "&&", ["@GVar 0", "arr_indexOf", "@Parent -3", "=", -1]], "@edit_gvar", 2, ["@GVar 2", "arr_push", "@Parent -2"], "@end-if", "@edit_var", 1, ["@var_retain", "@Var 1", "+", 1], "@end-repeat"], "EndMovement"],
-            [["@GVar 0", 0, 0n, "@end_vars", true, "@repeat", ["@var_retain", "@Var 0", "arr_length"], "@edit_var", 2, ["@var_retain", "@Var 0", "arr_elem", "@Var 1"], "2nd", ["@var_retain", "@Grid", "arr_flat", 1, "arr_map", [["@var_retain", "@Var -1", "arr_elem", 0], "*B", ["@var_retain", "@Var -1", "arr_elem", 1]], "arr_filter", ["@Var -1", "typeof", "=", "bigint", "&&", ["@var_retain", "@Var 1", "!=", 0n]], "arr_reduce", true, ["@var_retain", "@if", ["@var_retain", "@Var -1", "%B", "@Var 2", "=", 0n], "2nd", false, "@end-if"]], "@if", "@Parent -1", "@edit_gvar", 3, ["@var_retain", "@GVar 3", "arr_push", "@Var 1"], "@end-if", "@edit_var", 1, ["@var_retain", "@Var 1", "+", 1], "@end-repeat"], "EndMovement"],
-            [[0, 0n, "@end_vars", 0, "@repeat", ["@GVar 2", "arr_length"], "@edit_var", 1, ["@var_retain", "@GVar 2", "arr_elem", "@Var 0"], "@edit_gvar", 0, ["@var_retain", "@GVar 0", "arr_push", "@Var 1"], "@if", ["@var_retain", "@GVar 1", "arr_indexOf", "@Var 1", "=", -1], "@edit_gvar", 1, ["@var_retain", "@GVar 1", "arr_binaryInsert", "@Var 1"], "@end-if", "@edit_var", 0, ["@var_retain", "@Var 0", "+", 1], "@end-repeat", "@if", ["@GVar 2", "arr_length", ">", 0], "@if", ["@GVar 2", "arr_length", "=", 1], "announce", ["@GVar 2", "arr_elem", 0, "String", "@if", "@GVar 4", "2nd", "?", "@end-if", "str_concat", " unlocked!"], 2500, "@end-if", "@else-if", ["@GVar 2", "arr_length", "=", 2], "announce", ["@GVar 2", "arr_elem", 0, "String", "@if", "@GVar 4", "2nd", "?", "@end-if", "str_concat", " and ", "str_concat", ["@GVar 2", "arr_elem", 1, "String", "@if", "@GVar 4", "2nd", "?", "@end-if"], "str_concat", " unlocked!"], 2500, "@end-else-if", "@else", "announce", ["@GVar 2", "arr_pop", "arr_reduce", "", ["str_concat", ["@var_retain", "@Var -1", "@if", "@GVar 4", "2nd", "?", "@end-if"], "str_concat", ", "], "str_concat", "and ", "str_concat", ["@GVar 2", "arr_elem", ["@GVar 2", "arr_length", "-", 1]], "@if", "@GVar 4", "2nd", "?", "@end-if", "str_concat", " unlocked!"], 2500, "@end-else", "@end-if", "@edit_gvar", 2, ["@Literal"]], "EndMovement"],
-            [[0, 0, "@end_vars", 0, "@if", [["@GVar 3", "arr_length", ">", 0], "&&", [["@GVar 3", "arr_length"], "<", ["@GVar 0", "arr_length"]]], "@if", ["@GVar 3", "arr_length", "=", 1], "announce", ["@GVar 0", "arr_elem", ["@GVar 3", "arr_elem", 0], "String", "@if", "@GVar 4", "2nd", "?", "@end-if", "str_concat", " eliminated!"], 2500, "@end-if", "@else-if", ["@GVar 3", "arr_length", "=", 2], "announce", ["@GVar 0", "arr_elem", ["@GVar 3", "arr_elem", 0], "String", "@if", "@GVar 4", "2nd", "?", "@end-if", "str_concat", " and ", "str_concat", ["@GVar 0", "arr_elem", ["@GVar 3", "arr_elem", 1], "String", "@if", "@GVar 4", "2nd", "?", "@end-if"], "str_concat", " eliminated!"], 2500, "@end-else-if", "@else", "announce", ["@GVar 3", "arr_pop", "arr_reduce", "", ["str_concat", ["@var_retain", "@GVar 0", "arr_elem", "@Var -1", "@if", "@GVar 4", "2nd", "?", "@end-if"], "str_concat", ", "], "str_concat", "and ", "str_concat", ["@GVar 0", "arr_elem", ["@GVar 3", "arr_elem", ["@GVar 3", "arr_length", "-", 1]]], "@if", "@GVar 4", "2nd", "?", "@end-if", "str_concat", " eliminated!"], 2500, "@end-else", "@repeat", ["@GVar 3", "arr_length"], "@edit_var", 1, ["@var_retain", "@GVar 3", "arr_elem", "@Var 0"], "@add_score", ["@var_retain", "@GVar 0", "arr_elem", "@Var 1"], "@edit_gvar", 0, ["@var_retain", "@GVar 0", "arr_splice", ["@var_retain", "@Var 1", "-", "@Var 0"], 1, ["@Literal"]], "@edit_var", 0, ["@var_retain", "@Var 0", "+", 1], "@end-repeat", "@end-if", "@edit_gvar", 3, ["@Literal"]], "EndMovement"],
-            [["@global_var_retain_inner", 0, 0, ["@GVar 0", "arr_sort", ["@Var -2", "-", "@Var -1", "Number"]], "@end_vars", 0, "@edit_gvar", 7, ["@Literal"], "@repeat", ["@Var 2", "arr_length", ">", "@Var 0"], "@edit_var", 1, "@Var 0", "@repeat", ["@Var 2", "arr_length", ">", "@Var 1"], "@if", [["@Var 2", "arr_elem", "@Var 0"], "*B", ["@Var 2", "arr_elem", "@Var 1"], "<=", "@GVar 8"], "@edit_gvar", 7, ["@GVar 7", "arr_push", [["@Literal"], "arr_push", ["@Var 2", "arr_elem", "@Var 0"], "arr_push", ["@Var 2", "arr_elem", "@Var 1"]]], "@end-if", "@edit_var", 1, ["@Var 1", "+", 1], "@end-repeat", "@edit_var", 0, ["@Var 0", "+", 1], "@end-repeat"], "EndMovement"]
-        ];
+		switch (mod_vars[4]) { // The old seed algorithm was disabled by default due to the modifier shenanigans that potentially allowed anti-thematic dramatic numerical scale blowouts. However, there is now a mode modifier that reintroduce the unpatched seed algorithm if you wish, but that is not recommended for normal gameplay.
+			default: scripts = [ // Default modifier for Aquatic 2496
+				[[["@Grid", "arr_flat", 1, "arr_map", [["@var_retain", "@Var -1", "arr_elem", 0]]], 0n, "@end_vars", 0, "@repeat", ["@var_retain", "@Var 0", "arr_length"], "2nd", ["@global_var_retain", "@Var 0", "arr_elem", "@Var 1"], "absB", "DIVESeedUnlock", "@GVar 0", "@GVar 6", "@if", [["@Parent -3", ">", 1n], "&&", ["@GVar 2", "arr_indexOf", "@Parent -3", "=", -1]], "@edit_gvar", 2, ["@GVar 2", "arr_push", "@Parent -2"], "@end-if", "@edit_var", 1, ["@var_retain", "@Var 1", "+", 1], "@end-repeat"], "EndMovement"],
+				[[["@Grid", "arr_flat", 1, "arr_map", [["@var_retain", "@Var -1", "arr_elem", 1]]], 0n, "@end_vars", 0, "@repeat", ["@var_retain", "@Var 0", "arr_length"], "2nd", ["@global_var_retain", "@Var 0", "arr_elem", "@Var 1"], "absB", "DIVESeedUnlock", "@GVar 0", "@GVar 6", "@if", [["@Parent -3", ">", 1n], "&&", ["@GVar 2", "arr_indexOf", "@Parent -3", "=", -1]], "@edit_gvar", 2, ["@GVar 2", "arr_push", "@Parent -2"], "@end-if", "@edit_var", 1, ["@var_retain", "@Var 1", "+", 1], "@end-repeat"], "EndMovement"],
+				[["@GVar 0", 0, 0n, "@end_vars", true, "@repeat", ["@var_retain", "@Var 0", "arr_length"], "@edit_var", 2, ["@var_retain", "@Var 0", "arr_elem", "@Var 1"], "2nd", ["@var_retain", "@Grid", "arr_flat", 1, "arr_map", [["@var_retain", "@Var -1", "arr_elem", 0], "*B", ["@var_retain", "@Var -1", "arr_elem", 1]], "arr_filter", ["@Var -1", "typeof", "=", "bigint", "&&", ["@var_retain", "@Var 1", "!=", 0n]], "arr_reduce", true, ["@var_retain", "@if", ["@var_retain", "@Var -1", "%B", "@Var 2", "=", 0n], "2nd", false, "@end-if"]], "@if", "@Parent -1", "@edit_gvar", 3, ["@var_retain", "@GVar 3", "arr_push", "@Var 1"], "@end-if", "@edit_var", 1, ["@var_retain", "@Var 1", "+", 1], "@end-repeat"], "EndMovement"],
+				[[0, 0n, "@end_vars", 0, "@repeat", ["@GVar 2", "arr_length"], "@edit_var", 1, ["@var_retain", "@GVar 2", "arr_elem", "@Var 0"], "@edit_gvar", 0, ["@var_retain", "@GVar 0", "arr_push", "@Var 1"], "@if", ["@var_retain", "@GVar 1", "arr_indexOf", "@Var 1", "=", -1], "@edit_gvar", 1, ["@var_retain", "@GVar 1", "arr_binaryInsert", "@Var 1"], "@end-if", "@edit_var", 0, ["@var_retain", "@Var 0", "+", 1], "@end-repeat", "@if", ["@GVar 2", "arr_length", ">", 0], "@if", ["@GVar 2", "arr_length", "=", 1], "announce", ["@GVar 2", "arr_elem", 0, "String", "@if", "@GVar 4", "2nd", "?", "@end-if", "str_concat", " unlocked!"], 2500, "@end-if", "@else-if", ["@GVar 2", "arr_length", "=", 2], "announce", ["@GVar 2", "arr_elem", 0, "String", "@if", "@GVar 4", "2nd", "?", "@end-if", "str_concat", " and ", "str_concat", ["@GVar 2", "arr_elem", 1, "String", "@if", "@GVar 4", "2nd", "?", "@end-if"], "str_concat", " unlocked!"], 2500, "@end-else-if", "@else", "announce", ["@GVar 2", "arr_pop", "arr_reduce", "", ["str_concat", ["@var_retain", "@Var -1", "@if", "@GVar 4", "2nd", "?", "@end-if"], "str_concat", ", "], "str_concat", "and ", "str_concat", ["@GVar 2", "arr_elem", ["@GVar 2", "arr_length", "-", 1]], "@if", "@GVar 4", "2nd", "?", "@end-if", "str_concat", " unlocked!"], 2500, "@end-else", "@end-if", "@edit_gvar", 2, ["@Literal"]], "EndMovement"],
+				[[0, 0, "@end_vars", 0, "@if", [["@GVar 3", "arr_length", ">", 0], "&&", [["@GVar 3", "arr_length"], "<", ["@GVar 0", "arr_length"]]], "@if", ["@GVar 3", "arr_length", "=", 1], "announce", ["@GVar 0", "arr_elem", ["@GVar 3", "arr_elem", 0], "String", "@if", "@GVar 4", "2nd", "?", "@end-if", "str_concat", " eliminated!"], 2500, "@end-if", "@else-if", ["@GVar 3", "arr_length", "=", 2], "announce", ["@GVar 0", "arr_elem", ["@GVar 3", "arr_elem", 0], "String", "@if", "@GVar 4", "2nd", "?", "@end-if", "str_concat", " and ", "str_concat", ["@GVar 0", "arr_elem", ["@GVar 3", "arr_elem", 1], "String", "@if", "@GVar 4", "2nd", "?", "@end-if"], "str_concat", " eliminated!"], 2500, "@end-else-if", "@else", "announce", ["@GVar 3", "arr_pop", "arr_reduce", "", ["str_concat", ["@var_retain", "@GVar 0", "arr_elem", "@Var -1", "@if", "@GVar 4", "2nd", "?", "@end-if"], "str_concat", ", "], "str_concat", "and ", "str_concat", ["@GVar 0", "arr_elem", ["@GVar 3", "arr_elem", ["@GVar 3", "arr_length", "-", 1]]], "@if", "@GVar 4", "2nd", "?", "@end-if", "str_concat", " eliminated!"], 2500, "@end-else", "@repeat", ["@GVar 3", "arr_length"], "@edit_var", 1, ["@var_retain", "@GVar 3", "arr_elem", "@Var 0"], "@add_score", ["@var_retain", "@GVar 0", "arr_elem", "@Var 1"], "@edit_gvar", 0, ["@var_retain", "@GVar 0", "arr_splice", ["@var_retain", "@Var 1", "-", "@Var 0"], 1, ["@Literal"]], "@edit_var", 0, ["@var_retain", "@Var 0", "+", 1], "@end-repeat", "@end-if", "@edit_gvar", 3, ["@Literal"]], "EndMovement"],
+				[["@global_var_retain_inner", 0, 0, ["@GVar 0", "arr_sort", ["@Var -2", "-", "@Var -1", "Number"]], "@end_vars", 0, "@edit_gvar", 7, ["@Literal"], "@repeat", ["@Var 2", "arr_length", ">", "@Var 0"], "@edit_var", 1, "@Var 0", "@repeat", ["@Var 2", "arr_length", ">", "@Var 1"], "@if", [["@Var 2", "arr_elem", "@Var 0"], "*B", ["@Var 2", "arr_elem", "@Var 1"], "<=", "@GVar 8"], "@edit_gvar", 7, ["@GVar 7", "arr_push", [["@Literal"], "arr_push", ["@Var 2", "arr_elem", "@Var 0"], "arr_push", ["@Var 2", "arr_elem", "@Var 1"]]], "@end-if", "@edit_var", 1, ["@Var 1", "+", 1], "@end-repeat", "@edit_var", 0, ["@Var 0", "+", 1], "@end-repeat"], "EndMovement"]
+			];
+			break;
+			case 1: scripts = [ // Right-Only Aquatic 2496
+				[[["@Grid", "arr_flat", 1, "arr_map", [["@var_retain", "@Var -1", "arr_elem", 1]]], 0n, "@end_vars", 0, "@repeat", ["@var_retain", "@Var 0", "arr_length"], "2nd", ["@global_var_retain", "@Var 0", "arr_elem", "@Var 1"], "absB", "DIVESeedUnlock", "@GVar 0", "@GVar 6", "@if", [["@Parent -3", ">", 1n], "&&", ["@GVar 2", "arr_indexOf", "@Parent -3", "=", -1]], "@edit_gvar", 2, ["@GVar 2", "arr_push", "@Parent -2"], "@end-if", "@edit_var", 1, ["@var_retain", "@Var 1", "+", 1], "@end-repeat"], "EndMovement"],
+				[["@GVar 0", 0, 0n, "@end_vars", true, "@repeat", ["@var_retain", "@Var 0", "arr_length"], "@edit_var", 2, ["@var_retain", "@Var 0", "arr_elem", "@Var 1"], "2nd", ["@var_retain", "@Grid", "arr_flat", 1, "arr_map", [["@var_retain", "@Var -1", "arr_elem", 0], "*B", ["@var_retain", "@Var -1", "arr_elem", 1]], "arr_filter", ["@Var -1", "typeof", "=", "bigint", "&&", ["@var_retain", "@Var 1", "!=", 0n]], "arr_reduce", true, ["@var_retain", "@if", ["@var_retain", "@Var -1", "%B", "@Var 2", "=", 0n], "2nd", false, "@end-if"]], "@if", "@Parent -1", "@edit_gvar", 3, ["@var_retain", "@GVar 3", "arr_push", "@Var 1"], "@end-if", "@edit_var", 1, ["@var_retain", "@Var 1", "+", 1], "@end-repeat"], "EndMovement"],
+				[[0, 0n, "@end_vars", 0, "@repeat", ["@GVar 2", "arr_length"], "@edit_var", 1, ["@var_retain", "@GVar 2", "arr_elem", "@Var 0"], "@edit_gvar", 0, ["@var_retain", "@GVar 0", "arr_push", "@Var 1"], "@if", ["@var_retain", "@GVar 1", "arr_indexOf", "@Var 1", "=", -1], "@edit_gvar", 1, ["@var_retain", "@GVar 1", "arr_binaryInsert", "@Var 1"], "@end-if", "@edit_var", 0, ["@var_retain", "@Var 0", "+", 1], "@end-repeat", "@if", ["@GVar 2", "arr_length", ">", 0], "@if", ["@GVar 2", "arr_length", "=", 1], "announce", ["@GVar 2", "arr_elem", 0, "String", "@if", "@GVar 4", "2nd", "?", "@end-if", "str_concat", " unlocked!"], 2500, "@end-if", "@else-if", ["@GVar 2", "arr_length", "=", 2], "announce", ["@GVar 2", "arr_elem", 0, "String", "@if", "@GVar 4", "2nd", "?", "@end-if", "str_concat", " and ", "str_concat", ["@GVar 2", "arr_elem", 1, "String", "@if", "@GVar 4", "2nd", "?", "@end-if"], "str_concat", " unlocked!"], 2500, "@end-else-if", "@else", "announce", ["@GVar 2", "arr_pop", "arr_reduce", "", ["str_concat", ["@var_retain", "@Var -1", "@if", "@GVar 4", "2nd", "?", "@end-if"], "str_concat", ", "], "str_concat", "and ", "str_concat", ["@GVar 2", "arr_elem", ["@GVar 2", "arr_length", "-", 1]], "@if", "@GVar 4", "2nd", "?", "@end-if", "str_concat", " unlocked!"], 2500, "@end-else", "@end-if", "@edit_gvar", 2, ["@Literal"]], "EndMovement"],
+				[[0, 0, "@end_vars", 0, "@if", [["@GVar 3", "arr_length", ">", 0], "&&", [["@GVar 3", "arr_length"], "<", ["@GVar 0", "arr_length"]]], "@if", ["@GVar 3", "arr_length", "=", 1], "announce", ["@GVar 0", "arr_elem", ["@GVar 3", "arr_elem", 0], "String", "@if", "@GVar 4", "2nd", "?", "@end-if", "str_concat", " eliminated!"], 2500, "@end-if", "@else-if", ["@GVar 3", "arr_length", "=", 2], "announce", ["@GVar 0", "arr_elem", ["@GVar 3", "arr_elem", 0], "String", "@if", "@GVar 4", "2nd", "?", "@end-if", "str_concat", " and ", "str_concat", ["@GVar 0", "arr_elem", ["@GVar 3", "arr_elem", 1], "String", "@if", "@GVar 4", "2nd", "?", "@end-if"], "str_concat", " eliminated!"], 2500, "@end-else-if", "@else", "announce", ["@GVar 3", "arr_pop", "arr_reduce", "", ["str_concat", ["@var_retain", "@GVar 0", "arr_elem", "@Var -1", "@if", "@GVar 4", "2nd", "?", "@end-if"], "str_concat", ", "], "str_concat", "and ", "str_concat", ["@GVar 0", "arr_elem", ["@GVar 3", "arr_elem", ["@GVar 3", "arr_length", "-", 1]]], "@if", "@GVar 4", "2nd", "?", "@end-if", "str_concat", " eliminated!"], 2500, "@end-else", "@repeat", ["@GVar 3", "arr_length"], "@edit_var", 1, ["@var_retain", "@GVar 3", "arr_elem", "@Var 0"], "@add_score", ["@var_retain", "@GVar 0", "arr_elem", "@Var 1"], "@edit_gvar", 0, ["@var_retain", "@GVar 0", "arr_splice", ["@var_retain", "@Var 1", "-", "@Var 0"], 1, ["@Literal"]], "@edit_var", 0, ["@var_retain", "@Var 0", "+", 1], "@end-repeat", "@end-if", "@edit_gvar", 3, ["@Literal"]], "EndMovement"],
+				[["@global_var_retain_inner", 0, 0, ["@GVar 0", "arr_sort", ["@Var -2", "-", "@Var -1", "Number"]], "@end_vars", 0, "@edit_gvar", 7, ["@Literal"], "@repeat", ["@Var 2", "arr_length", ">", "@Var 0"], "@edit_var", 1, "@Var 0", "@repeat", ["@Var 2", "arr_length", ">", "@Var 1"], "@if", [["@Var 2", "arr_elem", "@Var 0"], "*B", ["@Var 2", "arr_elem", "@Var 1"], "<=", "@GVar 8"], "@edit_gvar", 7, ["@GVar 7", "arr_push", [["@Literal"], "arr_push", ["@Var 2", "arr_elem", "@Var 0"], "arr_push", ["@Var 2", "arr_elem", "@Var 1"]]], "@end-if", "@edit_var", 1, ["@Var 1", "+", 1], "@end-repeat", "@edit_var", 0, ["@Var 0", "+", 1], "@end-repeat"], "EndMovement"]
+			];
+			break;
+			case 2: scripts = [ // Powerful-Left Aquatic 2496
+				[[["@Grid", "arr_flat", 1, "arr_map", [["@var_retain", "@Var -1", "arr_elem", 1]]], 0n, "@end_vars", 0, "@repeat", ["@var_retain", "@Var 0", "arr_length"], "2nd", ["@global_var_retain", "@Var 0", "arr_elem", "@Var 1"], "absB", "DIVESeedUnlock", "@GVar 0", "@GVar 6", "@if", [["@Parent -3", ">", 1n], "&&", ["@GVar 2", "arr_indexOf", "@Parent -3", "=", -1]], "@edit_gvar", 2, ["@GVar 2", "arr_push", "@Parent -2"], "@end-if", "@edit_var", 1, ["@var_retain", "@Var 1", "+", 1], "@end-repeat"], "EndMovement"],
+				[[["@Grid", "arr_flat", 1, "arr_map", [["@var_retain", "@Var -1", "arr_elem", 0]]], 0n, "@end_vars", 0, "@repeat", ["@var_retain", "@Var 0", "arr_length"], "2nd", ["@global_var_retain", "@Var 0", "arr_elem", "@Var 1"], "absB", "@if", [["@Parent -3", ">", 1n], "&&", ["@GVar 2", "arr_indexOf", "@Parent -3", "=", -1], "&&", ["@GVar 0", "arr_indexOf", "@Parent -3", "=", -1]], "@edit_gvar", 2, ["@GVar 2", "arr_push", "@Parent -2"], "@end-if", "@edit_var", 1, ["@var_retain", "@Var 1", "+", 1], "@end-repeat"], "EndMovement"],
+				[["@GVar 0", 0, 0n, "@end_vars", true, "@repeat", ["@var_retain", "@Var 0", "arr_length"], "@edit_var", 2, ["@var_retain", "@Var 0", "arr_elem", "@Var 1"], "2nd", ["@var_retain", "@Grid", "arr_flat", 1, "arr_map", [["@var_retain", "@Var -1", "arr_elem", 0], "*B", ["@var_retain", "@Var -1", "arr_elem", 1]], "arr_filter", ["@Var -1", "typeof", "=", "bigint", "&&", ["@var_retain", "@Var 1", "!=", 0n]], "arr_reduce", true, ["@var_retain", "@if", ["@var_retain", "@Var -1", "%B", "@Var 2", "=", 0n], "2nd", false, "@end-if"]], "@if", "@Parent -1", "@edit_gvar", 3, ["@var_retain", "@GVar 3", "arr_push", "@Var 1"], "@end-if", "@edit_var", 1, ["@var_retain", "@Var 1", "+", 1], "@end-repeat"], "EndMovement"],
+				[[0, 0n, "@end_vars", 0, "@repeat", ["@GVar 2", "arr_length"], "@edit_var", 1, ["@var_retain", "@GVar 2", "arr_elem", "@Var 0"], "@edit_gvar", 0, ["@var_retain", "@GVar 0", "arr_push", "@Var 1"], "@if", ["@var_retain", "@GVar 1", "arr_indexOf", "@Var 1", "=", -1], "@edit_gvar", 1, ["@var_retain", "@GVar 1", "arr_binaryInsert", "@Var 1"], "@end-if", "@edit_var", 0, ["@var_retain", "@Var 0", "+", 1], "@end-repeat", "@if", ["@GVar 2", "arr_length", ">", 0], "@if", ["@GVar 2", "arr_length", "=", 1], "announce", ["@GVar 2", "arr_elem", 0, "String", "@if", "@GVar 4", "2nd", "?", "@end-if", "str_concat", " unlocked!"], 2500, "@end-if", "@else-if", ["@GVar 2", "arr_length", "=", 2], "announce", ["@GVar 2", "arr_elem", 0, "String", "@if", "@GVar 4", "2nd", "?", "@end-if", "str_concat", " and ", "str_concat", ["@GVar 2", "arr_elem", 1, "String", "@if", "@GVar 4", "2nd", "?", "@end-if"], "str_concat", " unlocked!"], 2500, "@end-else-if", "@else", "announce", ["@GVar 2", "arr_pop", "arr_reduce", "", ["str_concat", ["@var_retain", "@Var -1", "@if", "@GVar 4", "2nd", "?", "@end-if"], "str_concat", ", "], "str_concat", "and ", "str_concat", ["@GVar 2", "arr_elem", ["@GVar 2", "arr_length", "-", 1]], "@if", "@GVar 4", "2nd", "?", "@end-if", "str_concat", " unlocked!"], 2500, "@end-else", "@end-if", "@edit_gvar", 2, ["@Literal"]], "EndMovement"],
+				[[0, 0, "@end_vars", 0, "@if", [["@GVar 3", "arr_length", ">", 0], "&&", [["@GVar 3", "arr_length"], "<", ["@GVar 0", "arr_length"]]], "@if", ["@GVar 3", "arr_length", "=", 1], "announce", ["@GVar 0", "arr_elem", ["@GVar 3", "arr_elem", 0], "String", "@if", "@GVar 4", "2nd", "?", "@end-if", "str_concat", " eliminated!"], 2500, "@end-if", "@else-if", ["@GVar 3", "arr_length", "=", 2], "announce", ["@GVar 0", "arr_elem", ["@GVar 3", "arr_elem", 0], "String", "@if", "@GVar 4", "2nd", "?", "@end-if", "str_concat", " and ", "str_concat", ["@GVar 0", "arr_elem", ["@GVar 3", "arr_elem", 1], "String", "@if", "@GVar 4", "2nd", "?", "@end-if"], "str_concat", " eliminated!"], 2500, "@end-else-if", "@else", "announce", ["@GVar 3", "arr_pop", "arr_reduce", "", ["str_concat", ["@var_retain", "@GVar 0", "arr_elem", "@Var -1", "@if", "@GVar 4", "2nd", "?", "@end-if"], "str_concat", ", "], "str_concat", "and ", "str_concat", ["@GVar 0", "arr_elem", ["@GVar 3", "arr_elem", ["@GVar 3", "arr_length", "-", 1]]], "@if", "@GVar 4", "2nd", "?", "@end-if", "str_concat", " eliminated!"], 2500, "@end-else", "@repeat", ["@GVar 3", "arr_length"], "@edit_var", 1, ["@var_retain", "@GVar 3", "arr_elem", "@Var 0"], "@add_score", ["@var_retain", "@GVar 0", "arr_elem", "@Var 1"], "@edit_gvar", 0, ["@var_retain", "@GVar 0", "arr_splice", ["@var_retain", "@Var 1", "-", "@Var 0"], 1, ["@Literal"]], "@edit_var", 0, ["@var_retain", "@Var 0", "+", 1], "@end-repeat", "@end-if", "@edit_gvar", 3, ["@Literal"]], "EndMovement"],
+				[["@global_var_retain_inner", 0, 0, ["@GVar 0", "arr_sort", ["@Var -2", "-", "@Var -1", "Number"]], "@end_vars", 0, "@edit_gvar", 7, ["@Literal"], "@repeat", ["@Var 2", "arr_length", ">", "@Var 0"], "@edit_var", 1, "@Var 0", "@repeat", ["@Var 2", "arr_length", ">", "@Var 1"], "@if", [["@Var 2", "arr_elem", "@Var 0"], "*B", ["@Var 2", "arr_elem", "@Var 1"], "<=", "@GVar 8"], "@edit_gvar", 7, ["@GVar 7", "arr_push", [["@Literal"], "arr_push", ["@Var 2", "arr_elem", "@Var 0"], "arr_push", ["@Var 2", "arr_elem", "@Var 1"]]], "@end-if", "@edit_var", 1, ["@Var 1", "+", 1], "@end-repeat", "@edit_var", 0, ["@Var 0", "+", 1], "@end-repeat"], "EndMovement"]
+			];
+			break;
+			case -1: scripts = [ // Unpatched Aquatic 2496
+				[[["@Grid", "arr_flat", 1, "arr_map", [["@var_retain", "@Var -1", "arr_elem", 0], "*B", ["@var_retain", "@Var -1", "arr_elem", 1]]], 0n, "@end_vars", 0, "@repeat", ["@var_retain", "@Var 0", "arr_length"], "2nd", ["@global_var_retain", "@Var 0", "arr_elem", "@Var 1"], "absB", "DIVESeedUnlock", "@GVar 0", "@GVar 6", "@if", [["@Parent -3", ">", 1n], "&&", ["@GVar 2", "arr_indexOf", "@Parent -3", "=", -1]], "@edit_gvar", 2, ["@GVar 2", "arr_push", "@Parent -2"], "@end-if", "@edit_var", 1, ["@var_retain", "@Var 1", "+", 1], "@end-repeat"], "EndMovement"],
+				[["@GVar 0", 0, 0n, "@end_vars", true, "@repeat", ["@var_retain", "@Var 0", "arr_length"], "@edit_var", 2, ["@var_retain", "@Var 0", "arr_elem", "@Var 1"], "2nd", ["@var_retain", "@Grid", "arr_flat", 1, "arr_map", [["@var_retain", "@Var -1", "arr_elem", 0], "*B", ["@var_retain", "@Var -1", "arr_elem", 1]], "arr_filter", ["@Var -1", "typeof", "=", "bigint", "&&", ["@var_retain", "@Var 1", "!=", 0n]], "arr_reduce", true, ["@var_retain", "@if", ["@var_retain", "@Var -1", "%B", "@Var 2", "=", 0n], "2nd", false, "@end-if"]], "@if", "@Parent -1", "@edit_gvar", 3, ["@var_retain", "@GVar 3", "arr_push", "@Var 1"], "@end-if", "@edit_var", 1, ["@var_retain", "@Var 1", "+", 1], "@end-repeat"], "EndMovement"],
+				[[0, 0n, "@end_vars", 0, "@repeat", ["@GVar 2", "arr_length"], "@edit_var", 1, ["@var_retain", "@GVar 2", "arr_elem", "@Var 0"], "@edit_gvar", 0, ["@var_retain", "@GVar 0", "arr_push", "@Var 1"], "@if", ["@var_retain", "@GVar 1", "arr_indexOf", "@Var 1", "=", -1], "@edit_gvar", 1, ["@var_retain", "@GVar 1", "arr_binaryInsert", "@Var 1"], "@end-if", "@edit_var", 0, ["@var_retain", "@Var 0", "+", 1], "@end-repeat", "@if", ["@GVar 2", "arr_length", ">", 0], "@if", ["@GVar 2", "arr_length", "=", 1], "announce", ["@GVar 2", "arr_elem", 0, "String", "@if", "@GVar 4", "2nd", "?", "@end-if", "str_concat", " unlocked!"], 2500, "@end-if", "@else-if", ["@GVar 2", "arr_length", "=", 2], "announce", ["@GVar 2", "arr_elem", 0, "String", "@if", "@GVar 4", "2nd", "?", "@end-if", "str_concat", " and ", "str_concat", ["@GVar 2", "arr_elem", 1, "String", "@if", "@GVar 4", "2nd", "?", "@end-if"], "str_concat", " unlocked!"], 2500, "@end-else-if", "@else", "announce", ["@GVar 2", "arr_pop", "arr_reduce", "", ["str_concat", ["@var_retain", "@Var -1", "@if", "@GVar 4", "2nd", "?", "@end-if"], "str_concat", ", "], "str_concat", "and ", "str_concat", ["@GVar 2", "arr_elem", ["@GVar 2", "arr_length", "-", 1]], "@if", "@GVar 4", "2nd", "?", "@end-if", "str_concat", " unlocked!"], 2500, "@end-else", "@end-if", "@edit_gvar", 2, ["@Literal"]], "EndMovement"],
+				[[0, 0, "@end_vars", 0, "@if", [["@GVar 3", "arr_length", ">", 0], "&&", [["@GVar 3", "arr_length"], "<", ["@GVar 0", "arr_length"]]], "@if", ["@GVar 3", "arr_length", "=", 1], "announce", ["@GVar 0", "arr_elem", ["@GVar 3", "arr_elem", 0], "String", "@if", "@GVar 4", "2nd", "?", "@end-if", "str_concat", " eliminated!"], 2500, "@end-if", "@else-if", ["@GVar 3", "arr_length", "=", 2], "announce", ["@GVar 0", "arr_elem", ["@GVar 3", "arr_elem", 0], "String", "@if", "@GVar 4", "2nd", "?", "@end-if", "str_concat", " and ", "str_concat", ["@GVar 0", "arr_elem", ["@GVar 3", "arr_elem", 1], "String", "@if", "@GVar 4", "2nd", "?", "@end-if"], "str_concat", " eliminated!"], 2500, "@end-else-if", "@else", "announce", ["@GVar 3", "arr_pop", "arr_reduce", "", ["str_concat", ["@var_retain", "@GVar 0", "arr_elem", "@Var -1", "@if", "@GVar 4", "2nd", "?", "@end-if"], "str_concat", ", "], "str_concat", "and ", "str_concat", ["@GVar 0", "arr_elem", ["@GVar 3", "arr_elem", ["@GVar 3", "arr_length", "-", 1]]], "@if", "@GVar 4", "2nd", "?", "@end-if", "str_concat", " eliminated!"], 2500, "@end-else", "@repeat", ["@GVar 3", "arr_length"], "@edit_var", 1, ["@var_retain", "@GVar 3", "arr_elem", "@Var 0"], "@add_score", ["@var_retain", "@GVar 0", "arr_elem", "@Var 1"], "@edit_gvar", 0, ["@var_retain", "@GVar 0", "arr_splice", ["@var_retain", "@Var 1", "-", "@Var 0"], 1, ["@Literal"]], "@edit_var", 0, ["@var_retain", "@Var 0", "+", 1], "@end-repeat", "@end-if", "@edit_gvar", 3, ["@Literal"]], "EndMovement"],
+				[["@global_var_retain_inner", 0, 0, ["@GVar 0", "arr_sort", ["@Var -2", "-", "@Var -1", "Number"]], "@end_vars", 0, "@edit_gvar", 7, ["@Literal"], "@repeat", ["@Var 2", "arr_length", ">", "@Var 0"], "@edit_var", 1, "@Var 0", "@repeat", ["@Var 2", "arr_length", ">", "@Var 1"], "@if", [["@Var 2", "arr_elem", "@Var 0"], "*B", ["@Var 2", "arr_elem", "@Var 1"], "<=", "@GVar 8"], "@edit_gvar", 7, ["@GVar 7", "arr_push", [["@Literal"], "arr_push", ["@Var 2", "arr_elem", "@Var 0"], "arr_push", ["@Var 2", "arr_elem", "@Var 1"]]], "@end-if", "@edit_var", 1, ["@Var 1", "+", 1], "@end-repeat", "@edit_var", 0, ["@Var 0", "+", 1], "@end-repeat"], "EndMovement"]
+			];
+			break;
+		}
         document.getElementById("mode_vars_line").style.setProperty("display", "block");
         document.getElementById("Aquatic2496_vars").style.setProperty("display", "flex");
         document.getElementById("WavesModes_vars").style.setProperty("display", "flex");
@@ -16322,18 +16363,51 @@ function gmDisplayVars() {
         }
         if (gamemode == 89.50118) { // Aquatic 2496
             title = "Aquatic 2496";
+			let presetText = "Seeds are unlocked in the same way as DIVE, using the individual values on both sides in the product representation";
+			switch (mode_vars[4]) {
+				default: presetText = "Seeds are unlocked in the same way as DIVE, using the individual values on both sides in the product representation";
+				title = "Aquatic 2496";
+				break;
+				case 1: presetText = "Seeds are unlocked in the same way as DIVE, using only the right-hand side value in the product representation and ignoring the left-hand side";
+				title = "Right-Only Aquatic 2496";
+				break;
+				case 2: presetText = "Seeds are unlocked in the same way as DIVE, using the right-hand side value in the product representation specifically, but there's also the special subset of seeds that only works with the left-hand side value in the product representation (which does not use the DIVE-style recursive division, meaning that the special subset of seeds is mostly composite)";
+				title = "Powerful-Left Aquatic 2496";
+				break;
+				case -1: presetText = "Seeds are unlocked in the same way as DIVE, treating the entire value of the product (reintroducing the multiplication of both sides in the product representation before DIVE-style recursive division during the seed unlocking process) as their own seeds, to undo the modifier shenanigan patch like \"Visible Next Spawned Tiles\" and Multiple Merges (\"A tile that was just merged can itself be part of another merge on the same move.\") to potentially allow composite seeds (especially squares of primes) that are strictly larger than any of the existing component values on the board to be unlocked";
+				title = "Unpatched Aquatic 2496";
+				break;
+			}
             modeRulesDescription = "Tiles are products of two integers, and two tiles can merge if they have at least one integer in common, even if they're not in the same position: for example, a 2 × 6 tile and a 6 × 7 tile can merge into a 6 × 9 tile. If the tiles are equal, the larger number is the one considered to be matching. The score given from a merge is whatever the matching number is. This mode has no win condition, so just try to get as high of a score as you can!";
-            modeSpawnDescription = "The starting seed is " + (mode_vars[1] ? 1 : 2) + ". Seeds are unlocked in the same way as DIVE, using the right-hand side value of the product (rather than treating the entire product value as their own seeds, due to the modifier shenanigans), but there's also the special subset of seeds that only works with the left-hand side value of the product (which does not use the DIVE-style recursive division, meaning that the special subset of seeds is mostly composite). Seeds are single integers, so the spawning tile is a product of two (not necessarily distinct) seeds, such that the product is not larger than the largest tile discovered so far.";
+            modeSpawnDescription = "The starting seed is " + (mode_vars[1] ? 1 : 2) + ". " + presetText + ". Seeds are single integers, so the spawning tile is a product of two (not necessarily distinct) seeds, such that the product is not larger than the largest tile discovered so far.";
             if (!mode_vars[3]) {
-                modeSpawnDescription = "The starting seed is " + (mode_vars[1] ? 1 : 2) + ". Seeds are unlocked in the same way as DIVE, using the right-hand side value of the product (rather than treating the entire product value as their own seeds, due to the modifier shenanigans), but there's also the special subset of seeds that only works with the left-hand side value of the product (which does not use the DIVE-style recursive division, meaning that the special subset of seeds is mostly composite). Seeds are single integers, so the spawning tile is a product of two (not necessarily distinct) seeds, such that the product is not larger than the largest tile discovered so far.";
+                modeSpawnDescription = "The starting seed is " + (mode_vars[1] ? 1 : 2) + ". " + presetText + ". Seeds are single integers, so the spawning tile is a product of two (not necessarily distinct) seeds, such that the product is not larger than the largest tile discovered so far.";
                 document.getElementById("Aquatic2496_productLimit_text").innerHTML = "Spawning tiles cannot be larger than all existing tiles.";
                 document.getElementById("Aquatic2496_productLimit_text").style.setProperty("color", "#721c00");
             }
             else {
-                modeSpawnDescription = "The starting seed is " + (mode_vars[1] ? 1 : 2) + ". Seeds are unlocked in the same way as DIVE, using the right-hand side value of the product (rather than treating the entire product value as their own seeds, due to the modifier shenanigans), but there's also the special subset of seeds that only works with the left-hand side value of the product (which does not use the DIVE-style recursive division, meaning that the special subset of seeds is mostly composite). Seeds are single integers, so the spawning tile is a product of two (not necessarily distinct) seeds.";
+                modeSpawnDescription = "The starting seed is " + (mode_vars[1] ? 1 : 2) + ". " + presetText + ". Seeds are single integers, so the spawning tile is a product of two (not necessarily distinct) seeds.";
                 document.getElementById("Aquatic2496_productLimit_text").innerHTML = "Spawning tiles can be larger than all existing tiles.";
                 document.getElementById("Aquatic2496_productLimit_text").style.setProperty("color", "#d43500");
             }
+			switch (mode_vars[4]) {
+				default:
+					document.getElementById("Aquatic2496_seedPreset_text").innerHTML = "Seeds work the same way as DIVE on both sides.";
+				    document.getElementById("Aquatic2496_seedPreset_text").style.setProperty("color", "#3ea121");
+				break;
+				case 1:
+					document.getElementById("Aquatic2496_seedPreset_text").innerHTML = "Seeds work only for the right-hand side value in the product.";
+				    document.getElementById("Aquatic2496_seedPreset_text").style.setProperty("color", "#1fabe0");
+				break;
+				case 2:
+					document.getElementById("Aquatic2496_seedPreset_text").innerHTML = "The left-hand side value of the product is unlocked differently from the right-hand side, which would often include composites.";
+				    document.getElementById("Aquatic2496_seedPreset_text").style.setProperty("color", "#8e22e2");
+				break;
+				case -1:
+					document.getElementById("Aquatic2496_seedPreset_text").innerHTML = "To undo the modifier shenanigan fix, seeds work by treating the entire value of the product as their own seeds.";
+				    document.getElementById("Aquatic2496_seedPreset_text").style.setProperty("color", "#a93759");
+				break;
+			}
         }
         if (gamemode == 97.50118) { // Div-Add-Tor
             if (mode_vars[3] == 0) {
@@ -23456,7 +23530,11 @@ function loadModifiers() {
                 ];
             }
             if (gamemode == 89.50118 && mode_vars[3]) { // Aquatic 2496
-                scripts[4][0][17] = true;
+				if (mode_vars[4] == 0 || mode_vars[4] == 2) {
+					scripts[5][0][17] = true;
+				} else {
+					scripts[4][0][17] = true;
+				}
             }
             if (mode_vars[1]) {
                 if (gamemode == 50.22 || (gamemode == 97.50118 && mode_vars[4] != 0)) {
@@ -25394,9 +25472,27 @@ function operation(n1, operator, n2) {
         case "**B":
             result = n1 ** n2;
         break;
+		case "sqrt":
+			result = Math.sqrt(n1);
+		break;
+		case "cbrt":
+			result = Math.cbrt(n1);
+		break;
         case "log":
             result = Math.log(n1)/Math.log(n2);
         break;
+		case "log2":
+			result = Math.log2(n1);
+		break;
+		case "log10":
+			result = Math.log10(n1);
+		break;
+		case "ln":
+			result = Math.log(n1);
+		break;
+		case "exp":
+			result = Math.exp(n1);
+		break;
         case "round":
             result = Math.round(n1/n2) * n2;
         break;
@@ -27393,7 +27489,7 @@ function evaluateColor(color) {
         let alpha = CalcArray(color[4], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
         return "hsla(" + hue + ", " + saturation + "%, " + brightness + "%, " + alpha + ")";
     }
-    else if (color[0] === "@HWB") { // HWB conversion to HSL found using Google's AI overview
+    else if (color[0] === "@HWB" || color[0] === "@HWBA") { // HWB conversion to HSL found using Google's AI overview. Also, for the sake of similarities with HSL and HSV, HWBA is a valid alias.
       let hue = CalcArray(color[1], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
       let white = CalcArray(color[2], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
       let black = CalcArray(color[3], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
@@ -27558,8 +27654,8 @@ function convertColor(col, system) {
     }
     else {
         let colorarray = [];
-        if (Array.isArray(color) && !(color[0] == "@RGB" || color[0] == "@RGBA" || color[0] == "@HSL" || color[0] == "@HSLA" || color[0] == "@HSV" || color[0] == "@HSVA" || color[0] == "@HWB" || color[0] == "@LAB" || color[0] == "@LCH" || color[0] == "@OKLAB" || color[0] == "@OKLCH" || color[0] == "@sRGB" || color[0] == "@LinearRGB" || color[0] == "@sRGBLinear" || color[0] == "@XYZ" || color[0] == "@XYZ-D50" || color[0] == "@XYZ-D65")) color = CalcArray(color, vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
-        if (Array.isArray(color) && (color[0] == "@RGB" || color[0] == "@RGBA" || color[0] == "@HSL" || color[0] == "@HSLA" || color[0] == "@HSV" || color[0] == "@HSVA" || color[0] == "@HWB" || color[0] == "@LAB" || color[0] == "@LCH" || color[0] == "@OKLAB" || color[0] == "@OKLCH" || color[0] == "@sRGB" || color[0] == "@LinearRGB" || color[0] == "@sRGBLinear" || color[0] == "@XYZ" || color[0] == "@XYZ-D50" || color[0] == "@XYZ-D65")) colorarray = color;
+        if (Array.isArray(color) && !(color[0] == "@RGB" || color[0] == "@RGBA" || color[0] == "@HSL" || color[0] == "@HSLA" || color[0] == "@HSV" || color[0] == "@HSVA" || color[0] == "@HWB" || color[0] == "@HWBA" || color[0] == "@LAB" || color[0] == "@LCH" || color[0] == "@OKLAB" || color[0] == "@OKLCH" || color[0] == "@sRGB" || color[0] == "@LinearRGB" || color[0] == "@sRGBLinear" || color[0] == "@XYZ" || color[0] == "@XYZ-D50" || color[0] == "@XYZ-D65")) color = CalcArray(color, vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
+        if (Array.isArray(color) && (color[0] == "@RGB" || color[0] == "@RGBA" || color[0] == "@HSL" || color[0] == "@HSLA" || color[0] == "@HSV" || color[0] == "@HSVA" || color[0] == "@HWB" || color[0] == "@HWBA" || color[0] == "@LAB" || color[0] == "@LCH" || color[0] == "@OKLAB" || color[0] == "@OKLCH" || color[0] == "@sRGB" || color[0] == "@LinearRGB" || color[0] == "@sRGBLinear" || color[0] == "@XYZ" || color[0] == "@XYZ-D50" || color[0] == "@XYZ-D65")) colorarray = color;
         else if (typeof color == "string" && color[0] == "#") { // Any hex colors are converted to RGBA arrays first
             if (system == "@Hex") return color;
             if (color.length == 7 || color.length == 9) {
@@ -27699,7 +27795,7 @@ function convertColor(col, system) {
 }
 
 function rotateColor(color, degrees, system) { //degrees = 180 gives the complementary color
-    // Color rotation based on LCH and OKLCH color systems will be implemented later. HWB is basically the same as HSL.
+    // Color rotation based on LCH and OKLCH color systems will be implemented later. HSV and HWB are basically the same as HSL.
     let invertL = false; let vcoord = 0; let hcoord = 0; let gri = Grid; let vars = []; let globalVarStat = 0;
     if (arguments.length > 2 && arguments[2] !== undefined) invertL = arguments[2]; // If this is true, then the lightness of the color is inverted
     if (arguments.length > 3 && arguments[3] !== undefined) vcoord = arguments[3];
@@ -32304,11 +32400,24 @@ function compendiumStructuredClone(input) { // A version of structuredClone that
 }
 
 function updateAtSign(array, version) { // Version 1.1 added @ to the front of Empty, Void, and color evaluation starts like HSLA and linear-gradient; this function updates the array it's given accordingly.
+	// Also, for compatibility reasons, RGB, HSL, and HSV (without the "A" (alpha) suffix) replace with @RGBA, @HSLA, and @HSVA (with the pre-added "A" suffix), respectively.
     deepArrayReplace("Empty", "@Empty", array);
     deepArrayReplace("Void", "@Void", array);
+	deepArrayReplace("HSL", "@HSLA", array);
     deepArrayReplace("HSLA", "@HSLA", array);
+	deepArrayReplace("RGB", "@RGBA", array);
     deepArrayReplace("RGBA", "@RGBA", array);
-    deepArrayReplace("HSVA", "@HSVA", array);
+    deepArrayReplace("HSV", "@HSVA", array);
+	deepArrayReplace("HSVA", "@HSVA", array);
+	deepArrayReplace("HWB", "@HWB", array);
+	deepArrayReplace("HWBA", "@HWB", array);
+	deepArrayReplace("LAB", "@LAB", array);
+	deepArrayReplace("LCH", "@LCH", array);
+	deepArrayReplace("OKLAB", "@OKLAB", array);
+	deepArrayReplace("OKLCH", "@OKLCH", array);
+	deepArrayReplace("XYZ", "@XYZ", array);
+	deepArrayReplace("XYZ-D65", "@XYZ", array);
+	deepArrayReplace("XYZ-D50", "@XYZ-D50", array);
     deepArrayReplace("linear-gradient", "@linear-gradient", array);
     deepArrayReplace("repeating-linear-gradient", "@repeating-linear-gradient", array);
     deepArrayReplace("radial-gradient", "@radial-gradient", array);
