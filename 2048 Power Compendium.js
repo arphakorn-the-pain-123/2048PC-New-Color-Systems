@@ -16397,7 +16397,7 @@ function gmDisplayVars() {
 				break;
 				case 1:
 					document.getElementById("Aquatic2496_seedPreset_text").innerHTML = "Seeds work only for the right-hand side value in the product.";
-				    document.getElementById("Aquatic2496_seedPreset_text").style.setProperty("color", "#1fabe0");
+				    document.getElementById("Aquatic2496_seedPreset_text").style.setProperty("color", "#2271bf");
 				break;
 				case 2:
 					document.getElementById("Aquatic2496_seedPreset_text").innerHTML = "The left-hand side value of the product is unlocked differently from the right-hand side, which would often include composites.";
