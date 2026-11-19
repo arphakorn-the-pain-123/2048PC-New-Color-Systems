@@ -16373,7 +16373,7 @@ function gmDisplayVars() {
 				case 2: presetText = "Seeds are unlocked in the same way as DIVE, using the right-hand side value in the product representation specifically, but there's also the special subset of seeds that only works with the left-hand side value in the product representation (which does not use the DIVE-style recursive division, meaning that the special subset of seeds is mostly composite)";
 				title = "Powerful-Left Aquatic 2496";
 				break;
-				case -1: presetText = "Seeds are unlocked in the same way as DIVE, treating the entire value of the product (reintroducing the multiplication of both sides in the product representation before DIVE-style recursive division during the seed unlocking process) as their own seeds, to undo the modifier shenanigan patch like \"Visible Next Spawned Tiles\" and Multiple Merges (\"A tile that was just merged can itself be part of another merge on the same move.\") to potentially allow composite seeds (especially squares of primes) that are strictly larger than any of the existing component values on the board to be unlocked";
+				case -1: presetText = "Seeds are unlocked in the same way as DIVE, treating the entire value of the product (by reintroducing the multiplication of both sides in the product representation before DIVE-style recursive division during the seed unlocking process) as their own seeds, to attempt to undo the \"Visible Next Spawned Tiles\" modifier shenanigan patch, which potentially allow composite seeds (especially squares of primes) that are strictly larger than any of the existing component values on the board to be unlocked. But since the Visible Next Spawned Tiles now prevent the seed from being eliminated until the next spawned tiles are gone, the difference doesn't matter anymore.";
 				title = "Unpatched Aquatic 2496";
 				break;
 			}
@@ -16403,7 +16403,7 @@ function gmDisplayVars() {
 				    document.getElementById("Aquatic2496_seedPreset_text").style.setProperty("color", "#8e22e2");
 				break;
 				case -1:
-					document.getElementById("Aquatic2496_seedPreset_text").innerHTML = "To undo the modifier shenanigan fix, seeds work by treating the entire value of the product as their own seeds. (Only for testing purposes, not recommended for normal gameplay.)";
+					document.getElementById("Aquatic2496_seedPreset_text").innerHTML = "To undo the modifier shenanigan fix, seeds work by treating the entire value of the product as their own seeds. (Only for debugging purposes, so the gameplay difference doesn't matter.)";
 				    document.getElementById("Aquatic2496_seedPreset_text").style.setProperty("color", "#a93759");
 				break;
 			}
