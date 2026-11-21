@@ -1823,7 +1823,7 @@ document.getElementById("gp_export_button").addEventListener("click", function()
     switchScreen("SaveCode", "Export");
 });
 document.getElementById("save_code_import").addEventListener("click", function(){
-    if (["view color schemes", "view color scheme", "color scheme viewer"].indexOf(document.getElementById("save_code_box").value.toLowerCase()) !== -1) {
+    if (["view color schemes", "view color scheme", "color scheme viewer", "tvrce"].indexOf(document.getElementById("save_code_box").value.toLowerCase()) !== -1) {
         screenVars = [2n, true, true];
         switchScreen("Tile Viewer", "Wildcard 2048");
     }
@@ -27459,9 +27459,9 @@ function evaluateColor(color) {
         let green = CalcArray(color[2], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
         let blue = CalcArray(color[3], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
         let alpha = CalcArray(color[4], vcoord, hcoord, 0, 0, [1, Infinity, 0, 0], gri, [], vars, globalVarStat);
-        let redGamma = gammaRGB(red);
-        let greenGamma = gammaRGB(red);
-        let blueGamma = gammaRGB(red);
+        let redGamma = gammaRgb(red);
+        let greenGamma = gammaRgb(red);
+        let blueGamma = gammaRgb(red);
         if (color[0] === "@LinearRGB" || color[0] === "@sRGBLinear") {
           return "rgba(" + Math.round(redGamma * 255) + ", " + Math.round(greenGamma * 255) + ", " + Math.round(blueGamma * 255) + ", " + alpha + ")";
         } else if (color[0] === "@sRGB") {
